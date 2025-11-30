@@ -1,0 +1,83 @@
+{
+  "name": "FusionFinance.pl - Portal Finansowy",
+  "short_name": "FusionFinance",
+  "description": "Luksusowy portal finansowy z aktualnymi kursami walut, notowaniami giełdowymi i analizami rynkowymi",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#08090c",
+  "theme_color": "#08090c",
+  "orientation": "portrait-primary",
+  "scope": "/",
+  "lang": "pl-PL",
+  "categories": ["finance", "news", "business"],
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Rynki",
+      "short_name": "Rynki",
+      "description": "Wiadomości rynkowe",
+      "url": "/rynki",
+      "icons": [{ "src": "/favicon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Giełda",
+      "short_name": "Giełda",
+      "description": "Notowania giełdowe",
+      "url": "/gielda",
+      "icons": [{ "src": "/favicon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Crypto",
+      "short_name": "Crypto",
+      "description": "Kryptowaluty",
+      "url": "/crypto",
+      "icons": [{ "src": "/favicon-96x96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Waluty",
+      "short_name": "Waluty",
+      "description": "Kursy walut",
+      "url": "/waluty",
+      "icons": [{ "src": "/favicon-96x96.png", "sizes": "96x96" }]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/og-image.jpg",
+      "sizes": "1200x630",
+      "type": "image/jpeg",
+      "label": "FusionFinance.pl - Strona główna"
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
+

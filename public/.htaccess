@@ -1,0 +1,97 @@
+# FusionFinance.pl - Apache Configuration
+# Dla hostingu nazwa.pl
+
+# Włącz rewrite engine
+RewriteEngine On
+RewriteBase /
+
+# Force HTTPS
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Remove www (optional - odkomentuj jeśli chcesz bez www)
+# RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+# RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+# Obsługa trailing slash (Next.js static export)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ /$1/ [L,R=301]
+
+# Obsługa stron bez .html
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !\.
+RewriteCond %{REQUEST_FILENAME}.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# Obsługa index.html w katalogach
+DirectoryIndex index.html index.php
+
+# Kompresja GZIP
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE image/svg+xml
+</IfModule>
+
+# Cache statycznych zasobów
+<IfModule mod_expires.c>
+    ExpiresActive On
+    
+    # Obrazy - 1 miesiąc
+    ExpiresByType image/jpeg "access plus 1 month"
+    ExpiresByType image/png "access plus 1 month"
+    ExpiresByType image/gif "access plus 1 month"
+    ExpiresByType image/webp "access plus 1 month"
+    ExpiresByType image/svg+xml "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    
+    # CSS i JS - 1 tydzień
+    ExpiresByType text/css "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    
+    # Fonty - 1 rok
+    ExpiresByType font/woff2 "access plus 1 year"
+    ExpiresByType font/woff "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+    
+    # HTML - 1 godzina
+    ExpiresByType text/html "access plus 1 hour"
+</IfModule>
+
+# Security headers
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set X-XSS-Protection "1; mode=block"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+# Blokuj dostęp do wrażliwych plików
+<FilesMatch "\.(env|log|md|yml|yaml|json|lock)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Zezwól na manifest i robots
+<FilesMatch "(robots\.txt|sitemap\.xml|site\.webmanifest)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Niestandardowe strony błędów
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# PHP settings dla API
+<IfModule mod_php.c>
+    php_value max_execution_time 30
+    php_value memory_limit 64M
+</IfModule>
+

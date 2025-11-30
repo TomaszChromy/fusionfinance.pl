@@ -1,26 +1,373 @@
+/* ============================================
+   GLOBAL STYLES — FUSIONFINANCE
+   Version: 5.0 (Luxury Golden Ratio Design)
+   Author: Tomasz Chromy
+   POWERED BY TOMASZ CHROMY
+   ============================================ */
+
+/* Tailwind v4 — nowy import */
 @import "tailwindcss";
 
+/* ============================================
+   LUXURY COLOR PALETTE & GOLDEN RATIO SYSTEM
+   Golden Ratio: 1.618
+   Fibonacci: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89
+   ============================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Luxury Dark Theme */
+  --bg-primary: #08090c;
+  --bg-secondary: #0f1115;
+  --bg-tertiary: #15181e;
+  --bg-card: #1a1d24;
+  --bg-elevated: #1f232b;
+
+  /* Gold & Premium Accents */
+  --gold-primary: #c9a962;
+  --gold-light: #e4d4a5;
+  --gold-dark: #9a7b3c;
+  --gold-glow: rgba(201, 169, 98, 0.15);
+
+  /* Text Hierarchy */
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+
+  /* Accent Colors */
+  --accent-blue: #60a5fa;
+  --accent-green: #4ade80;
+  --accent-red: #f87171;
+  --accent-amber: #fbbf24;
+
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-gold: rgba(201, 169, 98, 0.3);
+
+  /* Fibonacci Spacing (rem) */
+  --space-1: 0.0625rem;  /* 1px */
+  --space-2: 0.125rem;   /* 2px */
+  --space-3: 0.1875rem;  /* 3px */
+  --space-5: 0.3125rem;  /* 5px */
+  --space-8: 0.5rem;     /* 8px */
+  --space-13: 0.8125rem; /* 13px */
+  --space-21: 1.3125rem; /* 21px */
+  --space-34: 2.125rem;  /* 34px */
+  --space-55: 3.4375rem; /* 55px */
+  --space-89: 5.5625rem; /* 89px */
+
+  /* Golden Ratio Typography Scale */
+  --text-xs: 0.694rem;    /* 11.1px */
+  --text-sm: 0.833rem;    /* 13.3px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.2rem;      /* 19.2px */
+  --text-xl: 1.44rem;     /* 23px */
+  --text-2xl: 1.728rem;   /* 27.6px */
+  --text-3xl: 2.074rem;   /* 33.2px */
+  --text-4xl: 2.488rem;   /* 39.8px */
+  --text-5xl: 2.986rem;   /* 47.8px */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================
+   BASE RESET / NORMALIZE
+   ============================================ */
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans",
+    Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.618; /* Golden ratio */
+  letter-spacing: 0.01em;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
+}
+
+/* Premium serif for headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Playfair Display", "Georgia", serif;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+/* Linki - domyślnie dziedziczą kolor */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+
+a:hover {
+  color: var(--gold-primary);
+}
+
+/* Focus state dla accessibility */
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--gold-primary);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   SCROLLBAR STYLING - Luxury
+   ============================================ */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold-dark) 0%, var(--gold-primary) 100%);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-light);
+}
+
+/* ============================================
+   LAYOUT CONTAINER - Golden Ratio
+   ============================================ */
+
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-21);
+  padding-right: var(--space-21);
+}
+
+/* ============================================
+   LUXURY CARD STYLES
+   ============================================ */
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: var(--space-21);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card:hover {
+  border-color: var(--border-gold);
+  box-shadow: 0 8px 34px var(--gold-glow);
+}
+
+.card-premium {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+  border: 1px solid var(--border-gold);
+  box-shadow: 0 4px 21px var(--gold-glow);
+}
+
+/* ============================================
+   LUXURY TABLE STYLES
+   ============================================ */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th,
+.data-table td {
+  padding: var(--space-13) 0;
+  text-align: left;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.data-table th {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.data-table tr:hover td {
+  color: var(--gold-primary);
+}
+
+/* ============================================
+   COLOR UTILITIES
+   ============================================ */
+
+.text-positive {
+  color: var(--accent-green);
+}
+
+.text-negative {
+  color: var(--accent-red);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-gold {
+  color: var(--gold-primary);
+}
+
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   SECTION DIVIDERS - Elegant
+   ============================================ */
+
+.section-divider {
+  border: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, var(--border-gold) 50%, transparent 100%);
+  margin: var(--space-34) 0;
+}
+
+.divider-gold {
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, var(--gold-primary) 50%, transparent 100%);
+}
+
+/* ============================================
+   LUXURY BUTTON STYLES
+   ============================================ */
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-13) var(--space-21);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--bg-primary);
+  background: linear-gradient(135deg, var(--gold-primary) 0%, var(--gold-dark) 100%);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 100%);
+  box-shadow: 0 4px 21px var(--gold-glow);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-8);
+  padding: var(--space-13) var(--space-21);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--gold-primary);
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: var(--gold-glow);
+  border-color: var(--gold-primary);
+  color: var(--gold-light);
+}
+
+/* ============================================
+   ANIMATIONS - Smooth & Elegant
+   ============================================ */
+
+.fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
+
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, var(--gold-glow) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s infinite;
+}
+
+/* ============================================
+   GOLDEN RATIO GRID SYSTEM
+   ============================================ */
+
+.grid-golden {
+  display: grid;
+  grid-template-columns: 61.8% 38.2%;
+  gap: var(--space-34);
+}
+
+.grid-golden-reverse {
+  display: grid;
+  grid-template-columns: 38.2% 61.8%;
+  gap: var(--space-34);
+}
+
+/* ============================================
+   LUXURY ACCENTS
+   ============================================ */
+
+.gold-line {
+  width: 55px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold-primary), var(--gold-light));
+  border-radius: 2px;
+}
+
+.gold-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gold-primary);
+  border-radius: 50%;
+  box-shadow: 0 0 13px var(--gold-glow);
+}
+
+/* Selection styling */
+::selection {
+  background: var(--gold-primary);
+  color: var(--bg-primary);
+}
+
+/* ============================================
+   END — globals.css
+   POWERED BY TOMASZ CHROMY
+   ============================================ */
