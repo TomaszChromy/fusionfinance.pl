@@ -4,10 +4,11 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RSSArticles from "@/components/RSSArticles";
+import MarketSidebar from "@/components/MarketSidebar";
 
 // HD obrazy kategoryzowane tematycznie
 const themeImages: Record<string, string[]> = {
@@ -60,22 +61,21 @@ function formatPolishDate(dateStr: string): string {
   const months = ["stycznia","lutego","marca","kwietnia","maja","czerwca",
                   "lipca","sierpnia","września","października","listopada","grudnia"];
   const date = new Date(dateStr);
+  if (isNaN(date.getTime())) return "Brak daty";
   return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`;
 }
 
-function generateArticleContent(title: string, description: string): string[] {
-  const paragraphs: string[] = [];
-  paragraphs.push(description || "Artykuł finansowy z najnowszymi informacjami rynkowymi.");
-  
-  const templates = [
-    "Analitycy rynkowi zwracają uwagę na kluczowe czynniki wpływające na obecną sytuację. Według ekspertów, obserwowane trendy mogą mieć istotne znaczenie dla dalszego rozwoju sytuacji na rynkach finansowych.",
-    "Inwestorzy z niepokojem śledzą rozwój wydarzeń, które mogą wpłynąć na ich portfele. Strategie zabezpieczające stają się coraz popularniejsze wśród uczestników rynku.",
-    "Perspektywy na najbliższe miesiące pozostają niepewne. Eksperci zalecają ostrożność i dywersyfikację portfela inwestycyjnego.",
-    "Globalne rynki finansowe reagują na najnowsze dane makroekonomiczne. Indeksy giełdowe notują znaczące wahania w odpowiedzi na zmieniające się warunki.",
-    "Banki centralne kontynuują politykę mającą na celu stabilizację sytuacji gospodarczej. Decyzje dotyczące stóp procentowych pozostają w centrum uwagi inwestorów.",
-  ];
-  
-  templates.forEach(t => paragraphs.push(t));
+function parseContent(content: string): string[] {
+  if (!content || content.length < 50) {
+    return [];
+  }
+
+  // Split by double newlines (paragraphs) or single newlines
+  const paragraphs = content
+    .split(/\n\n+/)
+    .map(p => p.trim())
+    .filter(p => p.length > 20); // Filter out very short fragments
+
   return paragraphs;
 }
 
@@ -83,15 +83,57 @@ function ArticleContent() {
   const searchParams = useSearchParams();
   const title = searchParams.get("title") || "Artykuł finansowy";
   const description = searchParams.get("desc") || "";
+  const initialContent = searchParams.get("content") || "";
   const dateStr = searchParams.get("date") || new Date().toISOString();
   const sourceUrl = searchParams.get("source") || "#";
   const urlImage = searchParams.get("image");
 
+  const [articleContent, setArticleContent] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
+
   const heroImage = getImageForTitle(title, urlImage);
-  const paragraphs = generateArticleContent(title, description);
+
+  // Always fetch full article content from source
+  useEffect(() => {
+    if (sourceUrl && sourceUrl !== "#") {
+      setLoading(true);
+      fetch(`/api/article?url=${encodeURIComponent(sourceUrl)}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.content && data.content.length > 100) {
+            setArticleContent(data.content);
+          } else if (initialContent && initialContent.length > 50) {
+            setArticleContent(initialContent);
+          }
+        })
+        .catch(() => {
+          // Use initial content on error
+          if (initialContent) {
+            setArticleContent(initialContent);
+          }
+        })
+        .finally(() => setLoading(false));
+    } else {
+      // No source URL, use initial content
+      setArticleContent(initialContent || description || "");
+      setLoading(false);
+    }
+  }, [sourceUrl, initialContent, description]);
+
+  // Parse content into paragraphs
+  const contentParagraphs = parseContent(articleContent);
+
+  // If no content, use description
+  const paragraphs = contentParagraphs.length > 0
+    ? contentParagraphs
+    : [description || "Pełna treść artykułu dostępna w źródle."];
+
+  // Calculate reading time (average 200 words per minute)
+  const wordCount = paragraphs.join(" ").split(/\s+/).length;
+  const readingTime = Math.max(1, Math.ceil(wordCount / 200));
 
   return (
-    <article className="max-w-[720px] mx-auto">
+    <article className="max-w-[800px]">
       <motion.div initial={{ opacity: 0, y: 21 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
         {/* Breadcrumb */}
         <nav className="mb-[21px] text-[11px] text-[#71717a] tracking-[0.1em] uppercase">
@@ -101,35 +143,73 @@ function ArticleContent() {
         </nav>
 
         {/* Title */}
-        <h1 className="font-serif text-[32px] md:text-[42px] font-medium text-[#f4f4f5] leading-tight mb-[21px]">
+        <h1 className="font-serif text-[28px] md:text-[38px] font-medium text-[#f4f4f5] leading-tight mb-[21px]">
           {title}
         </h1>
 
         {/* Meta */}
-        <div className="flex items-center gap-4 text-[12px] text-[#71717a] mb-[34px]">
+        <div className="flex flex-wrap items-center gap-4 text-[12px] text-[#71717a] mb-[34px]">
           <time>{formatPolishDate(dateStr)}</time>
           <span>•</span>
-          <span>5 min czytania</span>
-          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[#c9a962] hover:underline ml-auto">
-            Źródło →
+          <span>{readingTime} min czytania</span>
+          <span>•</span>
+          <span>{wordCount} słów</span>
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[#c9a962] hover:underline ml-auto flex items-center gap-1">
+            Czytaj w źródle <span>→</span>
           </a>
         </div>
 
         {/* Hero Image */}
         <figure className="mb-[34px]">
-          <div className="relative aspect-[16/10] overflow-hidden rounded-lg">
-            <Image src={heroImage} alt={title} fill className="object-cover" sizes="720px" priority unoptimized />
+          <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-white/5">
+            <Image src={heroImage} alt={title} fill className="object-cover" sizes="800px" priority unoptimized />
           </div>
-          <figcaption className="mt-[13px] text-[11px] text-[#71717a] text-center italic">
-            Zdjęcie ilustracyjne · FusionFinance
+          <figcaption className="mt-[13px] text-[11px] text-[#52525b] text-center">
+            Zdjęcie ilustracyjne
           </figcaption>
         </figure>
 
+        {/* Lead / Description */}
+        {description && (
+          <p className="text-[18px] text-[#e4e4e7] leading-relaxed mb-[34px] font-medium border-l-4 border-[#c9a962] pl-[21px]">
+            {description}
+          </p>
+        )}
+
         {/* Content */}
         <div className="prose prose-invert max-w-none">
-          {paragraphs.map((p, i) => (
-            <p key={i} className="text-[16px] text-[#d4d4d8] leading-[1.8] mb-[21px]">{p}</p>
-          ))}
+          {loading ? (
+            <div className="space-y-4">
+              <div className="h-4 bg-white/5 rounded animate-pulse w-full" />
+              <div className="h-4 bg-white/5 rounded animate-pulse w-[95%]" />
+              <div className="h-4 bg-white/5 rounded animate-pulse w-[90%]" />
+              <div className="h-4 bg-white/5 rounded animate-pulse w-full" />
+              <div className="h-4 bg-white/5 rounded animate-pulse w-[85%]" />
+              <p className="text-[14px] text-[#71717a] mt-6">Pobieranie pełnej treści artykułu...</p>
+            </div>
+          ) : (
+            paragraphs.map((p, i) => (
+              <p key={i} className="text-[16px] text-[#d4d4d8] leading-[1.85] mb-[21px]">
+                {p}
+              </p>
+            ))
+          )}
+        </div>
+
+        {/* Source link at the bottom */}
+        <div className="mt-[55px] pt-[34px] border-t border-white/10">
+          <a
+            href={sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-[#c9a962] text-[#08090c] font-medium rounded-lg hover:bg-[#e4d4a5] transition-colors"
+          >
+            Przejdź do pełnego artykułu w źródle
+            <span>→</span>
+          </a>
+          <p className="text-[12px] text-[#52525b] mt-3">
+            Treść pochodzi z zewnętrznego źródła i jest wyświetlana w celach informacyjnych.
+          </p>
         </div>
       </motion.div>
     </article>
@@ -140,13 +220,33 @@ export default function ArticlePage() {
   return (
     <div className="min-h-screen bg-[#08090c] text-[#f4f4f5]">
       <Navbar />
-      <main className="px-[21px] md:px-[55px] py-[55px]">
-        <Suspense fallback={<div className="text-center py-20">Ładowanie...</div>}>
-          <ArticleContent />
-        </Suspense>
-        <section className="max-w-[720px] mx-auto mt-[89px]">
-          <h2 className="text-[18px] font-medium text-[#f4f4f5] mb-[21px]">Powiązane artykuły</h2>
-          <RSSArticles feedType="bankier" limit={4} showImage={true} />
+      <main className="max-w-[1400px] mx-auto px-5 lg:px-8 py-[55px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-[55px]">
+          {/* Left column - Article */}
+          <Suspense fallback={<div className="text-center py-20">Ładowanie artykułu...</div>}>
+            <ArticleContent />
+          </Suspense>
+
+          {/* Right column - Sidebar */}
+          <div className="lg:sticky lg:top-[21px] lg:self-start space-y-[21px]">
+            <div className="flex items-center gap-3 mb-[13px]">
+              <div className="w-[4px] h-[28px] bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
+              <div>
+                <h2 className="text-[16px] font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
+                <p className="text-[11px] text-[#71717a] mt-0.5">Aktualizowane na żywo</p>
+              </div>
+            </div>
+            <MarketSidebar />
+          </div>
+        </div>
+
+        {/* Related articles */}
+        <section className="mt-[89px] pt-[55px] border-t border-white/5">
+          <div className="flex items-center gap-3 mb-[34px]">
+            <div className="w-[4px] h-[28px] bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
+            <h2 className="text-[20px] font-serif font-medium text-[#f4f4f5]">Powiązane artykuły</h2>
+          </div>
+          <RSSArticles feedType="all" limit={6} showImage={true} />
         </section>
       </main>
       <Footer />

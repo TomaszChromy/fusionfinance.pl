@@ -1,12 +1,20 @@
 {
-  "name": "probiz-site",
-  "version": "0.1.0",
+  "name": "fusionfinance",
+  "version": "1.0.0",
   "private": true,
+  "description": "FusionFinance.pl - Luksusowy Portal Finansowy",
+  "author": "Tomasz Chromy <tomasz@tomaszchromy.com>",
+  "homepage": "https://fusionfinance.pl",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prebuild:static": "node scripts/prepare-static.js",
+    "build:static": "cross-env STATIC_EXPORT=true next build",
+    "postbuild:static": "node scripts/restore-api.js",
+    "build:nazwa": "npm run build:static && echo Build zakończony! Pliki w folderze 'out'",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "preview": "next build && next start"
   },
   "dependencies": {
     "framer-motion": "^12.23.24",
@@ -20,6 +28,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^10.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.5",
     "tailwindcss": "^4",

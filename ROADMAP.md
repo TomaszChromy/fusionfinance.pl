@@ -31,11 +31,14 @@
 - [x] Typografia: Playfair Display + Geist
 
 ### 🟢 RSS Integration
-- [x] API endpoint `/api/rss`
-- [x] Parsowanie feedów z Bankier.pl
-- [x] Parsowanie feedów z Investing.com
+- [x] API endpoint `/api/rss` (Next.js + PHP fallback)
+- [x] PHP proxy dla hostingu współdzielonego
+- [x] Parsowanie feedów z Bankier.pl, Money.pl, Parkiet.com
+- [x] Filtrowanie artykułów po słowach kluczowych
 - [x] Obsługa obrazów z RSS
 - [x] Fallback do tematycznych obrazów Unsplash
+- [x] Kalendarz wydarzeń ekonomicznych
+- [x] Sidebar z kursami walut
 
 ### 🟢 Strony
 - [x] Strona główna z wyróżnionymi artykułami
@@ -178,6 +181,6 @@ Chcesz pomóc w rozwoju? Sprawdź [issues](https://github.com/your-repo/issues) 
 ---
 
 <p align="center">
-  <sub>Last updated: November 2024</sub>
+  <sub>Last updated: December 2024</sub>
 </p>
 

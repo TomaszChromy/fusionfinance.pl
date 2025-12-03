@@ -6,66 +6,66 @@
   
   <!-- Strona główna -->
   <url>
-    <loc>https://fusionfinance.pl</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>hourly</changefreq>
     <priority>1.0</priority>
   </url>
-  
+
   <!-- Sekcje główne -->
   <url>
-    <loc>https://fusionfinance.pl/rynki</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/rynki/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
   <url>
-    <loc>https://fusionfinance.pl/gielda</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/gielda/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
   <url>
-    <loc>https://fusionfinance.pl/crypto</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/crypto/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
   <url>
-    <loc>https://fusionfinance.pl/waluty</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/waluty/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
   <url>
-    <loc>https://fusionfinance.pl/analizy</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/analizy/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
-  
+
   <!-- Strony prawne -->
   <url>
-    <loc>https://fusionfinance.pl/polityka-prywatnosci</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/polityka-prywatnosci/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
-  
+
   <url>
-    <loc>https://fusionfinance.pl/regulamin</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/regulamin/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
-  
+
   <url>
-    <loc>https://fusionfinance.pl/cookies</loc>
-    <lastmod>2024-11-30</lastmod>
+    <loc>https://fusionfinance.pl/cookies/</loc>
+    <lastmod>2024-12-03</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>

@@ -9,6 +9,7 @@ interface RSSItem {
   title: string;
   link: string;
   description: string;
+  content: string;
   date: string;
   source: string;
   category?: string;
@@ -143,6 +144,7 @@ function createArticleUrl(article: RSSItem, index: number): string {
   const params = new URLSearchParams({
     title: article.title,
     desc: article.description,
+    content: article.content || article.description,
     date: article.date,
     source: article.link,
     image: imageUrl,
@@ -160,7 +162,11 @@ export default function RSSArticles({ feedType = "bankier", limit = 10, showImag
     async function loadArticles() {
       setLoading(true);
       try {
-        const response = await fetch(`/api/rss.php?feed=${feedType}&limit=${limit}`);
+        // Use Next.js API in dev, PHP API in production
+        const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+          ? `/api/rss?feed=${feedType}&limit=${limit}`
+          : `/api/rss.php?feed=${feedType}&limit=${limit}`;
+        const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
         setArticles(data.items || []);

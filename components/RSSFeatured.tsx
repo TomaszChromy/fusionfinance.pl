@@ -9,6 +9,7 @@ interface RSSItem {
   title: string;
   link: string;
   description: string;
+  content: string;
   date: string;
   source: string;
   category?: string;
@@ -123,25 +124,6 @@ function formatPolishDate(dateString: string): string {
 }
 
 function createArticleUrl(article: RSSItem, index: number): string {
-  // Create slug from title
-  const slug = article.title
-    .toLowerCase()
-    .replace(/[ąàáâãäå]/g, 'a')
-    .replace(/[ćčç]/g, 'c')
-    .replace(/[ęèéêë]/g, 'e')
-    .replace(/[ìíîï]/g, 'i')
-    .replace(/[łľ]/g, 'l')
-    .replace(/[ńñ]/g, 'n')
-    .replace(/[óòôõö]/g, 'o')
-    .replace(/[śš]/g, 's')
-    .replace(/[ùúûü]/g, 'u')
-    .replace(/[ýÿ]/g, 'y')
-    .replace(/[źżž]/g, 'z')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .slice(0, 60);
-
   // Przekaż oryginalny obraz lub fallback tematyczny
   const imageUrl = getImageForArticle(index, article.title, article.image);
 
@@ -149,6 +131,7 @@ function createArticleUrl(article: RSSItem, index: number): string {
   const params = new URLSearchParams({
     title: article.title,
     desc: article.description,
+    content: article.content || article.description,
     date: article.date,
     source: article.link,
     image: imageUrl,
@@ -164,7 +147,11 @@ export default function RSSFeatured() {
   useEffect(() => {
     async function loadArticles() {
       try {
-        const response = await fetch("/api/rss.php?feed=bankier&limit=3");
+        // Use Next.js API in dev, PHP API in production
+        const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
+          ? "/api/rss?feed=all&limit=6"
+          : "/api/rss.php?feed=all&limit=6";
+        const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();
           setArticles(data.items || []);
@@ -199,72 +186,123 @@ export default function RSSFeatured() {
   }
 
   return (
-    <section className="mt-[55px] pt-[34px] border-t border-[#c9a962]/20">
-      {/* Golden ratio grid: 61.8% / 38.2% */}
-      <div className="grid grid-cols-1 lg:grid-cols-[61.8fr_38.2fr] gap-0">
+    <section className="pt-4 lg:pt-6">
+      {/* Nagłówek sekcji */}
+      <div className="flex items-center justify-between mb-6 lg:mb-8">
+        <div className="flex items-center gap-3">
+          <div className="w-1 h-8 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
+          <div>
+            <h2 className="text-xl lg:text-2xl font-serif font-medium text-[#f4f4f5] tracking-tight">Wiadomości dnia</h2>
+            <p className="text-xs text-[#71717a] mt-0.5">Najważniejsze informacje ze świata finansów</p>
+          </div>
+        </div>
+        <div className="hidden md:flex items-center gap-3">
+          <span className="text-[10px] text-[#71717a] uppercase tracking-wider font-medium">
+            {new Date().toLocaleDateString("pl-PL", { weekday: "long", day: "numeric", month: "long" })}
+          </span>
+          <span className="relative flex h-2 w-2">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c9a962] opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c9a962]"></span>
+          </span>
+        </div>
+      </div>
 
-        {/* Main featured article - Left column */}
+      {/* Grid z artykułami */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+
+        {/* Główny artykuł - duży */}
         {articles[0] && (
           <motion.article
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-            className="lg:pr-[34px] lg:border-r border-white/5 pb-[21px] lg:pb-0"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            whileHover={{ scale: 1.005 }}
+            className="lg:row-span-2"
           >
-            <Link href={createArticleUrl(articles[0], 0)} className="group block">
-              <div className="relative aspect-[16/10] mb-[21px] overflow-hidden rounded-lg">
+            <Link href={createArticleUrl(articles[0], 0)} className="group block bg-[#0c0d10] border border-white/5 rounded-2xl overflow-hidden hover:border-[#c9a962]/40 transition-all duration-300 hover:shadow-[0_8px_40px_rgba(201,169,98,0.1)]">
+              <div className="relative aspect-[16/10] overflow-hidden">
                 <Image
                   src={getImageForArticle(0, articles[0].title, articles[0].image)}
                   alt={articles[0].title}
                   fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                  sizes="(max-width: 1024px) 100vw, 61.8vw"
+                  className="object-cover transition-all duration-700 group-hover:scale-105 group-hover:brightness-110"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   priority
                   unoptimized
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-gradient-to-r from-[#c9a962] to-[#e4d4a5] text-[#08090c] text-[10px] font-bold uppercase tracking-wider rounded-full mb-4 shadow-lg">
+                    <span className="w-1.5 h-1.5 bg-[#08090c] rounded-full animate-pulse" />
+                    Wyróżnione
+                  </span>
+                  <h2 className="font-serif text-[22px] lg:text-[30px] font-medium text-white leading-tight group-hover:text-[#e4d4a5] transition-colors duration-300 drop-shadow-lg">
+                    {articles[0].title}
+                  </h2>
+                </div>
               </div>
-              <h2 className="font-serif text-[28px] lg:text-[34px] font-medium text-[#f4f4f5] leading-tight mb-[13px] group-hover:text-[#c9a962] transition-colors duration-300">
-                {articles[0].title}
-              </h2>
-              <p className="text-[15px] text-[#a1a1aa] leading-relaxed mb-[13px] line-clamp-3">
-                {articles[0].description}
-              </p>
-              <span className="text-[11px] text-[#71717a] uppercase tracking-[0.1em]">
-                {formatPolishDate(articles[0].date)}
-              </span>
+              <div className="p-6 lg:p-8 pt-5 bg-gradient-to-b from-[#0c0d10] to-[#0a0b0e]">
+                <p className="text-[14px] lg:text-[15px] text-[#a1a1aa] leading-relaxed mb-4 line-clamp-2 group-hover:text-[#d4d4d8] transition-colors duration-200">
+                  {articles[0].description}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-[10px] text-[#71717a] uppercase tracking-[0.1em] font-medium">
+                    {formatPolishDate(articles[0].date)}
+                  </span>
+                  <span className="text-[13px] text-[#c9a962] font-medium flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-300">
+                    Czytaj więcej
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </span>
+                </div>
+              </div>
             </Link>
           </motion.article>
         )}
 
-        {/* Sidebar articles - Right column */}
-        <div className="lg:pl-[34px] space-y-0 divide-y divide-white/5">
+        {/* Mniejsze artykuły - kolumna po prawej */}
+        <div className="space-y-4">
           {articles.slice(1, 4).map((article, index) => (
             <motion.article
               key={article.link + index}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: (index + 1) * 0.1, ease: [0.4, 0, 0.2, 1] }}
-              className="py-[21px] first:pt-0 lg:first:pt-[21px]"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: (index + 1) * 0.1 }}
+              whileHover={{ scale: 1.01, x: 3 }}
             >
-              <Link href={createArticleUrl(article, index + 1)} className="group flex gap-[21px]">
-                <div className="flex-1">
-                  <h3 className="font-serif text-[17px] font-medium text-[#f4f4f5] leading-snug mb-[8px] group-hover:text-[#c9a962] transition-colors duration-300">
-                    {article.title}
-                  </h3>
-                  <p className="text-[13px] text-[#a1a1aa] line-clamp-2 leading-relaxed">
-                    {article.description}
-                  </p>
-                </div>
-                <div className="relative w-[89px] h-[89px] flex-shrink-0 overflow-hidden rounded-lg">
+              <Link href={createArticleUrl(article, index + 1)} className="group flex gap-5 bg-[#0c0d10] border border-white/5 rounded-xl p-4 hover:border-[#c9a962]/30 hover:bg-[#0c0d10]/80 transition-all duration-300 hover:shadow-[0_4px_30px_rgba(201,169,98,0.08)]">
+                <div className="relative w-[110px] h-[85px] lg:w-[150px] lg:h-[110px] flex-shrink-0 overflow-hidden rounded-lg border border-white/10 group-hover:border-[#c9a962]/30 transition-all duration-300">
                   <Image
                     src={getImageForArticle(index + 1, article.title, article.image)}
                     alt={article.title}
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-500"
-                    sizes="89px"
+                    className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-105"
+                    sizes="150px"
                     unoptimized
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                </div>
+                <div className="flex-1 flex flex-col justify-between min-w-0 py-1">
+                  <div>
+                    <h3 className="font-serif text-[15px] lg:text-[17px] font-medium text-[#f4f4f5] leading-snug mb-2 group-hover:text-[#c9a962] transition-colors duration-200 line-clamp-2">
+                      {article.title}
+                    </h3>
+                    <p className="text-[12px] text-[#71717a] line-clamp-2 hidden lg:block group-hover:text-[#a1a1aa] transition-colors duration-200">
+                      {article.description}
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-2 mt-2">
+                    <span className="text-[10px] text-[#52525b] uppercase tracking-wide font-medium">
+                      {formatPolishDate(article.date)}
+                    </span>
+                    <span className="text-[11px] text-[#c9a962] opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1 ml-auto">
+                      Czytaj
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </span>
+                  </div>
                 </div>
               </Link>
             </motion.article>
@@ -272,40 +310,30 @@ export default function RSSFeatured() {
         </div>
       </div>
 
-      {/* More headlines section */}
+      {/* Więcej wiadomości - poziomy pasek */}
       {articles.length > 4 && (
-        <div className="mt-[34px] pt-[34px] border-t border-white/5">
-          <div className="flex items-center gap-3 mb-[21px]">
-            <div className="w-[3px] h-[21px] bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
-            <h3 className="text-[13px] font-medium text-[#f4f4f5] uppercase tracking-[0.15em]">Więcej wiadomości</h3>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-[34px] gap-y-[13px]">
-            {articles.slice(4, 10).map((article, index) => (
+        <div className="mt-[34px] pt-[21px] border-t border-white/5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-[21px]">
+            {articles.slice(4, 7).map((article, index) => (
               <motion.div
                 key={article.link + index}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="py-[8px] border-b border-white/5 last:border-b-0"
               >
-                <Link href={createArticleUrl(article, index + 4)} className="group block">
-                  <h4 className="font-serif text-[15px] text-[#f4f4f5] group-hover:text-[#c9a962] transition-colors duration-300 leading-snug">
+                <Link href={createArticleUrl(article, index + 4)} className="group block p-[13px] bg-[#0c0d10]/50 border border-white/5 rounded-lg hover:border-[#c9a962]/20 transition-colors">
+                  <h4 className="font-serif text-[14px] text-[#f4f4f5] group-hover:text-[#c9a962] transition-colors duration-300 leading-snug line-clamp-2">
                     {article.title}
                   </h4>
+                  <span className="text-[10px] text-[#52525b] mt-2 block">
+                    {formatPolishDate(article.date)}
+                  </span>
                 </Link>
               </motion.div>
             ))}
           </div>
         </div>
       )}
-
-      {/* Section link */}
-      <div className="mt-[34px] pt-[21px] border-t border-white/5">
-        <Link href="/analizy" className="inline-flex items-center gap-[8px] text-[12px] font-medium text-[#c9a962] uppercase tracking-[0.15em] hover:text-[#e4d4a5] transition-colors duration-300 group">
-          Zobacz wszystkie artykuły
-          <span className="group-hover:translate-x-1 transition-transform duration-300">→</span>
-        </Link>
-      </div>
     </section>
   );
 }

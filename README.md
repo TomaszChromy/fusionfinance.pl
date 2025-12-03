@@ -48,11 +48,11 @@
 
 | Sekcja | Opis | Źródło RSS |
 |--------|------|------------|
-| **Rynki** | Ogólne wiadomości rynkowe | Bankier.pl Giełda |
-| **Giełda** | GPW, WIG20, akcje, obligacje | Bankier.pl Giełda |
-| **Crypto** | Bitcoin, Ethereum, altcoiny | CoinDesk, CryptoNews |
-| **Waluty** | Forex, kursy walut, NBP | Bankier.pl Waluty |
-| **Analizy** | Analizy techniczne i fundamentalne | Investing.com PL |
+| **Rynki** | Ogólne wiadomości rynkowe | Bankier.pl, Money.pl, Parkiet.com |
+| **Giełda** | GPW, WIG20, akcje, obligacje | Bankier.pl Giełda, Parkiet.com |
+| **Crypto** | Bitcoin, Ethereum, altcoiny | Bankier.pl, Money.pl |
+| **Waluty** | Forex, kursy walut, NBP | Bankier.pl Waluty, Money.pl |
+| **Analizy** | Analizy techniczne i fundamentalne | Bankier.pl, Parkiet.com |
 
 ### 📄 System artykułów
 
@@ -101,9 +101,20 @@ npm run dev
 # Build produkcyjny
 npm run build
 npm run start
+
+# Build dla hostingu współdzielonego (nazwa.pl)
+npm run build:static
+# Pliki w folderze 'out' - wgraj przez FTP
 ```
 
 Otwórz [http://localhost:3000](http://localhost:3000) w przeglądarce.
+
+### Hosting współdzielony (nazwa.pl)
+
+Projekt zawiera PHP proxy (`public/api/rss.php`) dla hostingów bez Node.js:
+1. `npm run build:static` - generuje pliki statyczne
+2. Wgraj zawartość folderu `out/` przez FTP
+3. PHP automatycznie obsłuży pobieranie RSS
 
 ---
 

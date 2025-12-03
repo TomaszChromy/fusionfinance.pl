@@ -10,28 +10,28 @@ export default function Footer() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-      className="mt-[89px] pt-[55px]"
+      className="mt-12 lg:mt-16 pt-10 lg:pt-14"
     >
       {/* Gold accent line */}
-      <div className="h-[1px] bg-gradient-to-r from-transparent via-[#c9a962]/40 to-transparent mb-[55px]" />
+      <div className="h-px bg-gradient-to-r from-transparent via-[#c9a962]/40 to-transparent mb-10" />
 
       {/* Logo */}
-      <div className="text-center mb-[34px]">
+      <div className="text-center mb-6">
         <Link href="/" className="inline-block group">
-          <span className="font-serif text-3xl font-medium text-[#f4f4f5]">
+          <span className="font-serif text-2xl lg:text-3xl font-medium text-[#f4f4f5]">
             Fusion<span className="bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">Finance</span>
           </span>
-          <div className="mt-3 mx-auto w-[55px] h-[1px] bg-gradient-to-r from-transparent via-[#c9a962]/50 to-transparent group-hover:via-[#c9a962] transition-all duration-500" />
+          <div className="mt-2 mx-auto w-12 h-px bg-gradient-to-r from-transparent via-[#c9a962]/50 to-transparent group-hover:via-[#c9a962] transition-all duration-500" />
         </Link>
       </div>
 
       {/* Navigation links */}
-      <div className="flex items-center justify-center gap-8 text-[12px] uppercase tracking-[0.15em] font-medium mb-[34px]">
-        {["Rynki", "Giełda", "Crypto", "Waluty", "Analizy"].map((name, i) => (
+      <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6 text-[11px] uppercase tracking-[0.12em] font-medium mb-6">
+        {["Rynki", "Giełda", "Crypto", "Waluty", "Analizy"].map((name) => (
           <Link
             key={name}
             href={`/${name.toLowerCase().replace("ł", "l")}`}
-            className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-300"
+            className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200"
           >
             {name}
           </Link>
@@ -39,81 +39,73 @@ export default function Footer() {
       </div>
 
       {/* Elegant divider */}
-      <div className="flex items-center justify-center gap-4 mb-[34px]">
-        <div className="w-[89px] h-[1px] bg-gradient-to-r from-transparent to-[#c9a962]/30" />
-        <div className="w-2 h-2 rotate-45 border border-[#c9a962]/40" />
-        <div className="w-[89px] h-[1px] bg-gradient-to-l from-transparent to-[#c9a962]/30" />
+      <div className="flex items-center justify-center gap-3 mb-6">
+        <div className="w-16 h-px bg-gradient-to-r from-transparent to-[#c9a962]/30" />
+        <div className="w-1.5 h-1.5 rotate-45 border border-[#c9a962]/40" />
+        <div className="w-16 h-px bg-gradient-to-l from-transparent to-[#c9a962]/30" />
       </div>
 
       {/* Copyright */}
-      <div className="text-center mb-[21px]">
-        <p className="text-[13px] text-[#a1a1aa] mb-2">
-          {" "}
+      <div className="text-center mb-4">
+        <p className="text-xs text-[#a1a1aa] mb-1">
           <Link
             href="https://tomsoft-website.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-[#c9a962] hover:text-[#e4d4a5] transition-colors duration-300"
+            className="text-[#c9a962] hover:text-[#e4d4a5] transition-colors duration-200"
           >
             TomSoft-Website
           </Link>
         </p>
 
-        <p className="text-[11px] text-[#71717a] tracking-[0.2em] uppercase">
+        <p className="text-[10px] text-[#71717a] tracking-[0.15em] uppercase">
           <Link
             href="https://tomaszchromy.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-[#c9a962] transition-colors duration-300"
+            className="hover:text-[#c9a962] transition-colors duration-200"
           >
             Powered by Tomasz Chromy
           </Link>
         </p>
       </div>
 
-      {/* Hosting info */}
-      <div className="text-center mb-[21px]">
-        <p className="text-[11px] text-[#52525b] tracking-wide">
-          Hosting: <span className="text-[#71717a]">nazwa.pl</span>
-        </p>
-      </div>
-
       {/* Disclaimers */}
-      <div className="text-center space-y-1 mb-[21px] max-w-xl mx-auto">
-        <p className="text-[11px] text-[#52525b] leading-relaxed">
+      <div className="text-center space-y-0.5 mb-4 max-w-lg mx-auto px-4">
+        <p className="text-[10px] text-[#52525b] leading-relaxed">
           This website was created for training purposes only and does not constitute a commercial offer.
         </p>
-        <p className="text-[11px] text-[#52525b] leading-relaxed">
+        <p className="text-[10px] text-[#52525b] leading-relaxed">
           Strona została stworzona w celach szkoleniowych i nie stanowi oferty handlowej.
         </p>
       </div>
 
       {/* Legal links */}
-      <div className="flex items-center justify-center gap-5 text-[11px] pb-[34px]">
+      <div className="flex items-center justify-center gap-4 text-[10px] pb-6">
         <Link
           href="/polityka-prywatnosci"
-          className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-300 tracking-wide"
+          className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200 tracking-wide"
         >
           Polityka prywatności
         </Link>
         <span className="text-[#c9a962]/30">◆</span>
         <Link
           href="/regulamin"
-          className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-300 tracking-wide"
+          className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200 tracking-wide"
         >
           Regulamin
         </Link>
         <span className="text-[#c9a962]/30">◆</span>
         <Link
           href="/cookies"
-          className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-300 tracking-wide"
+          className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200 tracking-wide"
         >
           Cookies
         </Link>
       </div>
 
       {/* Bottom gold line */}
-      <div className="h-[2px] bg-gradient-to-r from-transparent via-[#c9a962]/60 to-transparent" />
+      <div className="h-0.5 bg-gradient-to-r from-transparent via-[#c9a962]/60 to-transparent" />
     </motion.footer>
   );
 }

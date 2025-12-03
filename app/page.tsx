@@ -4,11 +4,8 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import BreakingNews from "@/components/BreakingNews";
 import RSSFeatured from "@/components/RSSFeatured";
-import MarketOverview from "@/components/MarketOverview";
 import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
-import StocksSection from "@/components/sections/StocksSection";
-import ForexSection from "@/components/sections/ForexSection";
-import CryptoSection from "@/components/sections/CryptoSection";
+import MarketSidebar from "@/components/MarketSidebar";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -17,77 +14,61 @@ export default function Home() {
       <Navbar />
       <BreakingNews />
 
-      {/* Luxury main container with golden ratio */}
-      <div className="mx-auto max-w-[1200px] px-5 lg:px-8">
+      <div className="mx-auto max-w-[1400px] px-4 lg:px-6 py-6 lg:py-8">
 
-        {/* MARKET TICKER */}
-        <MarketOverview />
-
-        {/* FEATURED SECTION */}
+        {/* HERO - Wyróżnione artykuły */}
         <RSSFeatured />
 
-        {/* MAIN CONTENT - Golden ratio grid: 61.8% / 38.2% */}
+        {/* MAIN CONTENT - Dwie kolumny */}
         <motion.div
           initial={{ opacity: 0, y: 21 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 lg:grid-cols-[61.8fr_38.2fr] gap-[34px] mt-[55px] pt-[34px] border-t border-[#c9a962]/20"
+          className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12 mt-10 lg:mt-14"
         >
-
-          {/* MAIN COLUMN - Articles (61.8%) */}
-          <div className="lg:pr-[34px] lg:border-r border-white/5">
-            {/* Section header with gold accent */}
-            <div className="flex items-center gap-3 mb-[21px] pb-[13px] border-b border-white/5">
-              <div className="w-[3px] h-[21px] bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
-              <h2 className="text-[13px] font-medium text-[#f4f4f5] uppercase tracking-[0.15em]">Najnowsze wiadomości</h2>
-            </div>
-
-            <div className="bg-[#0f1115] border border-[#c9a962]/10 rounded-lg p-[21px]">
-              <RSSArticlesPaginated feedType="all" totalArticles={100} articlesPerPage={12} />
-            </div>
-
-            {/* Stocks section */}
-            <div className="mt-[55px] pt-[34px] border-t border-white/5">
-              <div className="flex items-center gap-3 mb-[21px]">
-                <div className="w-[3px] h-[21px] bg-gradient-to-b from-[#4ade80] to-[#22c55e] rounded-full" />
-                <h2 className="text-[13px] font-medium text-[#f4f4f5] uppercase tracking-[0.15em]">Rynek akcji</h2>
+          {/* LEWA KOLUMNA - Artykuły */}
+          <div>
+            {/* Nagłówek sekcji */}
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#c9a962]/20">
+              <div className="flex items-center gap-3">
+                <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
+                <div>
+                  <h2 className="text-lg font-serif font-medium text-[#f4f4f5]">Najnowsze wiadomości</h2>
+                  <p className="text-xs text-[#71717a] mt-0.5">Aktualne informacje z rynków finansowych</p>
+                </div>
               </div>
-              <StocksSection />
+              <div className="hidden md:flex items-center gap-2 text-[10px] text-[#71717a] uppercase tracking-wider font-medium">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ade80] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4ade80]"></span>
+                </span>
+                Na żywo
+              </div>
+            </div>
+
+            {/* Lista artykułów */}
+            <div className="bg-[#0c0d10] border border-white/5 rounded-2xl p-5 lg:p-8">
+              <RSSArticlesPaginated feedType="all" totalArticles={80} articlesPerPage={10} />
             </div>
           </div>
 
-          {/* RIGHT SIDEBAR (38.2%) */}
-          <aside className="mt-[34px] lg:mt-0">
-            {/* Forex section */}
-            <div className="mb-[34px]">
-              <div className="flex items-center gap-3 mb-[13px] pb-[13px] border-b border-white/5">
-                <div className="w-[3px] h-[21px] bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
-                <h3 className="text-[12px] font-medium text-[#f4f4f5] uppercase tracking-[0.15em]">Waluty</h3>
+          {/* PRAWA KOLUMNA - Dane rynkowe */}
+          <aside className="lg:sticky lg:top-20 lg:self-start space-y-5">
+            {/* Nagłówek sidebara */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
+              <div>
+                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
+                <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
               </div>
-              <ForexSection />
             </div>
 
-            {/* Elegant divider */}
-            <div className="flex items-center gap-3 my-[21px]">
-              <div className="flex-1 h-[1px] bg-gradient-to-r from-transparent to-[#c9a962]/30" />
-              <div className="w-1.5 h-1.5 rotate-45 bg-[#c9a962]/40" />
-              <div className="flex-1 h-[1px] bg-gradient-to-l from-transparent to-[#c9a962]/30" />
-            </div>
-
-            {/* Crypto section */}
-            <div>
-              <div className="flex items-center gap-3 mb-[13px] pb-[13px] border-b border-white/5">
-                <div className="w-[3px] h-[21px] bg-gradient-to-b from-[#f7931a] to-[#f59e0b] rounded-full" />
-                <h3 className="text-[12px] font-medium text-[#f4f4f5] uppercase tracking-[0.15em]">Kryptowaluty</h3>
-              </div>
-              <CryptoSection />
-            </div>
+            <MarketSidebar />
           </aside>
         </motion.div>
-
-        {/* FOOTER */}
-        <Footer />
       </div>
+
+      <Footer />
     </main>
   );
 }
