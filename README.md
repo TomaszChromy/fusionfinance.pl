@@ -20,7 +20,7 @@
   <img src="https://img.shields.io/badge/Next.js-16.0.5-black?style=flat-square&logo=next.js" alt="Next.js"/>
   <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react" alt="React"/>
   <img src="https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript" alt="TypeScript"/>
-  <img src="https://img.shields.io/badge/Tailwind-4.0-06B6D4?style=flat-square&logo=tailwindcss" alt="Tailwind"/>
+  <img src="https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss" alt="Tailwind"/>
   <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License"/>
 </p>
 
@@ -124,7 +124,7 @@ Projekt zawiera PHP proxy (`public/api/rss.php`) dla hostingów bez Node.js:
 - **Next.js 16** - React Framework z App Router
 - **React 19** - Biblioteka UI
 - **TypeScript** - Typowanie statyczne
-- **Tailwind CSS 4** - Utility-first CSS
+- **Tailwind CSS 3** - Utility-first CSS
 
 ### Animacje
 - **Framer Motion** - Animacje i przejścia

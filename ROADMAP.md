@@ -19,7 +19,7 @@
 ### 🟢 Infrastruktura
 - [x] Setup Next.js 16 z App Router
 - [x] Konfiguracja TypeScript
-- [x] Tailwind CSS 4 z custom design system
+- [x] Tailwind CSS 3 z custom design system
 - [x] Framer Motion dla animacji
 - [x] Responsywny layout (mobile-first)
 

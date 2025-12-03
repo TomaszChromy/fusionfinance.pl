@@ -5,8 +5,10 @@
    POWERED BY TOMASZ CHROMY
    ============================================ */
 
-/* Tailwind v4 — nowy import */
-@import "tailwindcss";
+/* Tailwind CSS 3 */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 /* ============================================
    LUXURY COLOR PALETTE & GOLDEN RATIO SYSTEM

@@ -12,62 +12,100 @@ header('Access-Control-Allow-Methods: GET');
 header('Cache-Control: public, max-age=300'); // 5 min cache
 
 // Definicja feedów RSS - pasujące do kategorii frontendu
+// Źródła: Bankier.pl, Money.pl, Parkiet.com, Puls Biznesu, Cashless, WP Finanse,
+//         Kryptomaniak, BiznesAlert, WNP.pl, Forsal.pl
 $feeds = [
-    // Rynki finansowe ogólnie
+    // Rynki finansowe ogólnie - szeroki przekrój
     'rynki' => [
         'https://www.bankier.pl/rss/wiadomosci.xml',
         'https://www.money.pl/rss/rss.xml',
-        'https://www.parkiet.com/rss.xml',
+        'https://www.pb.pl/rss/wszystko',
+        'https://biznesalert.pl/feed/',
+        'https://www.wnp.pl/rss/serwis.xml',
+        'https://forsal.pl/rss.xml',
     ],
-    // Giełda
+    // Giełda - GPW, akcje, spółki, notowania
     'gielda' => [
         'https://www.bankier.pl/rss/gielda.xml',
-        'https://www.parkiet.com/rss.xml',
-        'https://www.money.pl/rss/rss.xml',
+        'https://www.parkiet.com/rss/parkiet.xml',
+        'https://www.money.pl/rss/gielda.xml',
+        'https://www.pb.pl/rss/gielda',
+        'https://forsal.pl/rss/gielda.xml',
     ],
-    // Kryptowaluty
+    // Kryptowaluty - Bitcoin, Ethereum, blockchain
     'crypto' => [
+        'https://kryptomaniak.pl/feed/',
         'https://www.bankier.pl/rss/wiadomosci.xml',
         'https://www.money.pl/rss/rss.xml',
     ],
-    // Waluty
+    // Waluty - Forex, kursy walut, NBP
     'waluty' => [
         'https://www.bankier.pl/rss/waluty.xml',
-        'https://www.money.pl/rss/rss.xml',
+        'https://www.money.pl/rss/waluty.xml',
+        'https://forsal.pl/rss/waluty.xml',
     ],
-    // Analizy
+    // Analizy - prognozy, rekomendacje, raporty
     'analizy' => [
-        'https://www.bankier.pl/rss/wiadomosci.xml',
-        'https://www.parkiet.com/rss.xml',
+        'https://www.parkiet.com/rss/parkiet.xml',
+        'https://www.pb.pl/rss/wszystko',
+        'https://biznesalert.pl/feed/',
+        'https://forsal.pl/rss.xml',
     ],
-    // All - wszystkie źródła
+    // Fintech - banki, innowacje finansowe
+    'fintech' => [
+        'https://www.cashless.pl/rss',
+        'https://finanse.wp.pl/rss.xml',
+        'https://www.bankier.pl/rss/finanse.xml',
+    ],
+    // All - wszystkie główne źródła
     'all' => [
         'https://www.bankier.pl/rss/wiadomosci.xml',
-        'https://www.bankier.pl/rss/gielda.xml',
         'https://www.money.pl/rss/rss.xml',
+        'https://www.parkiet.com/rss/parkiet.xml',
+        'https://www.pb.pl/rss/wszystko',
+        'https://biznesalert.pl/feed/',
+        'https://forsal.pl/rss.xml',
     ],
 ];
 
 // Filtry słów kluczowych dla każdej kategorii
 $categoryFilters = [
     'rynki' => [
-        'include' => ['rynek', 'giełd', 'indeks', 'wig', 'nasdaq', 'dow jones', 's&p', 'dax', 'ftse', 'obligacj', 'bond', 'stopy procentowe', 'nbp', 'fed', 'ecb', 'inflacj', 'pkb', 'gospodark'],
+        'include' => ['rynek', 'giełd', 'indeks', 'wig', 'nasdaq', 'dow jones', 's&p', 'dax', 'ftse',
+                      'obligacj', 'bond', 'stopy procentowe', 'nbp', 'fed', 'ecb', 'inflacj', 'pkb',
+                      'gospodark', 'ekonom', 'finans', 'inwestycj', 'kapitał', 'notowani'],
         'exclude' => []
     ],
     'gielda' => [
-        'include' => ['gpw', 'wig', 'akcj', 'spółk', 'notowani', 'giełd', 'indeks', 'dywidend', 'ipo', 'emisj', 'walne', 'raport', 'kurs', 'wzrost', 'spadek', 'sesj', 'parkiet', 'newconnect', 'debiut'],
-        'exclude' => ['bitcoin', 'ethereum', 'kryptowalut']
+        'include' => ['gpw', 'wig', 'wig20', 'mwig', 'swig', 'akcj', 'spółk', 'notowani', 'giełd',
+                      'indeks', 'dywidend', 'ipo', 'emisj', 'walne', 'raport', 'kurs akcji',
+                      'wzrost', 'spadek', 'sesj', 'parkiet', 'newconnect', 'debiut', 'inwestor',
+                      'portfel', 'zleceni', 'obrót', 'kapitalizacj'],
+        'exclude' => ['bitcoin', 'ethereum', 'kryptowalut', 'btc', 'eth']
     ],
     'crypto' => [
-        'include' => ['bitcoin', 'btc', 'ethereum', 'eth', 'kryptowalut', 'crypto', 'blockchain', 'token', 'nft', 'defi', 'altcoin', 'binance', 'mining', 'halving', 'stablecoin', 'solana', 'cardano', 'xrp', 'ripple', 'dogecoin'],
+        'include' => ['bitcoin', 'btc', 'ethereum', 'eth', 'kryptowalut', 'crypto', 'blockchain',
+                      'token', 'nft', 'defi', 'altcoin', 'binance', 'mining', 'halving',
+                      'stablecoin', 'solana', 'cardano', 'xrp', 'ripple', 'dogecoin', 'doge',
+                      'coinbase', 'ledger', 'wallet', 'krypto', 'cyfrowa waluta', 'web3'],
         'exclude' => []
     ],
     'waluty' => [
-        'include' => ['eur/', 'usd/', 'gbp/', 'chf/', 'walut', 'forex', 'kurs', 'złot', 'dolar', 'euro', 'frank', 'jen', 'funt', 'nbp', 'kantor', 'pln'],
-        'exclude' => ['bitcoin', 'ethereum', 'kryptowalut', 'akcj', 'gpw']
+        'include' => ['eur/pln', 'usd/pln', 'gbp/pln', 'chf/pln', 'walut', 'forex', 'kurs walut',
+                      'złot', 'dolar', 'euro', 'frank', 'jen', 'funt', 'nbp', 'kantor', 'pln',
+                      'wymian', 'dewiz', 'spread', 'fx', 'para walut'],
+        'exclude' => ['bitcoin', 'ethereum', 'kryptowalut', 'btc', 'eth', 'krypto']
     ],
     'analizy' => [
-        'include' => ['analiz', 'prognoz', 'rekomendacj', 'raport', 'perspektyw', 'outlook', 'wycen', 'wskaźnik', 'trend', 'komentarz', 'strategia'],
+        'include' => ['analiz', 'prognoz', 'rekomendacj', 'raport', 'perspektyw', 'outlook',
+                      'wycen', 'wskaźnik', 'trend', 'komentarz', 'strategia', 'ekspert',
+                      'przewidywani', 'scenariusz', 'ocena', 'rating', 'research'],
+        'exclude' => []
+    ],
+    'fintech' => [
+        'include' => ['fintech', 'bank', 'płatnoś', 'przelew', 'konto', 'aplikacj', 'mobiln',
+                      'cyfrowy', 'startup', 'innowacj', 'blik', 'revolut', 'neobank', 'paypal',
+                      'visa', 'mastercard', 'kredyt', 'pożyczk', 'leasing'],
         'exclude' => []
     ],
 ];
@@ -244,8 +282,8 @@ foreach ($feedUrls as $url) {
     }
 }
 
-// NIE FILTRUJ - zwróć wszystkie artykuły (debug mode)
-// Filtrowanie wyłączone tymczasowo aby sprawdzić czy RSS działa
+// Filtruj artykuły według kategorii
+$allItems = filterByCategory($allItems, $feedType, $categoryFilters);
 
 // Usuń duplikaty
 $allItems = removeDuplicates($allItems);
