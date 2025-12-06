@@ -170,6 +170,14 @@
 - [x] Integracja QuickActions na stronie głównej
 - [x] Integracja Watchlist, MarketCalendar na stronie /rynki
 - [x] Integracja CompareAssets na stronie /analizy
+- [x] NotificationCenter Component (centrum powiadomień z historią)
+- [x] SearchSuggestions Component (wyszukiwarka z podpowiedziami)
+- [x] Sparkline Component (mini wykresy liniowe inline)
+- [x] HeatMap Component (mapa ciepła dla rynków)
+- [x] TrendIndicator Component (wskaźnik trendu z analizą)
+- [x] Integracja NotificationCenter w Navbar
+- [x] Integracja HeatMap, TrendIndicator na stronie /gielda
+- [x] Integracja SearchSuggestions na stronie /szukaj
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)

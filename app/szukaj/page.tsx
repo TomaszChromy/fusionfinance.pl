@@ -14,6 +14,7 @@ import { CardSkeleton } from "@/components/Skeleton";
 import { ChipGroup } from "@/components/Chip";
 import Badge from "@/components/Badge";
 import { SourceAvatar } from "@/components/Avatar";
+import SearchSuggestions from "@/components/SearchSuggestions";
 
 interface SearchResult {
   title: string;
@@ -142,6 +143,10 @@ function SearchContent() {
       {/* Search Header */}
       <div className="mb-6">
         <SearchBar />
+        {/* Quick Suggestions */}
+        <div className="mt-4">
+          <SearchSuggestions placeholder="Szybkie wyszukiwanie aktywów..." className="max-w-md" />
+        </div>
       </div>
 
       {/* Filters */}

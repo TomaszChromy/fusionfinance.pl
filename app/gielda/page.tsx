@@ -9,6 +9,8 @@ import GPWStocksTable from "@/components/GPWStocksTable";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
+import HeatMap from "@/components/HeatMap";
+import TrendIndicator from "@/components/TrendIndicator";
 
 export default function GieldaPage() {
   return (
@@ -79,6 +81,16 @@ export default function GieldaPage() {
               </div>
             </div>
             <MarketSidebar />
+
+            {/* Heat Map */}
+            <HeatMap className="mt-6" title="Mapa ciepła WIG20" />
+
+            {/* Trend indicators */}
+            <div className="mt-6 space-y-2">
+              <TrendIndicator direction="up" strength="moderate" label="WIG20" value="+0.54%" />
+              <TrendIndicator direction="down" strength="weak" label="mWIG40" value="-0.23%" />
+              <TrendIndicator direction="up" strength="strong" label="sWIG80" value="+1.12%" />
+            </div>
           </aside>
         </div>
       </div>
