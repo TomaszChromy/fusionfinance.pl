@@ -12,6 +12,8 @@ import { ListSkeleton } from "@/components/Skeleton";
 import { ConfirmDialog } from "@/components/Modal";
 import { SourceAvatar } from "@/components/Avatar";
 import { GoldDivider } from "@/components/Divider";
+import PortfolioWidget from "@/components/PortfolioWidget";
+import AlertsPanel from "@/components/AlertsPanel";
 import { useState } from "react";
 
 export default function UlubionePage() {
@@ -110,9 +112,15 @@ export default function UlubionePage() {
               ))}
             </div>
           )}
+
+          {/* Sidebar widgets */}
+          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <PortfolioWidget />
+            <AlertsPanel />
+          </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );

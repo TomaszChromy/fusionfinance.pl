@@ -156,6 +156,11 @@
 - [x] Strona /kontakt (formularz + FAQ + social proof)
 - [x] Integracja Testimonials, SocialProof na stronie głównej
 - [x] Integracja ReadingStats na stronie /historia
+- [x] Strona /o-nas (historia projektu, zespół, testimonials)
+- [x] HotkeysModal Component (modal z listą skrótów klawiszowych)
+- [x] PortfolioWidget Component (widget portfela inwestycyjnego)
+- [x] AlertsPanel Component (panel alertów cenowych)
+- [x] Integracja PortfolioWidget, AlertsPanel na stronie /ulubione
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)
