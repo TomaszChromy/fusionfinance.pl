@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
+import SparklineChart, { generateMockData } from "./SparklineChart";
 
 interface MarketData {
   symbol: string;
@@ -9,6 +10,7 @@ interface MarketData {
   price: string;
   change: string;
   changePercent: string;
+  sparklineData?: number[];
 }
 
 interface EconomicEvent {
@@ -20,29 +22,29 @@ interface EconomicEvent {
 
 // Fallback dane walutowe (bez UAH)
 const fallbackForex: MarketData[] = [
-  { symbol: "EUR/PLN", name: "Euro", price: "4.3125", change: "+0.0085", changePercent: "+0.20%" },
-  { symbol: "USD/PLN", name: "Dolar", price: "3.9845", change: "-0.0125", changePercent: "-0.31%" },
-  { symbol: "GBP/PLN", name: "Funt", price: "5.0234", change: "+0.0156", changePercent: "+0.31%" },
-  { symbol: "CHF/PLN", name: "Frank", price: "4.4567", change: "+0.0045", changePercent: "+0.10%" },
-  { symbol: "EUR/USD", name: "Euro/Dolar", price: "1.0823", change: "+0.0034", changePercent: "+0.31%" },
+  { symbol: "EUR/PLN", name: "Euro", price: "4.3125", change: "+0.0085", changePercent: "+0.20%", sparklineData: generateMockData(20, "up") },
+  { symbol: "USD/PLN", name: "Dolar", price: "3.9845", change: "-0.0125", changePercent: "-0.31%", sparklineData: generateMockData(20, "down") },
+  { symbol: "GBP/PLN", name: "Funt", price: "5.0234", change: "+0.0156", changePercent: "+0.31%", sparklineData: generateMockData(20, "up") },
+  { symbol: "CHF/PLN", name: "Frank", price: "4.4567", change: "+0.0045", changePercent: "+0.10%", sparklineData: generateMockData(20, "neutral") },
+  { symbol: "EUR/USD", name: "Euro/Dolar", price: "1.0823", change: "+0.0034", changePercent: "+0.31%", sparklineData: generateMockData(20, "up") },
 ];
 
 // Fallback dane kryptowalut
 const fallbackCrypto: MarketData[] = [
-  { symbol: "BTC", name: "Bitcoin", price: "97,245", change: "+2,345", changePercent: "+2.47%" },
-  { symbol: "ETH", name: "Ethereum", price: "3,456", change: "+89", changePercent: "+2.64%" },
-  { symbol: "SOL", name: "Solana", price: "234.56", change: "+12.34", changePercent: "+5.56%" },
-  { symbol: "XRP", name: "Ripple", price: "2.34", change: "+0.12", changePercent: "+5.41%" },
-  { symbol: "ADA", name: "Cardano", price: "1.02", change: "+0.08", changePercent: "+8.51%" },
+  { symbol: "BTC", name: "Bitcoin", price: "97,245", change: "+2,345", changePercent: "+2.47%", sparklineData: generateMockData(20, "up") },
+  { symbol: "ETH", name: "Ethereum", price: "3,456", change: "+89", changePercent: "+2.64%", sparklineData: generateMockData(20, "up") },
+  { symbol: "SOL", name: "Solana", price: "234.56", change: "+12.34", changePercent: "+5.56%", sparklineData: generateMockData(20, "up") },
+  { symbol: "XRP", name: "Ripple", price: "2.34", change: "+0.12", changePercent: "+5.41%", sparklineData: generateMockData(20, "up") },
+  { symbol: "ADA", name: "Cardano", price: "1.02", change: "+0.08", changePercent: "+8.51%", sparklineData: generateMockData(20, "up") },
 ];
 
 // Fallback dane giełdowe
 const fallbackStocks: MarketData[] = [
-  { symbol: "WIG20", name: "WIG20", price: "2,345.67", change: "+23.45", changePercent: "+1.01%" },
-  { symbol: "WIG", name: "WIG", price: "78,234.12", change: "+456.78", changePercent: "+0.59%" },
-  { symbol: "S&P500", name: "S&P 500", price: "6,032.38", change: "+33.64", changePercent: "+0.56%" },
-  { symbol: "NASDAQ", name: "NASDAQ", price: "19,480.91", change: "+185.78", changePercent: "+0.96%" },
-  { symbol: "DAX", name: "DAX", price: "19,933.62", change: "+156.23", changePercent: "+0.79%" },
+  { symbol: "WIG20", name: "WIG20", price: "2,345.67", change: "+23.45", changePercent: "+1.01%", sparklineData: generateMockData(20, "up") },
+  { symbol: "WIG", name: "WIG", price: "78,234.12", change: "+456.78", changePercent: "+0.59%", sparklineData: generateMockData(20, "up") },
+  { symbol: "S&P500", name: "S&P 500", price: "6,032.38", change: "+33.64", changePercent: "+0.56%", sparklineData: generateMockData(20, "up") },
+  { symbol: "NASDAQ", name: "NASDAQ", price: "19,480.91", change: "+185.78", changePercent: "+0.96%", sparklineData: generateMockData(20, "up") },
+  { symbol: "DAX", name: "DAX", price: "19,933.62", change: "+156.23", changePercent: "+0.79%", sparklineData: generateMockData(20, "neutral") },
 ];
 
 // Kalendarz ekonomiczny
@@ -54,10 +56,11 @@ const defaultEvents: EconomicEvent[] = [
   { time: "20:00", event: "Decyzja FOMC ws. stóp", impact: "high", country: "US" },
 ];
 
-function DataSection({ title, icon, data }: {
+function DataSection({ title, icon, data, showSparkline = true }: {
   title: string;
   icon: string;
   data: MarketData[];
+  showSparkline?: boolean;
 }) {
   return (
     <div className="bg-[#0c0d10] border border-white/5 rounded-xl overflow-hidden hover:border-white/10 transition-colors duration-300">
@@ -76,18 +79,32 @@ function DataSection({ title, icon, data }: {
               key={i}
               className="flex items-center justify-between px-4 py-2.5 hover:bg-white/[0.02] transition-all duration-200 cursor-default group"
             >
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors duration-200">
+              <div className="flex items-center gap-2.5 flex-1 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-white/10 transition-colors duration-200 flex-shrink-0">
                   <span className="text-[10px] font-bold text-[#a1a1aa] group-hover:text-[#c9a962] transition-colors">
                     {item.symbol.slice(0, 3)}
                   </span>
                 </div>
-                <div>
-                  <span className="text-xs font-medium text-[#f4f4f5] block">{item.symbol}</span>
+                <div className="min-w-0">
+                  <span className="text-xs font-medium text-[#f4f4f5] block truncate">{item.symbol}</span>
                   <span className="text-[9px] text-[#71717a]">{item.name}</span>
                 </div>
               </div>
-              <div className="text-right">
+
+              {/* Sparkline Chart */}
+              {showSparkline && item.sparklineData && (
+                <div className="mx-2 flex-shrink-0 hidden sm:block">
+                  <SparklineChart
+                    data={item.sparklineData}
+                    width={60}
+                    height={24}
+                    showDot={false}
+                    strokeWidth={1.5}
+                  />
+                </div>
+              )}
+
+              <div className="text-right flex-shrink-0">
                 <span className="text-sm text-[#f4f4f5] font-mono font-medium block tabular-nums">{item.price}</span>
                 <span className={`text-[10px] font-semibold flex items-center justify-end gap-0.5 ${isPositive ? 'text-[#4ade80]' : 'text-[#f87171]'}`}>
                   {isPositive ? '▲' : '▼'} {item.changePercent}
@@ -198,21 +215,6 @@ export default function MarketSidebar() {
       transition={{ duration: 0.5 }}
       className="space-y-4"
     >
-      {/* Mobile: Horizontal scrolling tabs */}
-      <div className="lg:hidden overflow-x-auto scrollbar-hide -mx-4 px-4">
-        <div className="flex gap-2 pb-2">
-          {["Waluty", "Krypto", "Indeksy", "Kalendarz"].map((tab) => (
-            <button
-              key={tab}
-              type="button"
-              className="px-4 py-2 bg-[#0c0d10] border border-white/10 rounded-full text-xs font-medium text-[#a1a1aa] hover:text-[#c9a962] hover:border-[#c9a962]/30 transition-all whitespace-nowrap"
-            >
-              {tab}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Kalendarz ekonomiczny */}
       <div className="bg-[#0c0d10] border border-white/5 rounded-xl overflow-hidden hover:border-white/10 transition-colors duration-300">
         <div className="flex items-center gap-2.5 px-4 py-3 border-b border-white/5 bg-gradient-to-r from-[#0f1115] to-[#0c0d10]">

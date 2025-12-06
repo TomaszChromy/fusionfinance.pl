@@ -5,6 +5,11 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import Pagination from "./Pagination";
+import FavoriteButton from "./FavoriteButton";
+import { ListSkeleton } from "./Skeleton";
+import { ErrorState } from "./EmptyState";
+import { SourceAvatar } from "./Avatar";
+import Badge from "./Badge";
 
 interface RSSItem {
   title: string;
@@ -212,28 +217,12 @@ export default function RSSArticlesPaginated({
   };
 
   if (loading) {
-    return (
-      <div className="space-y-[21px]">
-        {[...Array(articlesPerPage)].map((_, i) => (
-          <div key={i} className="animate-pulse flex gap-[21px]">
-            {showImage && <div className="w-[89px] h-[55px] bg-white/5 rounded-lg" />}
-            <div className="flex-1 space-y-[8px]">
-              <div className="h-[13px] bg-white/5 rounded w-3/4" />
-              <div className="h-[8px] bg-white/5 rounded w-1/2" />
-              <div className="h-[8px] bg-white/5 rounded w-full" />
-            </div>
-          </div>
-        ))}
-      </div>
-    );
+    return <ListSkeleton items={articlesPerPage} showAvatar />;
   }
 
   if (error) {
     return (
-      <div className="text-center py-[34px] text-[#71717a]">
-        <p>{error}</p>
-        <p className="text-[12px] mt-[8px]">Sprawdź połączenie internetowe</p>
-      </div>
+      <ErrorState onRetry={() => window.location.reload()} />
     );
   }
 
@@ -313,6 +302,7 @@ export default function RSSArticlesPaginated({
                       </p>
                     </div>
                     <div className="flex items-center gap-3 mt-3">
+                      <SourceAvatar source={article.source || "news"} size="xs" />
                       <span className="text-[10px] text-[#71717a] uppercase tracking-[0.08em] font-medium">
                         {formatPolishDate(article.date)}
                       </span>
@@ -324,6 +314,19 @@ export default function RSSArticlesPaginated({
                         </svg>
                       </span>
                     </div>
+                  </div>
+                  {/* Favorite button */}
+                  <div className="flex-shrink-0 self-center">
+                    <FavoriteButton
+                      article={{
+                        title: article.title,
+                        description: article.description,
+                        image: imageUrl,
+                        source: article.source,
+                        date: formatPolishDate(article.date),
+                      }}
+                      size="sm"
+                    />
                   </div>
                 </Link>
               </motion.article>

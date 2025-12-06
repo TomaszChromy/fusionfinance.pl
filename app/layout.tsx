@@ -1,6 +1,13 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import TopBanner from "@/components/TopBanner";
+import CurrencyTicker from "@/components/CurrencyTicker";
+import CookieConsent from "@/components/CookieConsent";
+import ScrollToTop from "@/components/ScrollToTop";
+import OfflineIndicator from "@/components/OfflineIndicator";
+import KeyboardShortcuts from "@/components/KeyboardShortcuts";
+import { ToastProvider } from "@/components/Toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -128,7 +135,7 @@ export const metadata: Metadata = {
       { rel: "mask-icon", url: "/safari-pinned-tab.svg", color: "#c9a962" },
     ],
   },
-  manifest: "/site.webmanifest",
+  manifest: "/manifest.json",
   category: "finance",
   classification: "Business/Finance/Investment",
   referrer: "origin-when-cross-origin",
@@ -272,7 +279,15 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        {children}
+        <ToastProvider>
+          <OfflineIndicator />
+          <KeyboardShortcuts />
+          <TopBanner />
+          <CurrencyTicker />
+          {children}
+          <CookieConsent />
+          <ScrollToTop />
+        </ToastProvider>
       </body>
     </html>
   );

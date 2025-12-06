@@ -53,7 +53,7 @@ export default function Home() {
           </div>
 
           {/* PRAWA KOLUMNA - Dane rynkowe */}
-          <aside className="lg:sticky lg:top-20 lg:self-start space-y-5">
+          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-5">
             {/* Nagłówek sidebara */}
             <div className="flex items-center gap-3 mb-4">
               <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />

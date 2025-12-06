@@ -64,23 +64,81 @@
 
 ## 🔄 Faza 2: Rozszerzenia (W trakcie)
 
-### 🟡 Interaktywność
-- [ ] Wyszukiwarka artykułów
-- [ ] Filtrowanie po kategoriach
-- [ ] Sortowanie artykułów (data, popularność)
-- [ ] Infinite scroll jako alternatywa paginacji
+### 🟢 Interaktywność (Ukończone)
+- [x] Wyszukiwarka artykułów z podpowiedziami
+- [x] Filtrowanie po kategoriach (pills UI)
+- [x] Sortowanie artykułów (data, trafność)
+- [x] Infinite scroll jako alternatywa paginacji
+- [x] Loading Skeleton component
+- [x] Error Boundary component
+- [x] Offline Indicator (PWA support)
+- [x] Reading Progress Bar (pasek postępu czytania)
+- [x] Reading Time Estimator (szacowany czas czytania)
+- [x] Related Articles (powiązane artykuły)
+- [x] Keyboard Shortcuts (skróty klawiszowe: ? dla pomocy)
+- [x] Print Styles (style CSS do drukowania)
+- [x] Toast Notifications (system powiadomień)
+- [x] Table of Contents (spis treści artykułu)
+- [x] Image Lightbox (powiększanie obrazów)
+- [x] Trending Badge (oznaczenia HOT/NEW/TRENDING)
+- [x] Back Button (nawigacja wsteczna)
+- [x] Copy to Clipboard (przycisk kopiowania + hook)
+- [x] Article Rating (ocena artykułów: pomocne/niepomocne)
+- [x] Quick Share FAB (Floating Action Button do udostępniania)
+- [x] Animated Counter (animowane liczniki + progress bar)
+- [x] Text Selection Popover (popover przy zaznaczeniu tekstu)
+- [x] Tooltip Component (reusable tooltip z 4 pozycjami)
+- [x] Collapsible/Accordion (zwijane sekcje dla FAQ)
+- [x] Pull to Refresh (gest odświeżania dla PWA)
+- [x] Font Size Adjuster (regulacja rozmiaru czcionki)
+- [x] Integracja komponentów na stronie artykułu
+- [x] Tabs Component (zakładki z 3 wariantami: default, pills, underline)
+- [x] Modal Component (modal + ConfirmDialog)
+- [x] Dropdown Menu (dropdown + Select)
+- [x] Badge Component (badge + CategoryBadge + StatusBadge + NumberBadge)
+- [x] Alert Component (alert + InlineAlert z 4 wariantami)
+- [x] Input Components (Input, Textarea, Checkbox, Switch)
+- [x] Card Component (Card + CardHeader + CardBody + CardFooter + ArticleCard + StatsCard)
+- [x] Avatar Component (Avatar + AvatarGroup + SourceAvatar)
+- [x] Progress Component (Progress + CircularProgress + StepsProgress)
+- [x] Chip/Tag Component (Chip + ChipGroup + Tag)
+- [x] Skeleton Component (Skeleton + TextSkeleton + CardSkeleton + TableSkeleton + ListSkeleton)
+- [x] Empty State Component (EmptyState + NoSearchResults + NoFavorites + NoHistory + ErrorState)
+- [x] Divider Component (Divider + GoldDivider + DiamondDivider + SectionDivider + Spacer)
+- [x] Integracja na stronie /szukaj (CardSkeleton, NoSearchResults, Badge, SourceAvatar)
+- [x] Integracja na stronie /ulubione (ListSkeleton, NoFavorites, ConfirmDialog, SourceAvatar)
+- [x] Integracja na stronie /historia (ListSkeleton, NoHistory, ConfirmDialog, SectionDivider, SourceAvatar)
+- [x] Integracja na stronie głównej (CardSkeleton, ListSkeleton, SourceAvatar w RSSFeatured i RSSArticlesPaginated)
+- [x] Timeline Component (Timeline + HorizontalTimeline + NewsTimeline)
+- [x] Stat Component (Stat + StatsGrid + MiniStat + StatCard)
+- [x] List Component (List + ListItem + OrderedList + BulletList + DescriptionList)
+- [x] Table Component (Table + SimpleTable z sortowaniem)
+- [x] Notification Component (Notification + NotificationStack)
+- [x] Accordion Component (Accordion + FAQAccordion)
+- [x] Rating Component (Rating + StarRating + ThumbsRating)
+- [x] Stepper Component (Stepper + StepIndicator)
+- [x] Carousel Component (Carousel + ImageCarousel)
+- [x] Integracja CategoryBadge i InfoTooltip na stronach kategorii (crypto, gielda, waluty, rynki, analizy)
+- [x] Dodanie Breadcrumbs do strony kursy-walut
 
-### 🟡 Dane rynkowe
-- [ ] Live ticker kursów walut
-- [ ] Wykresy kursów (mini charts)
-- [ ] Tabela kursów NBP
-- [ ] Notowania GPW (WIG20, mWIG40)
+### 🟢 Dane rynkowe (Ukończone)
+- [x] Live ticker kursów walut (animowany pasek)
+- [x] Wykresy kursów (mini sparklines w sidebarze)
+- [x] Tabela kursów NBP (strona /kursy-walut)
+- [x] Notowania GPW (WIG20, mWIG40) - tabela na stronie /gielda
 
-### 🟡 User Experience
-- [ ] Dark/Light mode toggle
-- [ ] Zapisywanie ulubionych artykułów
-- [ ] Historia przeglądania
-- [ ] Udostępnianie w social media
+### 🟢 Personalizacja (Ukończone)
+- [x] Dark/Light mode toggle (przycisk w navbarze)
+- [x] Newsletter subscription (formularz w stopce)
+
+### 🟢 User Experience (Ukończone)
+- [x] Dark/Light mode toggle (przeniesione do Personalizacja)
+- [x] Zapisywanie ulubionych artykułów (localStorage + strona /ulubione)
+- [x] Historia przeglądania (localStorage + strona /historia)
+- [x] Udostępnianie w social media (Facebook, Twitter, LinkedIn, WhatsApp)
+- [x] Cookie Consent Banner (GDPR)
+- [x] Scroll to Top button
+- [x] Breadcrumbs component (SEO + nawigacja)
 
 ---
 
@@ -106,9 +164,11 @@
 
 ### 🔵 Zaawansowane SEO
 - [ ] AMP pages
-- [ ] Canonical URLs dla wszystkich stron
+- [x] Canonical URLs dla wszystkich stron
 - [ ] Hreflang dla wersji EN
-- [ ] News sitemap
+- [x] News sitemap
+- [x] Robots.txt dynamiczny
+- [x] PWA manifest.json
 
 ---
 

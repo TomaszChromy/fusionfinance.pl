@@ -4,11 +4,27 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useEffect, useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RSSArticles from "@/components/RSSArticles";
 import MarketSidebar from "@/components/MarketSidebar";
+import ShareButtons from "@/components/ShareButtons";
+import FavoriteButton from "@/components/FavoriteButton";
+import ReadingProgressBar from "@/components/ReadingProgressBar";
+import RelatedArticles from "@/components/RelatedArticles";
+import { useHistory, generateHistoryId } from "@/hooks/useHistory";
+// Nowe komponenty
+import BackButton from "@/components/BackButton";
+import CopyButton from "@/components/CopyButton";
+import ArticleRating from "@/components/ArticleRating";
+import QuickShareFAB from "@/components/QuickShareFAB";
+import TrendingBadge, { getBadgeType } from "@/components/TrendingBadge";
+import ImageLightbox from "@/components/ImageLightbox";
+import TextSelectionPopover from "@/components/TextSelectionPopover";
+import TableOfContents from "@/components/TableOfContents";
+import { useToast } from "@/components/Toast";
+import { FontSizeButtons } from "@/components/FontSizeAdjuster";
 
 // HD obrazy kategoryzowane tematycznie
 const themeImages: Record<string, string[]> = {
@@ -90,8 +106,25 @@ function ArticleContent() {
 
   const [articleContent, setArticleContent] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
+  const { addToHistory } = useHistory();
+  const { showToast } = useToast();
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const heroImage = getImageForTitle(title, urlImage);
+  const badgeType = getBadgeType({ date: dateStr });
+
+  // Add to history on mount
+  useEffect(() => {
+    const historyId = generateHistoryId(title, sourceUrl);
+    addToHistory({
+      id: historyId,
+      title,
+      description,
+      image: heroImage,
+      source: sourceUrl,
+      date: dateStr,
+    });
+  }, [title, description, heroImage, sourceUrl, dateStr, addToHistory]);
 
   // Always fetch full article content from source
   useEffect(() => {
@@ -135,37 +168,52 @@ function ArticleContent() {
   return (
     <article className="max-w-[800px]">
       <motion.div initial={{ opacity: 0, y: 21 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-        {/* Breadcrumb */}
-        <nav className="mb-[21px] text-[11px] text-[#71717a] tracking-[0.1em] uppercase">
-          <Link href="/" className="hover:text-[#c9a962]">Strona główna</Link>
-          <span className="mx-2">›</span>
-          <span className="text-[#a1a1aa]">Artykuł</span>
-        </nav>
+        {/* Back Button + Breadcrumb */}
+        <div className="flex items-center gap-4 mb-[21px]">
+          <BackButton variant="minimal" showLabel={false} />
+          <nav className="text-[11px] text-[#71717a] tracking-[0.1em] uppercase">
+            <Link href="/" className="hover:text-[#c9a962]">Strona główna</Link>
+            <span className="mx-2">›</span>
+            <span className="text-[#a1a1aa]">Artykuł</span>
+          </nav>
+        </div>
 
-        {/* Title */}
-        <h1 className="font-serif text-[28px] md:text-[38px] font-medium text-[#f4f4f5] leading-tight mb-[21px]">
-          {title}
-        </h1>
+        {/* Badge + Title */}
+        <div className="mb-[21px]">
+          {badgeType && <TrendingBadge type={badgeType} className="mb-3" />}
+          <h1 className="font-serif text-[28px] md:text-[38px] font-medium text-[#f4f4f5] leading-tight">
+            {title}
+          </h1>
+        </div>
 
-        {/* Meta */}
+        {/* Meta + Copy Link + Font Size */}
         <div className="flex flex-wrap items-center gap-4 text-[12px] text-[#71717a] mb-[34px]">
           <time>{formatPolishDate(dateStr)}</time>
           <span>•</span>
           <span>{readingTime} min czytania</span>
           <span>•</span>
           <span>{wordCount} słów</span>
-          <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[#c9a962] hover:underline ml-auto flex items-center gap-1">
-            Czytaj w źródle <span>→</span>
-          </a>
+          <div className="ml-auto flex items-center gap-3">
+            <FontSizeButtons />
+            <CopyButton
+              text={typeof window !== 'undefined' ? window.location.href : ''}
+              label="Link"
+              variant="minimal"
+              onCopy={() => showToast("Link skopiowany!", "success")}
+            />
+            <a href={sourceUrl} target="_blank" rel="noopener noreferrer" className="text-[#c9a962] hover:underline flex items-center gap-1">
+              Źródło <span>→</span>
+            </a>
+          </div>
         </div>
 
-        {/* Hero Image */}
+        {/* Hero Image with Lightbox */}
         <figure className="mb-[34px]">
-          <div className="relative aspect-[16/9] overflow-hidden rounded-xl border border-white/5">
+          <ImageLightbox src={heroImage} alt={title} className="relative aspect-[16/9] overflow-hidden rounded-xl border border-white/5">
             <Image src={heroImage} alt={title} fill className="object-cover" sizes="800px" priority unoptimized />
-          </div>
+          </ImageLightbox>
           <figcaption className="mt-[13px] text-[11px] text-[#52525b] text-center">
-            Zdjęcie ilustracyjne
+            Kliknij aby powiększyć • Zdjęcie ilustracyjne
           </figcaption>
         </figure>
 
@@ -176,8 +224,14 @@ function ArticleContent() {
           </p>
         )}
 
-        {/* Content */}
-        <div className="prose prose-invert max-w-none">
+        {/* Table of Contents (for long articles) */}
+        {!loading && articleContent.length > 2000 && (
+          <TableOfContents content={articleContent} className="mb-[34px]" />
+        )}
+
+        {/* Content with Text Selection Popover */}
+        <div ref={contentRef} className="prose prose-invert max-w-none relative">
+          <TextSelectionPopover containerRef={contentRef} />
           {loading ? (
             <div className="space-y-4">
               <div className="h-4 bg-white/5 rounded animate-pulse w-full" />
@@ -196,8 +250,35 @@ function ArticleContent() {
           )}
         </div>
 
+        {/* Article Rating */}
+        <div className="mt-[34px] pt-[21px] border-t border-white/10">
+          <ArticleRating articleId={sourceUrl} />
+        </div>
+
+        {/* Share & Favorite Buttons */}
+        <div className="mt-[21px] pt-[21px] border-t border-white/10">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <ShareButtons
+              url={typeof window !== 'undefined' ? window.location.href : `https://fusionfinance.pl/artykul`}
+              title={title}
+              description={description}
+            />
+            <FavoriteButton
+              article={{
+                title,
+                description,
+                image: heroImage,
+                source: sourceUrl,
+                date: formatPolishDate(dateStr),
+              }}
+              size="lg"
+              showLabel
+            />
+          </div>
+        </div>
+
         {/* Source link at the bottom */}
-        <div className="mt-[55px] pt-[34px] border-t border-white/10">
+        <div className="mt-[21px] pt-[21px] border-t border-white/10">
           <a
             href={sourceUrl}
             target="_blank"
@@ -212,6 +293,12 @@ function ArticleContent() {
           </p>
         </div>
       </motion.div>
+
+      {/* Quick Share FAB */}
+      <QuickShareFAB
+        url={typeof window !== 'undefined' ? window.location.href : ''}
+        title={title}
+      />
     </article>
   );
 }
@@ -219,6 +306,7 @@ function ArticleContent() {
 export default function ArticlePage() {
   return (
     <div className="min-h-screen bg-[#08090c] text-[#f4f4f5]">
+      <ReadingProgressBar showPercentage />
       <Navbar />
       <main className="max-w-[1400px] mx-auto px-5 lg:px-8 py-[55px]">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-[55px]">

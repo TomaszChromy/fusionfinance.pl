@@ -1,8 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import SearchBar from "./SearchBar";
+import ThemeToggle from "./ThemeToggle";
 
 const navLinks = [
   { name: "Rynki", href: "/rynki" },
@@ -15,6 +17,7 @@ const navLinks = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -47,7 +50,11 @@ export default function Navbar() {
             {new Date().toLocaleDateString("pl-PL", { weekday: "long", day: "numeric", month: "long", year: "numeric" })}
           </span>
           <div className="flex items-center gap-4">
-            <button type="button" className="text-[10px] text-[#71717a] hover:text-[#c9a962] uppercase tracking-[0.08em] font-medium transition-colors duration-200 flex items-center gap-1.5">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className="text-[10px] text-[#71717a] hover:text-[#c9a962] uppercase tracking-[0.08em] font-medium transition-colors duration-200 flex items-center gap-1.5"
+            >
               <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
@@ -55,6 +62,32 @@ export default function Navbar() {
             </button>
           </div>
         </div>
+
+        {/* Search Modal */}
+        <AnimatePresence>
+          {searchOpen && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm flex items-start justify-center pt-[20vh]"
+              onClick={() => setSearchOpen(false)}
+            >
+              <motion.div
+                initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                className="w-full max-w-2xl mx-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <SearchBar onClose={() => setSearchOpen(false)} isOpen={searchOpen} />
+                <p className="text-center text-xs text-[#71717a] mt-4">
+                  Naciśnij <kbd className="px-2 py-1 bg-white/10 rounded text-[10px]">ESC</kbd> aby zamknąć
+                </p>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         {/* Main header row - Logo + Navigation */}
         <div className={`flex items-center justify-between transition-all duration-300 ${
@@ -93,6 +126,29 @@ export default function Navbar() {
                 </Link>
               </motion.div>
             ))}
+
+            {/* Favorites, History & Theme Toggle */}
+            <div className="ml-2 pl-2 border-l border-white/10 flex items-center gap-1">
+              <Link
+                href="/ulubione"
+                className="p-2 text-[#71717a] hover:text-[#f87171] transition-colors rounded-lg hover:bg-white/[0.03]"
+                title="Ulubione artykuły"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </Link>
+              <Link
+                href="/historia"
+                className="p-2 text-[#71717a] hover:text-[#60a5fa] transition-colors rounded-lg hover:bg-white/[0.03]"
+                title="Historia przeglądania"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </Link>
+              <ThemeToggle />
+            </div>
           </nav>
 
           {/* Mobile menu button */}

@@ -5,6 +5,9 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import MarketSidebar from "@/components/MarketSidebar";
 import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
+import Breadcrumbs from "@/components/Breadcrumbs";
+import { CategoryBadge } from "@/components/Badge";
+import { InfoTooltip } from "@/components/Tooltip";
 
 export default function RynkiPage() {
   return (
@@ -12,6 +15,7 @@ export default function RynkiPage() {
       <Navbar />
 
       <div className="mx-auto max-w-[1400px] px-5 lg:px-8 py-[34px]">
+        <Breadcrumbs />
         {/* Page header */}
         <motion.div
           initial={{ opacity: 0, y: 21 }}
@@ -22,27 +26,54 @@ export default function RynkiPage() {
           <div className="flex items-center gap-3 mb-[13px]">
             <div className="w-[55px] h-[3px] bg-gradient-to-r from-[#c9a962] to-[#9a7b3c] rounded-full" />
           </div>
-          <h1 className="font-serif text-4xl lg:text-5xl font-medium text-[#f4f4f5] mb-[13px]">Rynki finansowe</h1>
+          <div className="flex items-center gap-3 mb-[13px]">
+            <h1 className="font-serif text-4xl lg:text-5xl font-medium text-[#f4f4f5]">Rynki finansowe</h1>
+            <CategoryBadge category="rynki" />
+          </div>
           <p className="text-[15px] text-[#a1a1aa] max-w-2xl leading-relaxed">
             Najnowsze wiadomości z rynków finansowych — indeksy, surowce, obligacje, ETF-y i fundusze inwestycyjne
           </p>
         </motion.div>
 
         {/* Two-column layout: Articles | Sidebar */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-[34px]">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12">
           {/* Left column - Articles */}
           <div>
-            <div className="flex items-center gap-3 mb-[21px]">
-              <div className="w-[3px] h-[21px] bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
-              <h2 className="text-[13px] font-medium text-[#f4f4f5] uppercase tracking-[0.15em]">Artykuły o rynkach</h2>
+            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#c9a962]/20">
+              <div className="flex items-center gap-3">
+                <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
+                <div>
+                  <h2 className="text-lg font-serif font-medium text-[#f4f4f5]">Artykuły o rynkach</h2>
+                  <p className="text-xs text-[#71717a] mt-0.5">Najnowsze wiadomości z rynków finansowych</p>
+                </div>
+              </div>
+              <div className="hidden md:flex items-center gap-2 text-[10px] text-[#71717a] uppercase tracking-wider font-medium">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ade80] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4ade80]"></span>
+                </span>
+                Na żywo
+                <InfoTooltip content="Artykuły aktualizowane automatycznie co 5 minut" />
+              </div>
             </div>
-            <RSSArticlesPaginated feedType="rynki" totalArticles={80} articlesPerPage={12} />
+
+            {/* Lista artykułów */}
+            <div className="bg-[#0c0d10] border border-white/5 rounded-2xl p-5 lg:p-8">
+              <RSSArticlesPaginated feedType="rynki" totalArticles={80} articlesPerPage={12} />
+            </div>
           </div>
 
           {/* Right column - Sidebar */}
-          <div className="lg:sticky lg:top-[21px] lg:self-start">
+          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
+              <div>
+                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
+                <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
+              </div>
+            </div>
             <MarketSidebar />
-          </div>
+          </aside>
         </div>
       </div>
 

@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import NewsletterForm from "./NewsletterForm";
 
 export default function Footer() {
   return (
@@ -12,30 +13,6 @@ export default function Footer() {
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
       className="mt-12 lg:mt-16 pt-10 lg:pt-14"
     >
-      {/* Under Construction Banner */}
-      <div className="mb-8 mx-4 lg:mx-0">
-        <div className="relative overflow-hidden rounded-lg border border-[#c9a962]/30 bg-gradient-to-r from-[#c9a962]/10 via-[#1a1d24] to-[#c9a962]/10 p-4 lg:p-5">
-          {/* Animated corner accents */}
-          <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#c9a962]/60" />
-          <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-[#c9a962]/60" />
-          <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-[#c9a962]/60" />
-          <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#c9a962]/60" />
-
-          <div className="flex items-center justify-center gap-3 text-center">
-            <span className="text-[#c9a962] text-lg">🚧</span>
-            <div>
-              <p className="text-[#c9a962] font-medium text-sm lg:text-base tracking-wide">
-                Strona w budowie
-              </p>
-              <p className="text-[#a1a1aa] text-xs mt-0.5">
-                Pracujemy nad nowymi funkcjami. Wkrótce więcej!
-              </p>
-            </div>
-            <span className="text-[#c9a962] text-lg">🚧</span>
-          </div>
-        </div>
-      </div>
-
       {/* Gold accent line */}
       <div className="h-px bg-gradient-to-r from-transparent via-[#c9a962]/40 to-transparent mb-10" />
 
@@ -69,6 +46,11 @@ export default function Footer() {
         <div className="w-16 h-px bg-gradient-to-l from-transparent to-[#c9a962]/30" />
       </div>
 
+      {/* Newsletter Section */}
+      <div className="max-w-md mx-auto mb-8 px-4">
+        <NewsletterForm />
+      </div>
+
       {/* Copyright */}
       <div className="text-center mb-4">
         <p className="text-xs text-[#a1a1aa] mb-1">
@@ -95,12 +77,10 @@ export default function Footer() {
       </div>
 
       {/* Disclaimers */}
-      <div className="text-center space-y-0.5 mb-4 max-w-lg mx-auto px-4">
-        <p className="text-[10px] text-[#52525b] leading-relaxed">
-          This website was created for training purposes only and does not constitute a commercial offer.
-        </p>
-        <p className="text-[10px] text-[#52525b] leading-relaxed">
-          Strona została stworzona w celach szkoleniowych i nie stanowi oferty handlowej.
+      <div className="text-center mb-6 max-w-3xl mx-auto px-4">
+        <p className="font-serif font-medium text-xl lg:text-2xl tracking-tight leading-relaxed">
+          <span className="text-[#f4f4f5]">UWAGA:</span>
+          <span className="bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent"> Ta strona została stworzona wyłącznie w celach edukacyjnych i treningowych. Nie stanowi oferty handlowej ani porady inwestycyjnej.</span>
         </p>
       </div>
 

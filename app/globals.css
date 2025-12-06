@@ -140,6 +140,30 @@ button:focus-visible {
   background: var(--gold-light);
 }
 
+/* Thin scrollbar for sidebars */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(201, 169, 98, 0.2);
+  border-radius: 2px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 169, 98, 0.4);
+}
+
+/* Firefox scrollbar support */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(201, 169, 98, 0.2) transparent;
+}
+
 /* ============================================
    LAYOUT CONTAINER - Golden Ratio
    ============================================ */
@@ -367,6 +391,207 @@ button:focus-visible {
 ::selection {
   background: var(--gold-primary);
   color: var(--bg-primary);
+}
+
+/* ============================================
+   LIGHT MODE THEME
+   ============================================ */
+
+html.light,
+html.light body {
+  --bg-primary: #fafafa;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #eeeeee;
+  --bg-card: #ffffff;
+  --bg-elevated: #ffffff;
+
+  --text-primary: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-default: rgba(0, 0, 0, 0.1);
+  --border-gold: rgba(154, 123, 60, 0.3);
+
+  --gold-glow: rgba(201, 169, 98, 0.2);
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+html.light ::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+html.light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--gold-dark) 0%, var(--gold-primary) 100%);
+}
+
+/* Light mode specific overrides */
+html.light .bg-\[\#08090c\] { background-color: #fafafa !important; }
+html.light .bg-\[\#0a0b0e\] { background-color: #f5f5f5 !important; }
+html.light .bg-\[\#0c0d10\] { background-color: #ffffff !important; }
+html.light .bg-\[\#0f1115\] { background-color: #fafafa !important; }
+html.light .bg-\[\#15181e\] { background-color: #eeeeee !important; }
+
+html.light .text-\[\#f4f4f5\] { color: #18181b !important; }
+html.light .text-\[\#a1a1aa\] { color: #52525b !important; }
+html.light .text-\[\#71717a\] { color: #71717a !important; }
+html.light .text-\[\#d4d4d8\] { color: #3f3f46 !important; }
+
+html.light .border-white\/5 { border-color: rgba(0, 0, 0, 0.05) !important; }
+html.light .border-white\/10 { border-color: rgba(0, 0, 0, 0.1) !important; }
+html.light .border-white\/20 { border-color: rgba(0, 0, 0, 0.15) !important; }
+
+html.light .bg-white\/5 { background-color: rgba(0, 0, 0, 0.03) !important; }
+html.light .bg-white\/10 { background-color: rgba(0, 0, 0, 0.06) !important; }
+html.light .bg-white\/\[0\.02\] { background-color: rgba(0, 0, 0, 0.02) !important; }
+html.light .bg-white\/\[0\.03\] { background-color: rgba(0, 0, 0, 0.03) !important; }
+html.light .bg-white\/\[0\.05\] { background-color: rgba(0, 0, 0, 0.04) !important; }
+
+html.light .hover\:bg-white\/\[0\.02\]:hover { background-color: rgba(0, 0, 0, 0.02) !important; }
+html.light .hover\:bg-white\/\[0\.05\]:hover { background-color: rgba(0, 0, 0, 0.04) !important; }
+html.light .hover\:bg-white\/10:hover { background-color: rgba(0, 0, 0, 0.06) !important; }
+
+html.light .divide-white\/\[0\.03\] > * + * { border-color: rgba(0, 0, 0, 0.05) !important; }
+
+html.light .from-\[\#08090c\] { --tw-gradient-from: #fafafa !important; }
+html.light .to-\[\#08090c\] { --tw-gradient-to: #fafafa !important; }
+html.light .from-\[\#0a0b0e\] { --tw-gradient-from: #f5f5f5 !important; }
+html.light .to-\[\#0a0b0e\] { --tw-gradient-to: #f5f5f5 !important; }
+html.light .from-\[\#0f1115\] { --tw-gradient-from: #ffffff !important; }
+html.light .to-\[\#0c0d10\] { --tw-gradient-to: #fafafa !important; }
+
+/* Light mode card shadows */
+html.light .card,
+html.light .bg-\[\#0c0d10\] {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+html.light .card:hover {
+  box-shadow: 0 4px 12px rgba(201, 169, 98, 0.15);
+}
+
+/* ============================================
+   SKELETON LOADING ANIMATIONS
+   ============================================ */
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
+
+/* Staggered bounce animation delays */
+.animate-bounce-delay-0 {
+  animation-delay: 0ms;
+}
+
+.animate-bounce-delay-150 {
+  animation-delay: 150ms;
+}
+
+.animate-bounce-delay-300 {
+  animation-delay: 300ms;
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  /* Hide non-essential elements */
+  .no-print,
+  header,
+  nav,
+  footer,
+  aside,
+  [data-cookie-consent],
+  [data-scroll-to-top],
+  [data-offline-indicator],
+  .fixed,
+  button:not(.print-btn) {
+    display: none !important;
+  }
+
+  /* Reset colors for print */
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  /* Article content styling */
+  article {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  h1 { font-size: 24pt; }
+  h2 { font-size: 18pt; }
+  h3 { font-size: 14pt; }
+
+  p {
+    color: black !important;
+    orphans: 3;
+    widows: 3;
+  }
+
+  /* Images */
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+
+  /* Links */
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  a[href]:after {
+    content: " (" attr(href) ")";
+    font-size: 10pt;
+    color: #666;
+  }
+
+  a[href^="#"]:after,
+  a[href^="javascript:"]:after {
+    content: "";
+  }
+
+  /* Page breaks */
+  .page-break-before { page-break-before: always; }
+  .page-break-after { page-break-after: always; }
+  .no-page-break { page-break-inside: avoid; }
+
+  /* Header for printed pages */
+  @page {
+    margin: 2cm;
+    @top-center {
+      content: "FusionFinance.pl";
+      font-size: 10pt;
+      color: #666;
+    }
+    @bottom-center {
+      content: counter(page);
+      font-size: 10pt;
+    }
+  }
 }
 
 /* ============================================

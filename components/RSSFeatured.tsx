@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { CardSkeleton } from "./Skeleton";
+import { SourceAvatar } from "./Avatar";
+import Badge from "./Badge";
 
 interface RSSItem {
   title: string;
@@ -171,15 +174,13 @@ export default function RSSFeatured() {
           <div className="w-[3px] h-[21px] bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
           <h2 className="text-[13px] font-medium text-[#f4f4f5] uppercase tracking-[0.15em]">Najnowsze wiadomości</h2>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-[21px]">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="animate-pulse">
-              <div className="h-[144px] bg-white/5 rounded-lg mb-[13px]" />
-              <div className="h-[13px] bg-white/5 rounded w-3/4 mb-[8px]" />
-              <div className="h-[8px] bg-white/5 rounded w-full mb-[8px]" />
-              <div className="h-[8px] bg-white/5 rounded w-1/4" />
-            </div>
-          ))}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+          <CardSkeleton showImage className="lg:row-span-2" />
+          <div className="space-y-4">
+            {[1, 2, 3].map((i) => (
+              <CardSkeleton key={i} showImage showAvatar />
+            ))}
+          </div>
         </div>
       </section>
     );
@@ -188,11 +189,11 @@ export default function RSSFeatured() {
   return (
     <section className="pt-4 lg:pt-6">
       {/* Nagłówek sekcji */}
-      <div className="flex items-center justify-between mb-6 lg:mb-8">
+      <div className="flex items-center justify-between mb-6 lg:mb-8 pb-4 border-b border-[#c9a962]/20">
         <div className="flex items-center gap-3">
           <div className="w-1 h-8 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
           <div>
-            <h2 className="text-xl lg:text-2xl font-serif font-medium text-[#f4f4f5] tracking-tight">Wiadomości dnia</h2>
+            <h2 className="text-xl lg:text-2xl font-serif font-medium text-[#f4f4f5] tracking-tight">Wyróżnione artykuły</h2>
             <p className="text-xs text-[#71717a] mt-0.5">Najważniejsze informacje ze świata finansów</p>
           </div>
         </div>
@@ -246,9 +247,12 @@ export default function RSSFeatured() {
                   {articles[0].description}
                 </p>
                 <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-[#71717a] uppercase tracking-[0.1em] font-medium">
-                    {formatPolishDate(articles[0].date)}
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <SourceAvatar source={articles[0].source || "news"} size="sm" />
+                    <span className="text-[10px] text-[#71717a] uppercase tracking-[0.1em] font-medium">
+                      {formatPolishDate(articles[0].date)}
+                    </span>
+                  </div>
                   <span className="text-[13px] text-[#c9a962] font-medium flex items-center gap-1.5 group-hover:gap-2.5 transition-all duration-300">
                     Czytaj więcej
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -293,6 +297,7 @@ export default function RSSFeatured() {
                     </p>
                   </div>
                   <div className="flex items-center gap-2 mt-2">
+                    <SourceAvatar source={article.source || "news"} size="xs" />
                     <span className="text-[10px] text-[#52525b] uppercase tracking-wide font-medium">
                       {formatPolishDate(article.date)}
                     </span>

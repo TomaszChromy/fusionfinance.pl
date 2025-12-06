@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
+// Skip this route during static export
+export const dynamic = "force-dynamic";
+
 interface ArticleData {
   title: string;
   content: string;
