@@ -147,6 +147,15 @@
 - [x] Integracja Calculator, Glossary na stronie /analizy
 - [x] Integracja CurrencyConverter na stronie /kursy-walut
 - [x] Integracja WeatherStrip na stronie głównej
+- [x] Testimonials Component (opinie użytkowników z karuzelą)
+- [x] FAQ Component (często zadawane pytania z kategoriami)
+- [x] ContactForm Component (formularz kontaktowy z walidacją)
+- [x] SocialProof Component (liczniki, logo partnerów, trust badges)
+- [x] ArticleBookmark Component (zakładki w artykułach)
+- [x] ReadingStats Component (statystyki czytania użytkownika)
+- [x] Strona /kontakt (formularz + FAQ + social proof)
+- [x] Integracja Testimonials, SocialProof na stronie głównej
+- [x] Integracja ReadingStats na stronie /historia
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)

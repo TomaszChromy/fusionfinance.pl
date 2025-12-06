@@ -12,6 +12,7 @@ import { ListSkeleton } from "@/components/Skeleton";
 import { ConfirmDialog } from "@/components/Modal";
 import { SourceAvatar } from "@/components/Avatar";
 import { SectionDivider } from "@/components/Divider";
+import ReadingStats from "@/components/ReadingStats";
 
 export default function HistoriaPage() {
   const { history, isLoaded, clearHistory, removeFromHistory } = useHistory();
@@ -68,6 +69,9 @@ export default function HistoriaPage() {
             confirmText="Wyczyść"
             variant="danger"
           />
+
+          {/* Reading Stats */}
+          <ReadingStats className="mb-8" />
 
           {/* Content */}
           {!isLoaded ? (

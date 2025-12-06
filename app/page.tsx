@@ -11,6 +11,8 @@ import MarketStatus from "@/components/MarketStatus";
 import { DailyQuote } from "@/components/QuoteCard";
 import LiveIndicator from "@/components/LiveIndicator";
 import { WeatherStrip } from "@/components/WeatherWidget";
+import Testimonials from "@/components/Testimonials";
+import SocialProof from "@/components/SocialProof";
 
 export default function Home() {
   return (
@@ -85,7 +87,25 @@ export default function Home() {
               </div>
               <WeatherStrip />
             </div>
+
+            {/* Testimonials */}
+            <div className="mt-5">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-sm font-medium text-[#f4f4f5]">💬 Opinie użytkowników</span>
+              </div>
+              <Testimonials autoPlay className="mt-3" />
+            </div>
           </aside>
+        </motion.div>
+
+        {/* Social Proof Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-16"
+        >
+          <SocialProof variant="compact" className="mb-8" />
         </motion.div>
       </div>
 
