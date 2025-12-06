@@ -120,6 +120,23 @@
 - [x] Carousel Component (Carousel + ImageCarousel)
 - [x] Integracja CategoryBadge i InfoTooltip na stronach kategorii (crypto, gielda, waluty, rynki, analizy)
 - [x] Dodanie Breadcrumbs do strony kursy-walut
+- [x] CountdownTimer Component (timer odliczający + EventCountdown)
+- [x] PriceAlert Component (alerty cenowe + PriceTicker + PriceAlertToast)
+- [x] MarketStatus Component (status giełd + MarketStatusGrid)
+- [x] QuoteCard Component (cytaty ekspertów + DailyQuote + ExpertQuote)
+- [x] ComparisonTable Component (tabela porównawcza + BrokerComparison)
+- [x] DataCard Component (karty danych + MacroDataCard + StatsOverviewCard)
+- [x] MiniCalendar Component (kalendarz wydarzeń + UpcomingEvents)
+- [x] LiveIndicator Component (wskaźnik live + LiveBadge + ConnectionStatus)
+- [x] SearchInput Component (zaawansowane wyszukiwanie z sugestiami)
+- [x] FilterPanel Component (panel filtrów z 3 wariantami)
+- [x] SortDropdown Component (dropdown sortowania)
+- [x] CurrencyConverter Component (kalkulator walutowy)
+- [x] StockTicker Component (ticker giełdowy + VerticalStockTicker + StockDisplay)
+- [x] NewsCard Component (karta wiadomości z 5 wariantami)
+- [x] TrendChart Component (mini wykres trendu + SparklineWithValue + MiniChartCard)
+- [x] Integracja MarketStatus, DailyQuote, LiveIndicator na stronie głównej
+- [x] Integracja MarketStatusGrid, EventCountdown na stronie /rynki
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)

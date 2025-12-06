@@ -8,6 +8,9 @@ import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
+import { MarketStatusGrid } from "@/components/MarketStatus";
+import { EventCountdown } from "@/components/CountdownTimer";
+import LiveIndicator from "@/components/LiveIndicator";
 
 export default function RynkiPage() {
   return (
@@ -47,12 +50,8 @@ export default function RynkiPage() {
                   <p className="text-xs text-[#71717a] mt-0.5">Najnowsze wiadomości z rynków finansowych</p>
                 </div>
               </div>
-              <div className="hidden md:flex items-center gap-2 text-[10px] text-[#71717a] uppercase tracking-wider font-medium">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ade80] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4ade80]"></span>
-                </span>
-                Na żywo
+              <div className="hidden md:flex items-center gap-2">
+                <LiveIndicator label="Na żywo" />
                 <InfoTooltip content="Artykuły aktualizowane automatycznie co 5 minut" />
               </div>
             </div>
@@ -73,6 +72,21 @@ export default function RynkiPage() {
               </div>
             </div>
             <MarketSidebar />
+
+            {/* Market Status Grid */}
+            <div className="mt-6">
+              <h3 className="text-sm font-medium text-[#f4f4f5] mb-3">Status giełd światowych</h3>
+              <MarketStatusGrid />
+            </div>
+
+            {/* Upcoming Economic Event */}
+            <div className="mt-6">
+              <EventCountdown
+                eventName="Decyzja FOMC"
+                eventDate={new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)}
+                eventType="meeting"
+              />
+            </div>
           </aside>
         </div>
       </div>

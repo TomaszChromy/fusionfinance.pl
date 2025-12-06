@@ -7,6 +7,9 @@ import RSSFeatured from "@/components/RSSFeatured";
 import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
 import MarketSidebar from "@/components/MarketSidebar";
 import Footer from "@/components/Footer";
+import MarketStatus from "@/components/MarketStatus";
+import { DailyQuote } from "@/components/QuoteCard";
+import LiveIndicator from "@/components/LiveIndicator";
 
 export default function Home() {
   return (
@@ -37,13 +40,7 @@ export default function Home() {
                   <p className="text-xs text-[#71717a] mt-0.5">Aktualne informacje z rynków finansowych</p>
                 </div>
               </div>
-              <div className="hidden md:flex items-center gap-2 text-[10px] text-[#71717a] uppercase tracking-wider font-medium">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ade80] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4ade80]"></span>
-                </span>
-                Na żywo
-              </div>
+              <LiveIndicator label="Na żywo" />
             </div>
 
             {/* Lista artykułów */}
@@ -64,6 +61,21 @@ export default function Home() {
             </div>
 
             <MarketSidebar />
+
+            {/* Market Status */}
+            <div className="mt-5">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-sm font-medium text-[#f4f4f5]">Status giełd</span>
+              </div>
+              <div className="space-y-3">
+                <MarketStatus marketId="gpw" variant="compact" />
+                <MarketStatus marketId="nyse" variant="compact" />
+                <MarketStatus marketId="crypto" variant="compact" />
+              </div>
+            </div>
+
+            {/* Daily Quote */}
+            <DailyQuote className="mt-5" />
           </aside>
         </motion.div>
       </div>
