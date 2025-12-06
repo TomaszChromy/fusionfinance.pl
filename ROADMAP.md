@@ -178,6 +178,15 @@
 - [x] Integracja NotificationCenter w Navbar
 - [x] Integracja HeatMap, TrendIndicator na stronie /gielda
 - [x] Integracja SearchSuggestions na stronie /szukaj
+- [x] NewsTicker Component (ticker wiadomości z auto-scroll)
+- [x] EconomicIndicators Component (wskaźniki ekonomiczne)
+- [x] PerformanceChart Component (wykres wydajności portfela)
+- [x] PriceAlertForm Component (formularz alertów cenowych)
+- [x] MarketMoodIndicator Component (Fear & Greed Index)
+- [x] Integracja NewsTicker, MarketMoodIndicator na stronie głównej
+- [x] Integracja EconomicIndicators na stronie /rynki
+- [x] Integracja PerformanceChart, PriceAlertForm na stronie /ulubione
+- [x] Integracja MarketMoodIndicator na stronie /crypto
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)

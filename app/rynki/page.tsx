@@ -13,6 +13,7 @@ import { EventCountdown } from "@/components/CountdownTimer";
 import LiveIndicator from "@/components/LiveIndicator";
 import Watchlist from "@/components/Watchlist";
 import MarketCalendar from "@/components/MarketCalendar";
+import EconomicIndicators from "@/components/EconomicIndicators";
 
 export default function RynkiPage() {
   return (
@@ -98,6 +99,11 @@ export default function RynkiPage() {
             {/* Market Calendar */}
             <div className="mt-6">
               <MarketCalendar variant="compact" />
+            </div>
+
+            {/* Economic Indicators */}
+            <div className="mt-6">
+              <EconomicIndicators variant="compact" />
             </div>
           </aside>
         </div>

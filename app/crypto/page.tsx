@@ -10,6 +10,7 @@ import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
 import { CryptoGrid } from "@/components/CryptoPrice";
 import Glossary from "@/components/Glossary";
+import MarketMoodIndicator from "@/components/MarketMoodIndicator";
 
 export default function CryptoPage() {
   return (
@@ -81,6 +82,9 @@ export default function CryptoPage() {
 
             {/* Glossary */}
             <Glossary variant="compact" />
+
+            {/* Market Mood - Fear & Greed */}
+            <MarketMoodIndicator value={72} className="mt-6" />
 
             {/* Market Data */}
             <div>

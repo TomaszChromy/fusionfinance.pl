@@ -14,6 +14,8 @@ import { WeatherStrip } from "@/components/WeatherWidget";
 import Testimonials from "@/components/Testimonials";
 import SocialProof from "@/components/SocialProof";
 import QuickActions from "@/components/QuickActions";
+import NewsTicker from "@/components/NewsTicker";
+import MarketMoodIndicator from "@/components/MarketMoodIndicator";
 
 export default function Home() {
   return (
@@ -97,6 +99,26 @@ export default function Home() {
               <Testimonials autoPlay className="mt-3" />
             </div>
           </aside>
+        </motion.div>
+
+        {/* News Ticker */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-12"
+        >
+          <NewsTicker variant="compact" />
+        </motion.div>
+
+        {/* Market Mood */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-8"
+        >
+          <MarketMoodIndicator variant="compact" />
         </motion.div>
 
         {/* Social Proof Section */}

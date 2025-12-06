@@ -14,6 +14,8 @@ import { SourceAvatar } from "@/components/Avatar";
 import { GoldDivider } from "@/components/Divider";
 import PortfolioWidget from "@/components/PortfolioWidget";
 import AlertsPanel from "@/components/AlertsPanel";
+import PerformanceChart from "@/components/PerformanceChart";
+import PriceAlertForm from "@/components/PriceAlertForm";
 import { useState } from "react";
 
 export default function UlubionePage() {
@@ -113,10 +115,20 @@ export default function UlubionePage() {
             </div>
           )}
 
+          {/* Portfolio Performance */}
+          <div className="mt-12">
+            <PerformanceChart title="Wydajność ulubionych aktywów" />
+          </div>
+
           {/* Sidebar widgets */}
-          <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             <PortfolioWidget />
             <AlertsPanel />
+          </div>
+
+          {/* Price Alert Form */}
+          <div className="mt-8 max-w-md">
+            <PriceAlertForm />
           </div>
         </div>
       </main>
