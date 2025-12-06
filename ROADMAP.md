@@ -187,6 +187,14 @@
 - [x] Integracja EconomicIndicators na stronie /rynki
 - [x] Integracja PerformanceChart, PriceAlertForm na stronie /ulubione
 - [x] Integracja MarketMoodIndicator na stronie /crypto
+- [x] AssetDetails Component (szczegółowa karta aktywa)
+- [x] VolumeChart Component (wykres wolumenu handlu)
+- [x] OrderBook Component (książka zleceń bid/ask)
+- [x] CurrencyStrength Component (wskaźnik siły walut)
+- [x] RecentTrades Component (lista ostatnich transakcji live)
+- [x] Integracja OrderBook, RecentTrades na stronie /crypto
+- [x] Integracja VolumeChart, AssetDetails na stronie /gielda
+- [x] Integracja CurrencyStrength na stronie /kursy-walut
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)

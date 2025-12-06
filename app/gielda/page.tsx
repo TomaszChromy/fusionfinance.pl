@@ -11,6 +11,8 @@ import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
 import HeatMap from "@/components/HeatMap";
 import TrendIndicator from "@/components/TrendIndicator";
+import VolumeChart from "@/components/VolumeChart";
+import AssetDetails from "@/components/AssetDetails";
 
 export default function GieldaPage() {
   return (
@@ -91,6 +93,22 @@ export default function GieldaPage() {
               <TrendIndicator direction="down" strength="weak" label="mWIG40" value="-0.23%" />
               <TrendIndicator direction="up" strength="strong" label="sWIG80" value="+1.12%" />
             </div>
+
+            {/* Volume Chart */}
+            <VolumeChart title="Wolumen WIG20" className="mt-6" />
+
+            {/* Featured Asset */}
+            <AssetDetails
+              symbol="PKO"
+              name="PKO Bank Polski"
+              price={48.56}
+              change={1.24}
+              changePercent={2.62}
+              high24h={49.20}
+              low24h={47.10}
+              volume={12500000}
+              className="mt-6"
+            />
           </aside>
         </div>
       </div>

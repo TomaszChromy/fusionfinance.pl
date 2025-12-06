@@ -4,6 +4,7 @@ import BreakingNews from "@/components/BreakingNews";
 import NBPCurrencyTable from "@/components/NBPCurrencyTable";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CurrencyConverter from "@/components/CurrencyConverter";
+import CurrencyStrength from "@/components/CurrencyStrength";
 
 export const metadata = {
   title: "Kursy walut NBP - Aktualne notowania | FusionFinance.pl",
@@ -36,7 +37,12 @@ export default function KursyWalutPage() {
 
           {/* Currency Table */}
           <NBPCurrencyTable />
-          
+
+          {/* Currency Strength */}
+          <div className="mt-8">
+            <CurrencyStrength variant="bars" title="Siła głównych walut" />
+          </div>
+
           {/* Info Section */}
           <div className="mt-8 grid gap-6 md:grid-cols-3">
             <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-5 hover:border-[#c9a962]/20 transition-colors">
