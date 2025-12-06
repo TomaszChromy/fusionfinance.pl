@@ -10,6 +10,7 @@ import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
 import Calculator from "@/components/Calculator";
 import Glossary from "@/components/Glossary";
+import CompareAssets from "@/components/CompareAssets";
 
 export default function AnalizyPage() {
   return (
@@ -81,6 +82,9 @@ export default function AnalizyPage() {
 
             {/* Glossary */}
             <Glossary variant="compact" />
+
+            {/* Compare Assets */}
+            <CompareAssets className="mt-6" />
 
             {/* Market Data */}
             <div>

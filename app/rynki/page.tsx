@@ -11,6 +11,8 @@ import { InfoTooltip } from "@/components/Tooltip";
 import { MarketStatusGrid } from "@/components/MarketStatus";
 import { EventCountdown } from "@/components/CountdownTimer";
 import LiveIndicator from "@/components/LiveIndicator";
+import Watchlist from "@/components/Watchlist";
+import MarketCalendar from "@/components/MarketCalendar";
 
 export default function RynkiPage() {
   return (
@@ -86,6 +88,16 @@ export default function RynkiPage() {
                 eventDate={new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)}
                 eventType="meeting"
               />
+            </div>
+
+            {/* Watchlist */}
+            <div className="mt-6">
+              <Watchlist variant="compact" />
+            </div>
+
+            {/* Market Calendar */}
+            <div className="mt-6">
+              <MarketCalendar variant="compact" />
             </div>
           </aside>
         </div>

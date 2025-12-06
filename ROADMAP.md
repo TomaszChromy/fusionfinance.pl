@@ -161,6 +161,15 @@
 - [x] PortfolioWidget Component (widget portfela inwestycyjnego)
 - [x] AlertsPanel Component (panel alertów cenowych)
 - [x] Integracja PortfolioWidget, AlertsPanel na stronie /ulubione
+- [x] Watchlist Component (lista obserwowanych aktywów)
+- [x] MarketCalendar Component (kalendarz wydarzeń ekonomicznych)
+- [x] CompareAssets Component (porównywarka aktywów)
+- [x] ExportData Component (eksport danych do CSV/JSON)
+- [x] QuickActions Component (floating menu z szybkimi akcjami)
+- [x] Footer rozszerzony (4 kolumny z kategoriami, social linki)
+- [x] Integracja QuickActions na stronie głównej
+- [x] Integracja Watchlist, MarketCalendar na stronie /rynki
+- [x] Integracja CompareAssets na stronie /analizy
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)

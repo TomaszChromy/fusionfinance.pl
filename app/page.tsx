@@ -13,6 +13,7 @@ import LiveIndicator from "@/components/LiveIndicator";
 import { WeatherStrip } from "@/components/WeatherWidget";
 import Testimonials from "@/components/Testimonials";
 import SocialProof from "@/components/SocialProof";
+import QuickActions from "@/components/QuickActions";
 
 export default function Home() {
   return (
@@ -110,6 +111,9 @@ export default function Home() {
       </div>
 
       <Footer />
+
+      {/* Quick Actions FAB */}
+      <QuickActions />
     </main>
   );
 }

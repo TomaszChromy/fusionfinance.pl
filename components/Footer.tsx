@@ -27,16 +27,53 @@ export default function Footer() {
       </div>
 
       {/* Navigation links */}
-      <div className="flex flex-wrap items-center justify-center gap-4 lg:gap-6 text-[11px] uppercase tracking-[0.12em] font-medium mb-6">
-        {["Rynki", "Giełda", "Crypto", "Waluty", "Analizy"].map((name) => (
-          <Link
-            key={name}
-            href={`/${name.toLowerCase().replace("ł", "l")}`}
-            className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200"
-          >
-            {name}
-          </Link>
-        ))}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto mb-8 px-4">
+        {/* Rynki */}
+        <div>
+          <h4 className="text-xs uppercase tracking-[0.15em] text-[#c9a962] font-medium mb-3">Rynki</h4>
+          <div className="space-y-2">
+            <Link href="/gielda" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">GPW</Link>
+            <Link href="/crypto" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kryptowaluty</Link>
+            <Link href="/kursy-walut" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kursy walut</Link>
+            <Link href="/rynki" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Przegląd rynków</Link>
+          </div>
+        </div>
+        {/* Narzędzia */}
+        <div>
+          <h4 className="text-xs uppercase tracking-[0.15em] text-[#c9a962] font-medium mb-3">Narzędzia</h4>
+          <div className="space-y-2">
+            <Link href="/analizy" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Analizy</Link>
+            <Link href="/szukaj" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Szukaj</Link>
+            <Link href="/ulubione" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Ulubione</Link>
+            <Link href="/historia" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Historia</Link>
+          </div>
+        </div>
+        {/* Informacje */}
+        <div>
+          <h4 className="text-xs uppercase tracking-[0.15em] text-[#c9a962] font-medium mb-3">Informacje</h4>
+          <div className="space-y-2">
+            <Link href="/o-nas" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">O nas</Link>
+            <Link href="/kontakt" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kontakt</Link>
+            <Link href="/polityka-prywatnosci" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Prywatność</Link>
+            <Link href="/regulamin" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Regulamin</Link>
+          </div>
+        </div>
+        {/* Social */}
+        <div>
+          <h4 className="text-xs uppercase tracking-[0.15em] text-[#c9a962] font-medium mb-3">Obserwuj nas</h4>
+          <div className="flex gap-3">
+            <a href="#" className="w-8 h-8 rounded-full bg-white/5 hover:bg-[#c9a962]/20 flex items-center justify-center text-[#71717a] hover:text-[#c9a962] transition-colors" title="Twitter">
+              𝕏
+            </a>
+            <a href="#" className="w-8 h-8 rounded-full bg-white/5 hover:bg-[#c9a962]/20 flex items-center justify-center text-[#71717a] hover:text-[#c9a962] transition-colors" title="LinkedIn">
+              in
+            </a>
+            <a href="#" className="w-8 h-8 rounded-full bg-white/5 hover:bg-[#c9a962]/20 flex items-center justify-center text-[#71717a] hover:text-[#c9a962] transition-colors" title="Facebook">
+              f
+            </a>
+          </div>
+          <p className="mt-3 text-[10px] text-[#52525b]">Bądź na bieżąco</p>
+        </div>
       </div>
 
       {/* Elegant divider */}
