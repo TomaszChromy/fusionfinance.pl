@@ -12,6 +12,30 @@ export default function Footer() {
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
       className="mt-12 lg:mt-16 pt-10 lg:pt-14"
     >
+      {/* Under Construction Banner */}
+      <div className="mb-8 mx-4 lg:mx-0">
+        <div className="relative overflow-hidden rounded-lg border border-[#c9a962]/30 bg-gradient-to-r from-[#c9a962]/10 via-[#1a1d24] to-[#c9a962]/10 p-4 lg:p-5">
+          {/* Animated corner accents */}
+          <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-[#c9a962]/60" />
+          <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-[#c9a962]/60" />
+          <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-[#c9a962]/60" />
+          <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-[#c9a962]/60" />
+
+          <div className="flex items-center justify-center gap-3 text-center">
+            <span className="text-[#c9a962] text-lg">🚧</span>
+            <div>
+              <p className="text-[#c9a962] font-medium text-sm lg:text-base tracking-wide">
+                Strona w budowie
+              </p>
+              <p className="text-[#a1a1aa] text-xs mt-0.5">
+                Pracujemy nad nowymi funkcjami. Wkrótce więcej!
+              </p>
+            </div>
+            <span className="text-[#c9a962] text-lg">🚧</span>
+          </div>
+        </div>
+      </div>
+
       {/* Gold accent line */}
       <div className="h-px bg-gradient-to-r from-transparent via-[#c9a962]/40 to-transparent mb-10" />
 
