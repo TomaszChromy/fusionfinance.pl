@@ -11,6 +11,9 @@ import { InfoTooltip } from "@/components/Tooltip";
 import Calculator from "@/components/Calculator";
 import Glossary from "@/components/Glossary";
 import CompareAssets from "@/components/CompareAssets";
+import InvestmentIdeas from "@/components/InvestmentIdeas";
+import RiskMeter from "@/components/RiskMeter";
+import TradingTips from "@/components/TradingTips";
 
 export default function AnalizyPage() {
   return (
@@ -85,6 +88,15 @@ export default function AnalizyPage() {
 
             {/* Compare Assets */}
             <CompareAssets className="mt-6" />
+
+            {/* Investment Ideas */}
+            <InvestmentIdeas variant="cards" maxItems={2} className="mt-6" />
+
+            {/* Risk Meter */}
+            <RiskMeter value={45} variant="gauge" className="mt-6" />
+
+            {/* Trading Tips */}
+            <TradingTips variant="carousel" className="mt-6" />
 
             {/* Market Data */}
             <div>

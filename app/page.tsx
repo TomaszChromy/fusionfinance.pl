@@ -16,6 +16,7 @@ import SocialProof from "@/components/SocialProof";
 import QuickActions from "@/components/QuickActions";
 import NewsTicker from "@/components/NewsTicker";
 import MarketMoodIndicator from "@/components/MarketMoodIndicator";
+import MarketNews from "@/components/MarketNews";
 
 export default function Home() {
   return (
@@ -119,6 +120,16 @@ export default function Home() {
           className="mt-8"
         >
           <MarketMoodIndicator variant="compact" />
+        </motion.div>
+
+        {/* Market News */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="mt-8"
+        >
+          <MarketNews maxItems={5} />
         </motion.div>
 
         {/* Social Proof Section */}

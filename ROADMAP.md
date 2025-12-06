@@ -195,6 +195,14 @@
 - [x] Integracja OrderBook, RecentTrades na stronie /crypto
 - [x] Integracja VolumeChart, AssetDetails na stronie /gielda
 - [x] Integracja CurrencyStrength na stronie /kursy-walut
+- [x] TradingTips Component (porady tradingowe z rotacją)
+- [x] MarketNews Component (wiadomości rynkowe live)
+- [x] PriceComparison Component (porównanie cen między giełdami)
+- [x] InvestmentIdeas Component (pomysły inwestycyjne)
+- [x] RiskMeter Component (miernik ryzyka z gauge)
+- [x] Integracja InvestmentIdeas, RiskMeter, TradingTips na stronie /analizy
+- [x] Integracja PriceComparison, MarketNews na stronie /crypto
+- [x] Integracja MarketNews na stronie głównej
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)

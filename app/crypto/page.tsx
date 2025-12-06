@@ -13,6 +13,8 @@ import Glossary from "@/components/Glossary";
 import MarketMoodIndicator from "@/components/MarketMoodIndicator";
 import OrderBook from "@/components/OrderBook";
 import RecentTrades from "@/components/RecentTrades";
+import MarketNews from "@/components/MarketNews";
+import PriceComparison from "@/components/PriceComparison";
 
 export default function CryptoPage() {
   return (
@@ -93,6 +95,12 @@ export default function CryptoPage() {
 
             {/* Recent Trades */}
             <RecentTrades symbol="BTC/USD" className="mt-6" />
+
+            {/* Price Comparison */}
+            <PriceComparison className="mt-6" />
+
+            {/* Market News */}
+            <MarketNews variant="compact" maxItems={4} className="mt-6" />
 
             {/* Market Data */}
             <div>
