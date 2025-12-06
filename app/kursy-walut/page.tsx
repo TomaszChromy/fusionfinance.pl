@@ -3,6 +3,7 @@ import Footer from "@/components/Footer";
 import BreakingNews from "@/components/BreakingNews";
 import NBPCurrencyTable from "@/components/NBPCurrencyTable";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import CurrencyConverter from "@/components/CurrencyConverter";
 
 export const metadata = {
   title: "Kursy walut NBP - Aktualne notowania | FusionFinance.pl",
@@ -28,6 +29,11 @@ export default function KursyWalutPage() {
             </p>
           </div>
           
+          {/* Currency Converter */}
+          <div className="mb-8">
+            <CurrencyConverter />
+          </div>
+
           {/* Currency Table */}
           <NBPCurrencyTable />
           

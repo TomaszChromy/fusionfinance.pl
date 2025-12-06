@@ -8,6 +8,8 @@ import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
+import { CryptoGrid } from "@/components/CryptoPrice";
+import Glossary from "@/components/Glossary";
 
 export default function CryptoPage() {
   return (
@@ -64,15 +66,33 @@ export default function CryptoPage() {
           </div>
 
           {/* Right column - Sidebar */}
-          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
-              <div>
-                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
-                <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
+          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-6">
+            {/* Crypto Prices */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-1 h-7 bg-gradient-to-b from-[#f7931a] to-[#f59e0b] rounded-full" />
+                <div>
+                  <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Kursy kryptowalut</h2>
+                  <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
+                </div>
               </div>
+              <CryptoGrid limit={6} />
             </div>
-            <MarketSidebar />
+
+            {/* Glossary */}
+            <Glossary variant="compact" />
+
+            {/* Market Data */}
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
+                <div>
+                  <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
+                  <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
+                </div>
+              </div>
+              <MarketSidebar />
+            </div>
           </aside>
         </div>
       </div>

@@ -137,6 +137,16 @@
 - [x] TrendChart Component (mini wykres trendu + SparklineWithValue + MiniChartCard)
 - [x] Integracja MarketStatus, DailyQuote, LiveIndicator na stronie głównej
 - [x] Integracja MarketStatusGrid, EventCountdown na stronie /rynki
+- [x] WeatherWidget Component (widget pogody + WeatherStrip + wpływ na rynki)
+- [x] CryptoPrice Component (kursy kryptowalut + CryptoGrid z 4 wariantami)
+- [x] LanguageSwitcher Component (przełącznik języka z 4 wariantami)
+- [x] ThemeCustomizer Component (panel ustawień wyglądu + ThemeSettingsButton)
+- [x] Glossary Component (słownik finansowy z wyszukiwaniem i kategoriami)
+- [x] Calculator Component (kalkulatory: procent składany, kredyt, ROI, inflacja)
+- [x] Integracja CryptoGrid, Glossary na stronie /crypto
+- [x] Integracja Calculator, Glossary na stronie /analizy
+- [x] Integracja CurrencyConverter na stronie /kursy-walut
+- [x] Integracja WeatherStrip na stronie głównej
 
 ### 🟢 Dane rynkowe (Ukończone)
 - [x] Live ticker kursów walut (animowany pasek)

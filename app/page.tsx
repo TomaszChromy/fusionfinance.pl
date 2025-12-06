@@ -10,6 +10,7 @@ import Footer from "@/components/Footer";
 import MarketStatus from "@/components/MarketStatus";
 import { DailyQuote } from "@/components/QuoteCard";
 import LiveIndicator from "@/components/LiveIndicator";
+import { WeatherStrip } from "@/components/WeatherWidget";
 
 export default function Home() {
   return (
@@ -76,6 +77,14 @@ export default function Home() {
 
             {/* Daily Quote */}
             <DailyQuote className="mt-5" />
+
+            {/* Weather */}
+            <div className="mt-5 p-4 bg-[#0c0d10] border border-white/5 rounded-xl">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-sm font-medium text-[#f4f4f5]">🌤️ Pogoda w centrach finansowych</span>
+              </div>
+              <WeatherStrip />
+            </div>
           </aside>
         </motion.div>
       </div>
