@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { sendWelcomeEmail } from "@/lib/email";
 
 export async function POST(request: Request) {
   try {
@@ -41,6 +42,11 @@ export async function POST(request: Request) {
         isActive: true,
       },
     });
+
+    // Send welcome email (non-blocking)
+    if (process.env.RESEND_API_KEY) {
+      sendWelcomeEmail(email).catch(console.error);
+    }
 
     return NextResponse.json({ message: "Dziękujemy za zapisanie się do newslettera!" });
   } catch (error) {
