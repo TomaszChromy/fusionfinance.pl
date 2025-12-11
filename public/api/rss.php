@@ -169,20 +169,56 @@ function fetchRSS($url) {
     return $xml;
 }
 
+// Funkcja czyszcząca tekst boilerplate z różnych źródeł
+function cleanBoilerplate($text) {
+    // Wzorce do usunięcia (money.pl, bankier.pl, inne portale)
+    $patterns = [
+        // money.pl - info o redakcji, social share, kurs walut
+        '/Redakcja money\.pl\d{1,2} [a-ząćęłńóśźż]+ \d{4}, \d{1,2}:\d{2}/iu',
+        '/ZAPISZ\s*ZAPISANO\s*UDOSTĘPNIJ[^.]*Udostępnij na X[^.]*Udostępnij na Facebook(u)?/iu',
+        '/SKOMENTUJ/iu',
+        '/Dźwięk został wygenerowany automatycznie i może zawierać błędy/iu',
+        '/Kurs [a-ząćęłńóśźż\s]+ \d{1,2}\.\d{1,2}\.\d{4} - godz\. \d{1,2}:\d{2}[^.]+\./iu',
+        '/wobec złotego:\s*[\d,\.]+\s*wobec dolara amerykańskiego:\s*[\d,\.]+/iu',
+        // Ogólne wzorce social share
+        '/Udostępnij na (Twitter|Facebook|X|LinkedIn)/iu',
+        '/Podziel się:\s*(Twitter|Facebook|X)/iu',
+        // Bankier.pl
+        '/Zapisz artykuł/iu',
+        '/Dodaj do ulubionych/iu',
+        // Forsal.pl, inne
+        '/Czytaj więcej na [a-zA-Z0-9\.\-]+/iu',
+        '/Źródło:\s*PAP|Reuters|ISBnews/iu',
+        // Puste nawiasy, nadmiarowe spacje
+        '/\(\s*\)/u',
+        '/\s{2,}/u',
+    ];
+
+    foreach ($patterns as $pattern) {
+        $text = preg_replace($pattern, ' ', $text);
+    }
+
+    // Usuń nadmiarowe spacje i trim
+    $text = preg_replace('/\s+/', ' ', $text);
+    $text = trim($text);
+
+    return $text;
+}
+
 function parseItems($xml, $source) {
     $items = [];
-    
+
     if (!isset($xml->channel->item)) {
         return $items;
     }
-    
+
     foreach ($xml->channel->item as $item) {
         // Pobierz obraz z enclosure lub media:content
         $image = null;
         if (isset($item->enclosure['url'])) {
             $image = (string)$item->enclosure['url'];
         }
-        
+
         // Sprawdź media:content
         $namespaces = $item->getNameSpaces(true);
         if (isset($namespaces['media'])) {
@@ -193,28 +229,32 @@ function parseItems($xml, $source) {
                 $image = (string)$media->thumbnail['url'];
             }
         }
-        
+
         // Szukaj obrazu w treści
         if (!$image) {
-            $content = isset($item->children('content', true)->encoded) 
-                ? (string)$item->children('content', true)->encoded 
+            $content = isset($item->children('content', true)->encoded)
+                ? (string)$item->children('content', true)->encoded
                 : (string)$item->description;
-            
+
             if (preg_match('/<img[^>]+src=["\']([^"\']+)["\']/', $content, $matches)) {
                 $image = $matches[1];
             }
         }
-        
+
+        // Wyczyść opis z boilerplate
+        $description = strip_tags((string)$item->description);
+        $description = cleanBoilerplate($description);
+
         $items[] = [
             'title' => (string)$item->title,
             'link' => (string)$item->link,
-            'description' => strip_tags((string)$item->description),
+            'description' => $description,
             'date' => date('c', strtotime((string)$item->pubDate)),
             'source' => $source,
             'image' => $image
         ];
     }
-    
+
     return $items;
 }
 

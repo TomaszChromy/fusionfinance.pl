@@ -165,6 +165,40 @@ function extractImageFromContent(content: string): string | undefined {
   return imgMatch ? imgMatch[1] : undefined;
 }
 
+// Funkcja czyszcząca tekst boilerplate z różnych źródeł (money.pl, bankier.pl, etc.)
+function cleanBoilerplate(text: string): string {
+  const patterns = [
+    // money.pl - info o redakcji, social share, kurs walut
+    /Redakcja money\.pl\d{1,2} [a-ząćęłńóśźż]+ \d{4}, \d{1,2}:\d{2}/gi,
+    /ZAPISZ\s*ZAPISANO\s*UDOSTĘPNIJ[^.]*Udostępnij na X[^.]*Udostępnij na Facebook(u)?/gi,
+    /SKOMENTUJ/gi,
+    /Dźwięk został wygenerowany automatycznie i może zawierać błędy/gi,
+    /Kurs [a-ząćęłńóśźż\s]+ \d{1,2}\.\d{1,2}\.\d{4} - godz\. \d{1,2}:\d{2}[^.]+\./gi,
+    /wobec złotego:\s*[\d,\.]+\s*wobec dolara amerykańskiego:\s*[\d,\.]+/gi,
+    // Ogólne wzorce social share
+    /Udostępnij na (Twitter|Facebook|X|LinkedIn)/gi,
+    /Podziel się:\s*(Twitter|Facebook|X)/gi,
+    // Bankier.pl
+    /Zapisz artykuł/gi,
+    /Dodaj do ulubionych/gi,
+    // Forsal.pl, inne
+    /Czytaj więcej na [a-zA-Z0-9.\-]+/gi,
+    /Źródło:\s*(PAP|Reuters|ISBnews)/gi,
+    // Puste nawiasy
+    /\(\s*\)/g,
+  ];
+
+  let cleaned = text;
+  for (const pattern of patterns) {
+    cleaned = cleaned.replace(pattern, " ");
+  }
+
+  // Usuń nadmiarowe spacje
+  cleaned = cleaned.replace(/\s+/g, " ").trim();
+
+  return cleaned;
+}
+
 async function fetchRSSFeed(url: string): Promise<RSSItem[]> {
   try {
     const response = await fetch(url, {
@@ -227,11 +261,16 @@ async function fetchRSSFeed(url: string): Promise<RSSItem[]> {
           .replace(/\n{3,}/g, "\n\n")
           .trim();
 
+        // Czyść opis z boilerplate
+        const cleanDescription = cleanBoilerplate(
+          description.replace(/<[^>]*>/g, "").replace(/&[^;]+;/g, " ").trim()
+        ).substring(0, 300);
+
         items.push({
           title: title.replace(/<[^>]*>/g, "").replace(/&[^;]+;/g, " ").trim(),
           link,
-          description: description.replace(/<[^>]*>/g, "").replace(/&[^;]+;/g, " ").substring(0, 300).trim(),
-          content: cleanContent,
+          description: cleanDescription,
+          content: cleanBoilerplate(cleanContent),
           date: pubDate,
           image,
         });
