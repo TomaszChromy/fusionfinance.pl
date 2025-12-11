@@ -127,3 +127,26 @@ export function ErrorFallback({
 
 export default ErrorBoundary;
 
+// Hook-based error handling for API calls
+export function useErrorHandler() {
+  const handleError = (error: unknown, context?: string) => {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+
+    console.error(`[${context || "API"}] Error:`, errorMessage);
+
+    // Return user-friendly message
+    if (errorMessage.includes("fetch") || errorMessage.includes("Failed")) {
+      return "Problem z połączeniem. Sprawdź internet.";
+    }
+    if (errorMessage.includes("timeout")) {
+      return "Serwer nie odpowiada. Spróbuj później.";
+    }
+    if (errorMessage.includes("404")) {
+      return "Nie znaleziono zasobu.";
+    }
+
+    return "Wystąpił nieoczekiwany błąd.";
+  };
+
+  return { handleError };
+}

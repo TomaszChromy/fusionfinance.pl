@@ -7,6 +7,7 @@ import CookieConsent from "@/components/CookieConsent";
 import ScrollToTop from "@/components/ScrollToTop";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
+import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import { ToastProvider } from "@/components/Toast";
 import Providers from "@/components/Providers";
 
@@ -275,6 +276,7 @@ export default function RootLayout({
       >
         <Providers>
           <ToastProvider>
+            <ServiceWorkerRegistration />
             <OfflineIndicator />
             <KeyboardShortcuts />
             <TopBanner />
