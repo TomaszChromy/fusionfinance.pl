@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
 import NotificationCenter from "./NotificationCenter";
+import UserMenu from "./UserMenu";
 
 const navLinks = [
   { name: "Rynki", href: "/rynki" },
@@ -148,6 +149,7 @@ export default function Navbar() {
                 </svg>
               </Link>
               <NotificationCenter />
+              <UserMenu />
             </div>
           </nav>
 

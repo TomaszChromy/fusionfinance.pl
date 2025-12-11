@@ -8,6 +8,7 @@ import ScrollToTop from "@/components/ScrollToTop";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import { ToastProvider } from "@/components/Toast";
+import Providers from "@/components/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -279,15 +280,17 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ToastProvider>
-          <OfflineIndicator />
-          <KeyboardShortcuts />
-          <TopBanner />
-          <CurrencyTicker />
-          {children}
-          <CookieConsent />
-          <ScrollToTop />
-        </ToastProvider>
+        <Providers>
+          <ToastProvider>
+            <OfflineIndicator />
+            <KeyboardShortcuts />
+            <TopBanner />
+            <CurrencyTicker />
+            {children}
+            <CookieConsent />
+            <ScrollToTop />
+          </ToastProvider>
+        </Providers>
       </body>
     </html>
   );
