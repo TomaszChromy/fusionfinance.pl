@@ -34,9 +34,11 @@ $feeds = [
     ],
     // Kryptowaluty - Bitcoin, Ethereum, blockchain
     'crypto' => [
-        'https://kryptomaniak.pl/feed/',
+        'https://mybank.pl/news/wiadomosci-kryptowaluty-rss.xml',
         'https://www.bankier.pl/rss/wiadomosci.xml',
+        'https://businessinsider.com.pl/feed',
         'https://www.money.pl/rss/rss.xml',
+        'https://forsal.pl/feed',
     ],
     // Waluty - Forex, kursy walut, NBP
     'waluty' => [
