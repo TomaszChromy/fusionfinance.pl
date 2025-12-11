@@ -42,12 +42,12 @@ export default function PolitykaPrywatnosciPage() {
             <section className="bg-[#0f1115] border border-white/5 rounded-lg p-[34px]">
               <h2 className="text-[18px] font-medium text-[#f4f4f5] mb-[13px]">2. Administrator danych</h2>
               <p className="text-[15px] text-[#a1a1aa] leading-relaxed mb-[13px]">
-                Administratorem danych osobowych jest TomSoft-Website.
+                Administratorem danych osobowych jest Tomasz Chromy.
               </p>
               <div className="bg-[#08090c] border border-[#c9a962]/20 rounded-lg p-[21px]">
                 <p className="text-[13px] text-[#71717a] uppercase tracking-[0.1em] mb-[8px]">Kontakt:</p>
-                <p className="text-[15px] text-[#f4f4f5]">kontakt@fusionfinance.pl</p>
-                <p className="text-[13px] text-[#a1a1aa] mt-[5px]">tomsoft-website.com</p>
+                <p className="text-[15px] text-[#f4f4f5]">tomasz.chromy@outlook.com</p>
+                <p className="text-[13px] text-[#a1a1aa] mt-[5px]">tomaszchromy.com</p>
               </div>
             </section>
 

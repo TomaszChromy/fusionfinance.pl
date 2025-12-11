@@ -57,7 +57,6 @@ export const metadata: Metadata = {
   ],
   authors: [
     { name: "FusionFinance.pl", url: "https://fusionfinance.pl" },
-    { name: "TomSoft-Website", url: "https://tomsoft-website.com" },
     { name: "Tomasz Chromy", url: "https://tomaszchromy.com" },
   ],
   creator: "Tomasz Chromy",

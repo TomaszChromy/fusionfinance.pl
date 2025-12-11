@@ -52,7 +52,7 @@ export default function RegulaminPage() {
                 </div>
                 <div className="flex items-start gap-[13px]">
                   <span className="text-[#c9a962] font-medium min-w-[120px]">Administrator</span>
-                  <span>TomSoft-Website</span>
+                  <span>Tomasz Chromy</span>
                 </div>
                 <div className="flex items-start gap-[13px]">
                   <span className="text-[#c9a962] font-medium min-w-[120px]">Hosting</span>

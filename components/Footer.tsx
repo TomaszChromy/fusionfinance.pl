@@ -91,17 +91,6 @@ export default function Footer() {
 
       {/* Copyright */}
       <div className="text-center mb-4">
-        <p className="text-xs text-[#a1a1aa] mb-1">
-          <Link
-            href="https://tomsoft-website.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-[#c9a962] hover:text-[#e4d4a5] transition-colors duration-200"
-          >
-            TomSoft-Website
-          </Link>
-        </p>
-
         <p className="text-[10px] text-[#71717a] tracking-[0.15em] uppercase">
           <Link
             href="https://tomaszchromy.com"
@@ -109,7 +98,7 @@ export default function Footer() {
             rel="noopener noreferrer"
             className="hover:text-[#c9a962] transition-colors duration-200"
           >
-            Powered by Tomasz Chromy
+            © {new Date().getFullYear()} Tomasz Chromy
           </Link>
         </p>
       </div>

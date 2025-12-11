@@ -79,7 +79,7 @@ export default function CookiesPage() {
             <section className="bg-[#0f1115] border border-white/5 rounded-lg p-[34px]">
               <h2 className="text-[18px] font-medium text-[#f4f4f5] mb-[13px]">5. Kontakt</h2>
               <p className="text-[15px] text-[#a1a1aa] leading-relaxed">
-                W razie pytań dotyczących polityki cookies, prosimy o kontakt pod adresem: <a href="mailto:kontakt@fusionfinance.pl" className="text-[#c9a962] hover:text-[#e4d4a5] transition-colors">kontakt@fusionfinance.pl</a>
+                W razie pytań dotyczących polityki cookies, prosimy o kontakt pod adresem: <a href="mailto:tomasz.chromy@outlook.com" className="text-[#c9a962] hover:text-[#e4d4a5] transition-colors">tomasz.chromy@outlook.com</a>
               </p>
             </section>
           </div>
