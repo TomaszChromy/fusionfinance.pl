@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import NewsletterForm from "./NewsletterForm";
+import VisitCounter from "./VisitCounter";
 
 export default function Footer() {
   return (
@@ -121,7 +122,7 @@ export default function Footer() {
       </div>
 
       {/* Legal links */}
-      <div className="flex items-center justify-center gap-4 text-[10px] pb-6">
+      <div className="flex items-center justify-center gap-4 text-[10px] pb-4">
         <Link
           href="/polityka-prywatnosci/"
           className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200 tracking-wide"
@@ -142,6 +143,11 @@ export default function Footer() {
         >
           Cookies
         </Link>
+      </div>
+
+      {/* Visit Counter */}
+      <div className="pb-4">
+        <VisitCounter />
       </div>
 
       {/* Bottom gold line */}
