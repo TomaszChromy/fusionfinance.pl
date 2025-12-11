@@ -8,11 +8,11 @@ import NotificationCenter from "./NotificationCenter";
 import UserMenu from "./UserMenu";
 
 const navLinks = [
-  { name: "Rynki", href: "/rynki" },
-  { name: "Giełda", href: "/gielda" },
-  { name: "Crypto", href: "/crypto" },
-  { name: "Waluty", href: "/waluty" },
-  { name: "Analizy", href: "/analizy" },
+  { name: "Rynki", href: "/rynki/" },
+  { name: "Giełda", href: "/gielda/" },
+  { name: "Crypto", href: "/crypto/" },
+  { name: "Waluty", href: "/waluty/" },
+  { name: "Analizy", href: "/analizy/" },
 ];
 
 export default function Navbar() {
@@ -131,7 +131,7 @@ export default function Navbar() {
             {/* Favorites, History & Theme Toggle */}
             <div className="ml-2 pl-2 border-l border-white/10 flex items-center gap-1">
               <Link
-                href="/ulubione"
+                href="/ulubione/"
                 className="p-2 text-[#71717a] hover:text-[#f87171] transition-colors rounded-lg hover:bg-white/[0.03]"
                 title="Ulubione artykuły"
               >
@@ -140,7 +140,7 @@ export default function Navbar() {
                 </svg>
               </Link>
               <Link
-                href="/historia"
+                href="/historia/"
                 className="p-2 text-[#71717a] hover:text-[#60a5fa] transition-colors rounded-lg hover:bg-white/[0.03]"
                 title="Historia przeglądania"
               >

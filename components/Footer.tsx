@@ -32,30 +32,30 @@ export default function Footer() {
         <div>
           <h4 className="text-xs uppercase tracking-[0.15em] text-[#c9a962] font-medium mb-3">Rynki</h4>
           <div className="space-y-2">
-            <Link href="/gielda" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">GPW</Link>
-            <Link href="/crypto" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kryptowaluty</Link>
-            <Link href="/kursy-walut" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kursy walut</Link>
-            <Link href="/rynki" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Przegląd rynków</Link>
+            <Link href="/gielda/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">GPW</Link>
+            <Link href="/crypto/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kryptowaluty</Link>
+            <Link href="/kursy-walut/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kursy walut</Link>
+            <Link href="/rynki/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Przegląd rynków</Link>
           </div>
         </div>
         {/* Narzędzia */}
         <div>
           <h4 className="text-xs uppercase tracking-[0.15em] text-[#c9a962] font-medium mb-3">Narzędzia</h4>
           <div className="space-y-2">
-            <Link href="/analizy" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Analizy</Link>
-            <Link href="/szukaj" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Szukaj</Link>
-            <Link href="/ulubione" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Ulubione</Link>
-            <Link href="/historia" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Historia</Link>
+            <Link href="/analizy/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Analizy</Link>
+            <Link href="/szukaj/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Szukaj</Link>
+            <Link href="/ulubione/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Ulubione</Link>
+            <Link href="/historia/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Historia</Link>
           </div>
         </div>
         {/* Informacje */}
         <div>
           <h4 className="text-xs uppercase tracking-[0.15em] text-[#c9a962] font-medium mb-3">Informacje</h4>
           <div className="space-y-2">
-            <Link href="/o-nas" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">O nas</Link>
-            <Link href="/kontakt" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kontakt</Link>
-            <Link href="/polityka-prywatnosci" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Prywatność</Link>
-            <Link href="/regulamin" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Regulamin</Link>
+            <Link href="/o-nas/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">O nas</Link>
+            <Link href="/kontakt/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kontakt</Link>
+            <Link href="/polityka-prywatnosci/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Prywatność</Link>
+            <Link href="/regulamin/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Regulamin</Link>
           </div>
         </div>
         {/* Social */}
@@ -124,21 +124,21 @@ export default function Footer() {
       {/* Legal links */}
       <div className="flex items-center justify-center gap-4 text-[10px] pb-6">
         <Link
-          href="/polityka-prywatnosci"
+          href="/polityka-prywatnosci/"
           className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200 tracking-wide"
         >
           Polityka prywatności
         </Link>
         <span className="text-[#c9a962]/30">◆</span>
         <Link
-          href="/regulamin"
+          href="/regulamin/"
           className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200 tracking-wide"
         >
           Regulamin
         </Link>
         <span className="text-[#c9a962]/30">◆</span>
         <Link
-          href="/cookies"
+          href="/cookies/"
           className="text-[#71717a] hover:text-[#c9a962] transition-colors duration-200 tracking-wide"
         >
           Cookies
