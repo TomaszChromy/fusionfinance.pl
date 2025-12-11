@@ -71,7 +71,7 @@ export default function KontaktPage() {
             className="mt-16"
           >
             <h2 className="text-center text-lg font-medium text-[#f4f4f5] mb-8">
-              Zaufało nam już ponad <span className="text-[#c9a962]">50 000</span> czytelników
+              Projekt <span className="text-[#c9a962]">open source</span> w aktywnym rozwoju
             </h2>
             <SocialProof variant="combined" />
           </motion.div>

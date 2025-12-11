@@ -26,6 +26,9 @@ export default function Home() {
 
       <div className="mx-auto max-w-[1400px] px-4 lg:px-6 py-6 lg:py-8">
 
+        {/* SEO H1 - wizualnie ukryty ale dostępny dla SEO */}
+        <h1 className="sr-only">FusionFinance - Portal Finansowy z Aktualnymi Wiadomościami z Giełdy, Kryptowalut i Rynków</h1>
+
         {/* HERO - Wyróżnione artykuły */}
         <RSSFeatured />
 
@@ -92,10 +95,10 @@ export default function Home() {
               <WeatherStrip />
             </div>
 
-            {/* Testimonials */}
+            {/* Features */}
             <div className="mt-5">
               <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm font-medium text-[#f4f4f5]">💬 Opinie użytkowników</span>
+                <span className="text-sm font-medium text-[#f4f4f5]">✨ Funkcje projektu</span>
               </div>
               <Testimonials autoPlay className="mt-3" />
             </div>

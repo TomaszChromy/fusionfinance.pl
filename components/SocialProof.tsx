@@ -10,11 +10,12 @@ interface Stat {
   prefix?: string;
 }
 
-const MOCK_STATS: Stat[] = [
-  { value: 50000, label: "Czytelników miesięcznie", suffix: "+" },
-  { value: 1500, label: "Artykułów", suffix: "+" },
-  { value: 24, label: "Źródeł danych" },
-  { value: 99.9, label: "Dostępność", suffix: "%" },
+// Realistyczne statystyki dla projektu beta
+const BETA_STATS: Stat[] = [
+  { value: 6, label: "Źródeł RSS", suffix: "+" },
+  { value: 12, label: "Integracji API" },
+  { value: 27, label: "Podstron" },
+  { value: 100, label: "Open Source", suffix: "%" },
 ];
 
 const PARTNER_LOGOS = [
@@ -43,7 +44,7 @@ export default function SocialProof({ variant = "combined", className = "" }: So
   if (variant === "compact") {
     return (
       <div className={`flex items-center justify-center gap-6 ${className}`}>
-        {MOCK_STATS.slice(0, 3).map((stat, i) => (
+        {BETA_STATS.slice(0, 3).map((stat, i) => (
           <div key={i} className="text-center">
             <p className="text-lg font-bold text-[#c9a962]">
               {stat.prefix}{stat.value.toLocaleString()}{stat.suffix}
@@ -67,7 +68,7 @@ export default function SocialProof({ variant = "combined", className = "" }: So
 function StatsSection({ className = "" }: { className?: string }) {
   return (
     <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 ${className}`}>
-      {MOCK_STATS.map((stat, index) => (
+      {BETA_STATS.map((stat, index) => (
         <AnimatedStat key={index} stat={stat} delay={index * 0.1} />
       ))}
     </div>
@@ -144,13 +145,13 @@ function PartnersSection({ className = "" }: { className?: string }) {
   );
 }
 
-// Trust badges
+// Trust badges - realne cechy projektu
 export function TrustBadges({ className = "" }: { className?: string }) {
   const badges = [
-    { icon: "🔒", label: "SSL Secured" },
-    { icon: "🛡️", label: "GDPR Compliant" },
-    { icon: "⚡", label: "99.9% Uptime" },
-    { icon: "🔄", label: "Auto Updates" },
+    { icon: "🔒", label: "HTTPS" },
+    { icon: "📱", label: "PWA Ready" },
+    { icon: "🌙", label: "Dark Mode" },
+    { icon: "🚀", label: "Next.js 16" },
   ];
 
   return (

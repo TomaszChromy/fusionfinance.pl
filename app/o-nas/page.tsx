@@ -117,7 +117,7 @@ export default function ONasPage() {
             </div>
           </motion.div>
 
-          {/* Testimonials */}
+          {/* Features */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -125,7 +125,7 @@ export default function ONasPage() {
             className="mb-12"
           >
             <h2 className="text-lg font-medium text-[#f4f4f5] mb-6 flex items-center gap-2">
-              <span>💬</span> Co mówią użytkownicy
+              <span>✨</span> Kluczowe funkcje
             </h2>
             <Testimonials variant="grid" />
           </motion.div>

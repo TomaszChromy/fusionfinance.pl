@@ -115,9 +115,8 @@ export default function Footer() {
 
       {/* Disclaimers */}
       <div className="text-center mb-6 max-w-3xl mx-auto px-4">
-        <p className="font-serif font-medium text-xl lg:text-2xl tracking-tight leading-relaxed">
-          <span className="text-[#f4f4f5]">UWAGA:</span>
-          <span className="bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent"> Ta strona została stworzona wyłącznie w celach edukacyjnych i treningowych. Nie stanowi oferty handlowej ani porady inwestycyjnej.</span>
+        <p className="text-xs text-[#71717a] leading-relaxed">
+          <span className="text-[#a1a1aa] font-medium">Zastrzeżenie:</span> Informacje prezentowane na tej stronie mają charakter wyłącznie informacyjny i nie stanowią rekomendacji inwestycyjnych, porady finansowej ani oferty zakupu lub sprzedaży instrumentów finansowych. Decyzje inwestycyjne podejmuj samodzielnie, konsultując się z licencjonowanym doradcą.
         </p>
       </div>
 
