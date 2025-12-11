@@ -21,12 +21,26 @@ export default function NewsletterForm() {
 
     setState("loading");
 
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, frequency: "weekly" }),
+      });
 
-    // Simulate success (in production, this would be a real API call)
-    setState("success");
-    setEmail("");
+      const data = await res.json();
+
+      if (res.ok) {
+        setState("success");
+        setEmail("");
+      } else {
+        setState("error");
+        setErrorMessage(data.error || "Wystąpił błąd");
+      }
+    } catch {
+      setState("error");
+      setErrorMessage("Wystąpił błąd. Spróbuj ponownie.");
+    }
 
     // Reset after 5 seconds
     setTimeout(() => setState("idle"), 5000);

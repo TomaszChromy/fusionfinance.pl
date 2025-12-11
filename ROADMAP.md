@@ -225,27 +225,38 @@
 
 ---
 
-## 📅 Faza 3: Zaawansowane (Planowane Q1 2025)
+## ✅ Faza 3: Zaawansowane (Q1 2025)
 
-### 🔵 Backend & API
-- [ ] Baza danych (Prisma + PostgreSQL)
-- [ ] Cache layer (Redis)
-- [ ] API rate limiting
-- [ ] Webhook dla nowych artykułów
+### 🟢 Backend & API
+- [x] Baza danych (Prisma 7 + PostgreSQL na nazwa.pl)
+- [x] Prisma schema (User, Account, Session, Favorite, PriceAlert, WatchlistItem, Newsletter)
+- [x] API routes (/api/favorites, /api/alerts, /api/watchlist, /api/newsletter)
+- [ ] Cache layer (Redis) - rozważane
+- [ ] Webhook dla nowych artykułów - rozważane
 
-### 🔵 Konta użytkowników
-- [ ] Rejestracja / Logowanie
-- [ ] OAuth (Google, GitHub)
-- [ ] Profile użytkowników
-- [ ] Powiadomienia email
+### 🟢 Konta użytkowników
+- [x] NextAuth.js v5 z JWT
+- [x] Credentials provider (email + hasło)
+- [x] Google OAuth (gotowe do konfiguracji)
+- [x] Strona logowania (/logowanie)
+- [x] Strona rejestracji (/rejestracja)
+- [x] Strona profilu (/profil)
+- [x] UserMenu w Navbar
+- [x] SessionProvider wrapper
 
-### 🔵 Newsletter
-- [ ] Subskrypcja newsletter
-- [ ] Automatyczne wysyłanie digest
+### 🟢 Funkcje użytkownika
+- [x] Strona alertów cenowych (/alerty)
+- [x] Strona watchlist (/watchlist)
+- [x] Strona ustawień (/ustawienia)
+- [x] API do ulubionych artykułów
+
+### 🟢 Newsletter
+- [x] Subskrypcja newsletter (API + baza danych)
+- [x] NewsletterForm z integracją API
+- [ ] Automatyczne wysyłanie digest (wymaga Resend/SendGrid)
 - [ ] Personalizacja treści
-- [ ] Integracja z Resend/Mailchimp
 
-### 🔵 Zaawansowane SEO
+### 🟢 Zaawansowane SEO
 - [ ] AMP pages
 - [x] Canonical URLs dla wszystkich stron
 - [ ] Hreflang dla wersji EN
