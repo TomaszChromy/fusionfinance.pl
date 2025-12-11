@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import SearchBar from "./SearchBar";
-import ThemeToggle from "./ThemeToggle";
 import NotificationCenter from "./NotificationCenter";
 
 const navLinks = [
@@ -149,7 +148,6 @@ export default function Navbar() {
                 </svg>
               </Link>
               <NotificationCenter />
-              <ThemeToggle />
             </div>
           </nav>
 
