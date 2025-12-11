@@ -3,6 +3,8 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import SparklineChart, { generateMockData } from "./SparklineChart";
+import AddToWatchlistButton from "./AddToWatchlistButton";
+import CreateAlertButton from "./CreateAlertButton";
 
 interface StockData {
   symbol: string;
@@ -128,6 +130,7 @@ export default function GPWStocksTable() {
               <th className="px-5 py-3 text-right text-[10px] font-semibold text-[#71717a] uppercase tracking-wider">Zmiana</th>
               <th className="px-5 py-3 text-right text-[10px] font-semibold text-[#71717a] uppercase tracking-wider hidden sm:table-cell">Obrót</th>
               <th className="px-5 py-3 text-center text-[10px] font-semibold text-[#71717a] uppercase tracking-wider hidden md:table-cell">Trend</th>
+              <th className="px-5 py-3 text-center text-[10px] font-semibold text-[#71717a] uppercase tracking-wider hidden lg:table-cell">Akcje</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/[0.03]">
@@ -179,6 +182,17 @@ export default function GPWStocksTable() {
                     <td className="px-5 py-3 hidden md:table-cell">
                       <div className="flex justify-center">
                         <SparklineChart data={stock.sparkline} width={70} height={22} showDot={false} strokeWidth={1.5} />
+                      </div>
+                    </td>
+                    <td className="px-5 py-3 hidden lg:table-cell">
+                      <div className="flex items-center justify-center gap-1">
+                        <AddToWatchlistButton
+                          symbol={stock.symbol}
+                          name={stock.name}
+                          type={activeTab === "indices" ? "index" : "stock"}
+                          variant="icon"
+                        />
+                        <CreateAlertButton symbol={stock.symbol} currentPrice={stock.price} variant="icon" />
                       </div>
                     </td>
                   </motion.tr>

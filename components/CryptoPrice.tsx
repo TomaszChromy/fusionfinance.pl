@@ -2,6 +2,8 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import AddToWatchlistButton from "./AddToWatchlistButton";
+import CreateAlertButton from "./CreateAlertButton";
 
 interface CryptoData {
   id: string;
@@ -99,7 +101,7 @@ export default function CryptoPrice({
     return (
       <motion.div
         whileHover={{ y: -2 }}
-        className={`bg-[#0c0d10] border border-white/5 rounded-xl p-4 hover:border-[#c9a962]/20 transition-colors ${className}`}
+        className={`bg-[#0c0d10] border border-white/5 rounded-xl p-4 hover:border-[#c9a962]/20 transition-colors group ${className}`}
       >
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
@@ -139,6 +141,12 @@ export default function CryptoPrice({
             </div>
           </div>
         )}
+        {/* Action buttons - visible on hover */}
+        <div className="mt-3 pt-3 border-t border-white/5 flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <AddToWatchlistButton symbol={crypto.symbol} name={crypto.name} type="crypto" variant="compact" />
+          <CreateAlertButton symbol={crypto.symbol} currentPrice={crypto.price} variant="icon" />
+          <span className="text-[10px] text-[#52525b] ml-auto">Obserwuj / Alert</span>
+        </div>
       </motion.div>
     );
   }

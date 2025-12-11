@@ -2,6 +2,8 @@
 
 import { motion } from "framer-motion";
 import Sparkline from "./Sparkline";
+import AddToWatchlistButton from "./AddToWatchlistButton";
+import CreateAlertButton from "./CreateAlertButton";
 
 interface AssetDetailsProps {
   symbol: string;
@@ -14,6 +16,7 @@ interface AssetDetailsProps {
   volume?: number;
   marketCap?: number;
   sparklineData?: number[];
+  assetType?: "stock" | "crypto" | "currency" | "index";
   className?: string;
 }
 
@@ -28,6 +31,7 @@ export default function AssetDetails({
   volume,
   marketCap,
   sparklineData = [100, 102, 98, 105, 103, 108, 106, 110],
+  assetType = "stock",
   className = "",
 }: AssetDetailsProps) {
   const isPositive = change >= 0;
@@ -96,24 +100,8 @@ export default function AssetDetails({
 
       {/* Actions */}
       <div className="p-4 border-t border-white/5 flex gap-2">
-        <button
-          type="button"
-          className="flex-1 py-2 text-xs font-medium bg-[#4ade80]/20 text-[#4ade80] rounded-lg hover:bg-[#4ade80]/30 transition-colors"
-        >
-          📈 Kup
-        </button>
-        <button
-          type="button"
-          className="flex-1 py-2 text-xs font-medium bg-[#f87171]/20 text-[#f87171] rounded-lg hover:bg-[#f87171]/30 transition-colors"
-        >
-          📉 Sprzedaj
-        </button>
-        <button
-          type="button"
-          className="py-2 px-3 text-xs font-medium bg-white/5 text-[#a1a1aa] rounded-lg hover:bg-white/10 transition-colors"
-        >
-          🔔
-        </button>
+        <AddToWatchlistButton symbol={symbol} name={name} type={assetType} variant="button" className="flex-1" />
+        <CreateAlertButton symbol={symbol} currentPrice={price} variant="button" />
       </div>
     </motion.div>
   );
