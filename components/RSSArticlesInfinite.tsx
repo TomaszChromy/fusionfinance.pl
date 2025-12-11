@@ -106,9 +106,9 @@ export default function RSSArticlesInfinite({
     async function loadArticles() {
       setLoading(true);
       try {
-        const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-          ? `/api/rss?feed=${feedType}&limit=100`
-          : `/api/rss.php?feed=${feedType}&limit=100`;
+        // Use Next.js API on port 3000, PHP API on static export
+        const { getRssApiUrl } = await import("@/lib/api");
+        const apiUrl = getRssApiUrl(feedType, 100);
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();

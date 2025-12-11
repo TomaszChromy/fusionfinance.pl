@@ -150,10 +150,9 @@ export default function RSSFeatured() {
   useEffect(() => {
     async function loadArticles() {
       try {
-        // Use Next.js API in dev, PHP API in production
-        const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-          ? "/api/rss?feed=all&limit=6"
-          : "/api/rss.php?feed=all&limit=6";
+        // Use Next.js API on port 3000, PHP API on static export
+        const { getRssApiUrl } = await import("@/lib/api");
+        const apiUrl = getRssApiUrl("all", 6);
         const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();

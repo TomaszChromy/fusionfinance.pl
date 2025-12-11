@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { getRssApiUrl } from "@/lib/api";
 
 const fallbackNews = [
   "Ładowanie najnowszych wiadomości finansowych...",
@@ -15,7 +16,8 @@ export default function BreakingNews() {
   useEffect(() => {
     async function fetchBreakingNews() {
       try {
-        const response = await fetch("/api/rss?feed=all&limit=12");
+        const apiUrl = getRssApiUrl("all", 12);
+        const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Failed to fetch");
 
         const data = await response.json();

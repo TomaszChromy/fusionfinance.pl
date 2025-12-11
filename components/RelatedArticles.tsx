@@ -95,9 +95,9 @@ export default function RelatedArticles({
   useEffect(() => {
     async function fetchArticles() {
       try {
-        const apiUrl = typeof window !== "undefined" && window.location.hostname === "localhost"
-          ? `/api/rss?feed=${feedType}&limit=50`
-          : `/api/rss.php?feed=${feedType}&limit=50`;
+        // Use Next.js API on port 3000, PHP API on static export
+        const { getRssApiUrl } = await import("@/lib/api");
+        const apiUrl = getRssApiUrl(feedType, 50);
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
