@@ -94,18 +94,11 @@ export const metadata: Metadata = {
     description: "Twój elegancki portal finansowy. Aktualne kursy walut, notowania giełdowe GPW i świata, kryptowaluty, profesjonalne analizy rynkowe i wiadomości ze świata finansów.",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/og-image.svg",
         width: 1200,
         height: 630,
         alt: "FusionFinance.pl - Portal Finansowy | Giełda, Waluty, Kryptowaluty",
-        type: "image/jpeg",
-      },
-      {
-        url: "/og-image-square.jpg",
-        width: 600,
-        height: 600,
-        alt: "FusionFinance.pl Logo",
-        type: "image/jpeg",
+        type: "image/svg+xml",
       },
     ],
   },
@@ -116,7 +109,7 @@ export const metadata: Metadata = {
     title: "FusionFinance.pl - Luksusowy Portal Finansowy",
     description: "Aktualne kursy walut, notowania giełdowe GPW, kryptowaluty i profesjonalne analizy rynkowe.",
     images: {
-      url: "/og-image.jpg",
+      url: "/og-image.svg",
       alt: "FusionFinance.pl - Portal Finansowy",
     },
   },

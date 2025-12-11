@@ -172,7 +172,62 @@ export default function CryptoPrice({
 }
 
 // Crypto Grid - display multiple cryptocurrencies
-export function CryptoGrid({ limit = 6, className = "" }: { limit?: number; className?: string }) {
+export function CryptoGrid({
+  limit = 6,
+  className = "",
+  variant = "grid"
+}: {
+  limit?: number;
+  className?: string;
+  variant?: "grid" | "sidebar" | "list";
+}) {
+  // Sidebar variant - compact 2-column grid optimized for narrow sidebars
+  if (variant === "sidebar") {
+    return (
+      <div className={`grid grid-cols-2 gap-2 ${className}`}>
+        {MOCK_CRYPTO.slice(0, limit).map((crypto) => {
+          const isPositive = crypto.change24h >= 0;
+          return (
+            <div
+              key={crypto.id}
+              className="bg-[#0c0d10] border border-white/5 rounded-lg p-3 hover:border-[#c9a962]/20 transition-colors"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <div className="w-7 h-7 rounded-full bg-[#c9a962]/10 flex items-center justify-center text-sm text-[#c9a962]">
+                  {CRYPTO_ICONS[crypto.symbol] || "●"}
+                </div>
+                <div className="min-w-0">
+                  <p className="text-xs font-semibold text-[#c9a962] truncate">{crypto.name}</p>
+                  <p className="text-[10px] text-[#71717a]">{crypto.symbol}</p>
+                </div>
+              </div>
+              <p className="text-base font-bold text-[#f4f4f5] mb-1">
+                ${crypto.price.toLocaleString()}
+              </p>
+              <div className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                isPositive ? "bg-[#4ade80]/10 text-[#4ade80]" : "bg-[#f87171]/10 text-[#f87171]"
+              }`}>
+                {isPositive ? "▲" : "▼"} {Math.abs(crypto.change24h).toFixed(2)}%
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+
+  // List variant - vertical list for narrow spaces
+  if (variant === "list") {
+    return (
+      <div className={`space-y-2 ${className}`}>
+        {MOCK_CRYPTO.slice(0, limit).map((crypto) => (
+          <CryptoPrice key={crypto.id} cryptoId={crypto.id} variant="default" />
+        ))}
+      </div>
+    );
+  }
+
+  // Default grid variant
   return (
     <div className={`grid grid-cols-2 md:grid-cols-3 gap-3 ${className}`}>
       {MOCK_CRYPTO.slice(0, limit).map((crypto) => (

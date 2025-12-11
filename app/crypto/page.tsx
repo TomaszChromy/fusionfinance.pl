@@ -73,15 +73,15 @@ export default function CryptoPage() {
           {/* Right column - Sidebar */}
           <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-6">
             {/* Crypto Prices */}
-            <div>
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-4">
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-7 bg-gradient-to-b from-[#f7931a] to-[#f59e0b] rounded-full" />
+                <div className="w-1 h-6 bg-gradient-to-b from-[#f7931a] to-[#f59e0b] rounded-full" />
                 <div>
-                  <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Kursy kryptowalut</h2>
-                  <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
+                  <h2 className="text-sm font-serif font-medium text-[#f4f4f5]">Kursy kryptowalut</h2>
+                  <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Na żywo</p>
                 </div>
               </div>
-              <CryptoGrid limit={6} />
+              <CryptoGrid limit={6} variant="sidebar" />
             </div>
 
             {/* Glossary */}

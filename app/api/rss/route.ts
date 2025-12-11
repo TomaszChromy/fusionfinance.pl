@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// Skip this route during static export
+// Dynamic API - requires Node.js runtime (not compatible with static export)
 export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
 interface RSSItem {
   title: string;

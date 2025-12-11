@@ -1,83 +1,62 @@
 import { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = "https://fusionfinance.pl";
   const currentDate = new Date().toISOString();
 
-  // Main pages
+  // Strony główne - najwyższy priorytet
   const mainPages = [
-    {
-      url: baseUrl,
-      lastModified: currentDate,
-      changeFrequency: "hourly" as const,
-      priority: 1,
-    },
-    {
-      url: `${baseUrl}/rynki`,
-      lastModified: currentDate,
-      changeFrequency: "hourly" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/gielda`,
-      lastModified: currentDate,
-      changeFrequency: "hourly" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/crypto`,
-      lastModified: currentDate,
-      changeFrequency: "hourly" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/waluty`,
-      lastModified: currentDate,
-      changeFrequency: "hourly" as const,
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/analizy`,
-      lastModified: currentDate,
-      changeFrequency: "daily" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/kursy-walut`,
-      lastModified: currentDate,
-      changeFrequency: "daily" as const,
-      priority: 0.8,
-    },
-    {
-      url: `${baseUrl}/szukaj`,
-      lastModified: currentDate,
-      changeFrequency: "weekly" as const,
-      priority: 0.5,
-    },
+    { path: "", priority: 1.0, changeFrequency: "hourly" as const },
+    { path: "/rynki", priority: 0.95, changeFrequency: "hourly" as const },
+    { path: "/gielda", priority: 0.95, changeFrequency: "hourly" as const },
+    { path: "/crypto", priority: 0.95, changeFrequency: "hourly" as const },
+    { path: "/waluty", priority: 0.95, changeFrequency: "hourly" as const },
+    { path: "/kursy-walut", priority: 0.9, changeFrequency: "hourly" as const },
+    { path: "/analizy", priority: 0.9, changeFrequency: "daily" as const },
+    { path: "/markets", priority: 0.85, changeFrequency: "hourly" as const },
   ];
 
-  // Legal pages
+  // Strony funkcjonalne
+  const functionalPages = [
+    { path: "/szukaj", priority: 0.7, changeFrequency: "daily" as const },
+    { path: "/artykul", priority: 0.8, changeFrequency: "daily" as const },
+  ];
+
+  // Strony użytkownika
+  const userPages = [
+    { path: "/logowanie", priority: 0.5, changeFrequency: "monthly" as const },
+    { path: "/rejestracja", priority: 0.5, changeFrequency: "monthly" as const },
+    { path: "/profil", priority: 0.4, changeFrequency: "weekly" as const },
+    { path: "/ulubione", priority: 0.4, changeFrequency: "weekly" as const },
+    { path: "/watchlist", priority: 0.4, changeFrequency: "weekly" as const },
+    { path: "/alerty", priority: 0.4, changeFrequency: "weekly" as const },
+    { path: "/ustawienia", priority: 0.3, changeFrequency: "monthly" as const },
+    { path: "/historia", priority: 0.4, changeFrequency: "daily" as const },
+  ];
+
+  // Strony informacyjne
+  const infoPages = [
+    { path: "/o-nas", priority: 0.6, changeFrequency: "monthly" as const },
+    { path: "/kontakt", priority: 0.6, changeFrequency: "monthly" as const },
+  ];
+
+  // Strony prawne
   const legalPages = [
-    {
-      url: `${baseUrl}/polityka-prywatnosci`,
-      lastModified: "2024-01-01",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/regulamin`,
-      lastModified: "2024-01-01",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
-    {
-      url: `${baseUrl}/cookies`,
-      lastModified: "2024-01-01",
-      changeFrequency: "yearly" as const,
-      priority: 0.3,
-    },
+    { path: "/polityka-prywatnosci", priority: 0.3, changeFrequency: "yearly" as const },
+    { path: "/regulamin", priority: 0.3, changeFrequency: "yearly" as const },
+    { path: "/cookies", priority: 0.3, changeFrequency: "yearly" as const },
+    { path: "/wypisz", priority: 0.2, changeFrequency: "yearly" as const },
   ];
 
-  return [...mainPages, ...legalPages];
+  const allPages = [...mainPages, ...functionalPages, ...userPages, ...infoPages, ...legalPages];
+
+  return allPages.map((page) => ({
+    url: `${baseUrl}${page.path}`,
+    lastModified: currentDate,
+    changeFrequency: page.changeFrequency,
+    priority: page.priority,
+  }));
 }
 
