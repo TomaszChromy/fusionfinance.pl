@@ -19,6 +19,8 @@ DirectoryIndex index.html
 # API Routes - przekieruj do PHP
 RewriteRule ^api/rss/?$ /api/rss.php [L,QSA]
 RewriteRule ^api/article/?$ /api/article.php [L,QSA]
+RewriteRule ^api/auth/session/?$ /api/auth/session.php [L,QSA]
+RewriteRule ^api/counter/?$ /api/counter.php [L,QSA]
 
 # Jeśli folder istnieje i ma index.html - serwuj go
 RewriteCond %{REQUEST_FILENAME} -d
@@ -85,7 +87,7 @@ RewriteRule ^([^/]+)/?$ /$1/index.html [L]
 </FilesMatch>
 
 # Zezwól na manifest i robots
-<FilesMatch "(robots\.txt|sitemap\.xml|site\.webmanifest)$">
+<FilesMatch "(robots\.txt|sitemap\.xml|site\.webmanifest|manifest\.json)$">
     Order allow,deny
     Allow from all
 </FilesMatch>
