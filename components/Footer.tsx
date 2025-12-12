@@ -137,30 +137,30 @@ export default function Footer() {
       {/* Partners Section */}
       <div className="py-6 border-t border-white/5">
         <p className="text-center text-[10px] uppercase tracking-[0.15em] text-[#71717a] mb-4">Partnerzy</p>
-        <div className="flex items-center justify-center gap-8">
+        <div className="flex items-center justify-center gap-6">
           {/* Tomasz Chromy */}
           <a
             href="https://tomaszchromy.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-[#c9a962]/30 transition-all duration-300"
+            className="group flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-[#0c0d10] hover:bg-[#0f1014] border border-[#c9a962]/10 hover:border-[#c9a962]/40 transition-all duration-300"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c9a962] to-[#9a7b3c] flex items-center justify-center text-[#08090c] font-bold text-sm">
-              TC
+            <div className="w-7 h-7 rounded border border-[#c9a962]/40 bg-gradient-to-br from-[#c9a962]/10 to-transparent flex items-center justify-center">
+              <span className="text-[10px] font-serif font-medium bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">TC</span>
             </div>
-            <span className="text-xs text-[#a1a1aa] group-hover:text-[#f4f4f5] transition-colors">tomaszchromy.com</span>
+            <span className="text-xs text-[#71717a] group-hover:text-[#c9a962] transition-colors font-medium tracking-wide">tomaszchromy.com</span>
           </a>
           {/* TomSoft Website */}
           <a
             href="https://tomsoft-website.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-[#c9a962]/30 transition-all duration-300"
+            className="group flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-[#0c0d10] hover:bg-[#0f1014] border border-[#c9a962]/10 hover:border-[#c9a962]/40 transition-all duration-300"
           >
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#3b82f6] to-[#1d4ed8] flex items-center justify-center text-white font-bold text-sm">
-              TS
+            <div className="w-7 h-7 rounded border border-[#c9a962]/40 bg-gradient-to-br from-[#c9a962]/10 to-transparent flex items-center justify-center">
+              <span className="text-[10px] font-serif font-medium bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">TS</span>
             </div>
-            <span className="text-xs text-[#a1a1aa] group-hover:text-[#f4f4f5] transition-colors">tomsoft-website.com</span>
+            <span className="text-xs text-[#71717a] group-hover:text-[#c9a962] transition-colors font-medium tracking-wide">tomsoft-website.com</span>
           </a>
         </div>
       </div>
