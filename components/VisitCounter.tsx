@@ -19,24 +19,35 @@ export default function VisitCounter() {
         const sessionCounted = sessionStorage.getItem("visit_counted");
         const action = sessionCounted ? "get" : "count";
 
-        const response = await fetch(
-          getApiUrl("counter", { action }),
-          { cache: "no-store" }
-        );
+        const url = getApiUrl("counter", { action });
+        console.log("[VisitCounter] Fetching:", url, "action:", action);
+
+        const response = await fetch(url, {
+          cache: "no-store",
+          headers: {
+            'Accept': 'application/json',
+          }
+        });
+
+        console.log("[VisitCounter] Response status:", response.status);
 
         if (response.ok) {
           const data = await response.json();
+          console.log("[VisitCounter] Data:", data);
+
           if (data.success) {
             setCounter({ total: data.total, today: data.today });
 
-            // Oznacz sesję jako zliczoną
-            if (!sessionCounted) {
+            // Oznacz sesję jako zliczoną tylko po udanym zliczeniu
+            if (!sessionCounted && action === "count") {
               sessionStorage.setItem("visit_counted", "1");
             }
           }
+        } else {
+          console.warn("[VisitCounter] Response not OK:", response.status, response.statusText);
         }
       } catch (error) {
-        console.warn("Counter fetch failed:", error);
+        console.warn("[VisitCounter] Fetch failed:", error);
       } finally {
         setLoading(false);
       }
