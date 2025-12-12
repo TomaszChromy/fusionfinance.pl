@@ -134,6 +134,37 @@ export default function Footer() {
         </Link>
       </div>
 
+      {/* Partners Section */}
+      <div className="py-6 border-t border-white/5">
+        <p className="text-center text-[10px] uppercase tracking-[0.15em] text-[#71717a] mb-4">Partnerzy</p>
+        <div className="flex items-center justify-center gap-8">
+          {/* Tomasz Chromy */}
+          <a
+            href="https://tomaszchromy.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-[#c9a962]/30 transition-all duration-300"
+          >
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c9a962] to-[#9a7b3c] flex items-center justify-center text-[#08090c] font-bold text-sm">
+              TC
+            </div>
+            <span className="text-xs text-[#a1a1aa] group-hover:text-[#f4f4f5] transition-colors">tomaszchromy.com</span>
+          </a>
+          {/* TomSoft Website */}
+          <a
+            href="https://tomsoft-website.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 px-4 py-2 rounded-lg bg-white/[0.02] hover:bg-white/[0.05] border border-white/5 hover:border-[#c9a962]/30 transition-all duration-300"
+          >
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#3b82f6] to-[#1d4ed8] flex items-center justify-center text-white font-bold text-sm">
+              TS
+            </div>
+            <span className="text-xs text-[#a1a1aa] group-hover:text-[#f4f4f5] transition-colors">tomsoft-website.com</span>
+          </a>
+        </div>
+      </div>
+
       {/* Visit Counter */}
       <div className="pb-4">
         <VisitCounter />
