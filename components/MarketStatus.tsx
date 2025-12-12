@@ -153,13 +153,63 @@ export default function MarketStatus({
   );
 }
 
-// Market Status Grid
+// Compact Market Card for Grid
+function MarketCard({ market }: { market: Market }) {
+  const [status, setStatus] = useState<{ isOpen: boolean; timeUntil: string; nextEvent: "open" | "close" } | null>(null);
+
+  useEffect(() => {
+    setStatus(getMarketStatus(market));
+    const interval = setInterval(() => {
+      setStatus(getMarketStatus(market));
+    }, 60000);
+    return () => clearInterval(interval);
+  }, [market]);
+
+  if (!status) return null;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      className="relative bg-[#0c0d10] border border-white/5 rounded-lg p-3 hover:border-[#c9a962]/20 transition-all group"
+    >
+      {/* Status indicator dot */}
+      <div className={`absolute top-2 right-2 w-2 h-2 rounded-full ${
+        status.isOpen ? "bg-[#4ade80] animate-pulse" : "bg-[#f87171]"
+      }`} />
+
+      {/* Market name */}
+      <div className="mb-2">
+        <div className="text-[10px] text-[#52525b] uppercase tracking-wider truncate">{market.name}</div>
+        <div className={`text-sm font-bold ${status.isOpen ? "text-[#4ade80]" : "text-[#f87171]"}`}>
+          {market.shortName}
+        </div>
+      </div>
+
+      {/* Status and time */}
+      <div className="flex items-center justify-between text-[10px]">
+        <span className={`px-1.5 py-0.5 rounded ${
+          status.isOpen ? "bg-[#4ade80]/10 text-[#4ade80]" : "bg-[#f87171]/10 text-[#f87171]"
+        }`}>
+          {status.isOpen ? "Otwarta" : "Zamk."}
+        </span>
+        <span className="text-[#71717a]">
+          {status.nextEvent === "close" ? "Zamk." : "Otw."} {status.timeUntil}
+        </span>
+      </div>
+    </motion.div>
+  );
+}
+
+// Market Status Grid - Compact 3x2 layout
 export function MarketStatusGrid({ className = "" }: { className?: string }) {
   return (
-    <div className={`grid grid-cols-2 md:grid-cols-3 gap-3 ${className}`}>
-      {MARKETS.map(market => (
-        <MarketStatus key={market.id} marketId={market.id} />
-      ))}
+    <div className={`bg-[#0a0b0e] border border-white/5 rounded-xl p-3 ${className}`}>
+      <div className="grid grid-cols-3 gap-2">
+        {MARKETS.map(market => (
+          <MarketCard key={market.id} market={market} />
+        ))}
+      </div>
     </div>
   );
 }

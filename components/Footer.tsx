@@ -54,9 +54,9 @@ export default function Footer() {
           <h4 className="text-xs uppercase tracking-[0.15em] text-[#c9a962] font-medium mb-3">Informacje</h4>
           <div className="space-y-2">
             <Link href="/o-nas/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">O nas</Link>
+            <Link href="/o-redakcji/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">O redakcji</Link>
             <Link href="/kontakt/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Kontakt</Link>
-            <Link href="/polityka-prywatnosci/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Prywatność</Link>
-            <Link href="/regulamin/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Regulamin</Link>
+            <Link href="/disclaimer/" className="block text-xs text-[#71717a] hover:text-[#f4f4f5] transition-colors">Disclaimer</Link>
           </div>
         </div>
         {/* Social */}

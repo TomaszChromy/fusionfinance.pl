@@ -18,17 +18,17 @@ export default function VisitCounter() {
         // Sprawdź czy już zliczono tę sesję
         const sessionCounted = sessionStorage.getItem("visit_counted");
         const action = sessionCounted ? "get" : "count";
-        
+
         const response = await fetch(
-          getApiUrl(`/api/counter.php?action=${action}`),
+          getApiUrl("counter", { action }),
           { cache: "no-store" }
         );
-        
+
         if (response.ok) {
           const data = await response.json();
           if (data.success) {
             setCounter({ total: data.total, today: data.today });
-            
+
             // Oznacz sesję jako zliczoną
             if (!sessionCounted) {
               sessionStorage.setItem("visit_counted", "1");

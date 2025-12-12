@@ -78,7 +78,10 @@ export default function RynkiPage() {
 
             {/* Market Status Grid */}
             <div className="mt-6">
-              <h3 className="text-sm font-medium text-[#f4f4f5] mb-3">Status giełd światowych</h3>
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-sm">🌍</span>
+                <h3 className="text-sm font-medium text-[#f4f4f5]">Status giełd światowych</h3>
+              </div>
               <MarketStatusGrid />
             </div>
 
