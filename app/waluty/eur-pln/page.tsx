@@ -15,6 +15,28 @@ const FAQ_ITEMS = [
   { q: "Czy Polska przyjmie euro?", a: "Polska jest zobowiązana do przyjęcia euro, ale nie ma określonej daty. Wymaga to spełnienia kryteriów konwergencji i zmiany Konstytucji RP." },
 ];
 
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Kurs euro (EUR/PLN) - Aktualny kurs, wykres, analiza",
+  "description": "Aktualny kurs euro do złotego (EUR/PLN) z NBP. Sprawdź wykres, analizę techniczną i czynniki wpływające na kurs euro.",
+  "author": { "@type": "Organization", "name": "FusionFinance.pl", "url": "https://fusionfinance.pl" },
+  "publisher": { "@type": "Organization", "name": "FusionFinance.pl", "logo": { "@type": "ImageObject", "url": "https://fusionfinance.pl/logo.png" } },
+  "datePublished": "2024-01-01",
+  "dateModified": new Date().toISOString().split("T")[0],
+  "mainEntityOfPage": { "@type": "WebPage", "@id": "https://fusionfinance.pl/waluty/eur-pln/" }
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": FAQ_ITEMS.map(item => ({
+    "@type": "Question",
+    "name": item.q,
+    "acceptedAnswer": { "@type": "Answer", "text": item.a }
+  }))
+};
+
 export default function EurPlnPage() {
   const [rate, setRate] = useState<{ mid: number; date: string } | null>(null);
   const [loading, setLoading] = useState(true);
@@ -38,6 +60,8 @@ export default function EurPlnPage() {
 
   return (
     <main className="min-h-screen bg-[#08090c]">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <Navbar />
       <div className="mx-auto max-w-[1000px] px-4 lg:px-6 py-8">
         <Breadcrumbs />
@@ -124,7 +148,7 @@ export default function EurPlnPage() {
               {FAQ_ITEMS.map((item, i) => (
                 <div key={i} itemScope itemProp="mainEntity" itemType="https://schema.org/Question"
                   className="border border-white/5 rounded-lg overflow-hidden">
-                  <button onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  <button type="button" onClick={() => setOpenFaq(openFaq === i ? null : i)}
                     className="w-full flex items-center justify-between p-4 text-left hover:bg-white/[0.02] transition-colors">
                     <span itemProp="name" className="text-sm font-medium text-[#f4f4f5]">{item.q}</span>
                     <motion.span animate={{ rotate: openFaq === i ? 180 : 0 }} className="text-[#c9a962]">▼</motion.span>

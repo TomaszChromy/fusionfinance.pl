@@ -15,9 +15,33 @@ const REDAKCJA = [
   },
 ];
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "FusionFinance.pl",
+  "url": "https://fusionfinance.pl",
+  "logo": "https://fusionfinance.pl/logo.png",
+  "founder": {
+    "@type": "Person",
+    "name": "Tomasz Chromy",
+    "url": "https://tomaszchromy.com"
+  },
+  "foundingDate": "2024",
+  "description": "Agregator wiadomości finansowych z wiodących polskich portali",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "tomasz.chromy@outlook.com",
+    "contactType": "customer service"
+  }
+};
+
 export default function ORedakcjiPage() {
   return (
     <main className="min-h-screen bg-[#08090c]">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+      />
       <Navbar />
 
       <div className="mx-auto max-w-[900px] px-4 lg:px-6 py-12">
