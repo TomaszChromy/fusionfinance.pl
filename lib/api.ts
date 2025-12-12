@@ -15,13 +15,14 @@ export function isLocalhost(): boolean {
 }
 
 /**
- * Check if we're running on localhost with a specific port (Next.js dev)
+ * Check if we're running on localhost with Next.js dev server
  */
 export function isNextDevServer(): boolean {
   if (typeof window === "undefined") return false;
   const { hostname, port } = window.location;
-  // Next.js dev runs on port 3000, static serve on 3001
-  return (hostname === "localhost" || hostname === "127.0.0.1") && port === "3000";
+  // Next.js dev runs on port 3000 or 3001 (fallback when 3000 is busy)
+  // Static serve typically uses other ports like 8000, 8080, 5000, etc.
+  return (hostname === "localhost" || hostname === "127.0.0.1") && (port === "3000" || port === "3001");
 }
 
 /**

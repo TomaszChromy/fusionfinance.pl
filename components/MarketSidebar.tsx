@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
-import SparklineChart, { generateMockData } from "./SparklineChart";
+import SparklineChart from "./SparklineChart";
 
 interface MarketData {
   symbol: string;
@@ -20,31 +20,37 @@ interface EconomicEvent {
   country: string;
 }
 
+// Static sparkline data to avoid hydration mismatch (no Math.random at module load)
+const upTrend1 = [100, 101, 99, 102, 103, 101, 104, 105, 103, 106, 107, 105, 108, 109, 107, 110, 111, 109, 112, 114];
+const upTrend2 = [100, 102, 101, 103, 102, 104, 105, 103, 106, 105, 107, 108, 106, 109, 110, 108, 111, 112, 110, 113];
+const downTrend = [114, 112, 113, 111, 112, 110, 109, 111, 108, 109, 107, 106, 108, 105, 106, 104, 103, 105, 102, 100];
+const neutralTrend = [100, 101, 99, 100, 102, 100, 101, 99, 100, 101, 99, 100, 102, 100, 99, 101, 100, 99, 101, 100];
+
 // Fallback dane walutowe (bez UAH)
 const fallbackForex: MarketData[] = [
-  { symbol: "EUR/PLN", name: "Euro", price: "4.3125", change: "+0.0085", changePercent: "+0.20%", sparklineData: generateMockData(20, "up") },
-  { symbol: "USD/PLN", name: "Dolar", price: "3.9845", change: "-0.0125", changePercent: "-0.31%", sparklineData: generateMockData(20, "down") },
-  { symbol: "GBP/PLN", name: "Funt", price: "5.0234", change: "+0.0156", changePercent: "+0.31%", sparklineData: generateMockData(20, "up") },
-  { symbol: "CHF/PLN", name: "Frank", price: "4.4567", change: "+0.0045", changePercent: "+0.10%", sparklineData: generateMockData(20, "neutral") },
-  { symbol: "EUR/USD", name: "Euro/Dolar", price: "1.0823", change: "+0.0034", changePercent: "+0.31%", sparklineData: generateMockData(20, "up") },
+  { symbol: "EUR/PLN", name: "Euro", price: "4.3125", change: "+0.0085", changePercent: "+0.20%", sparklineData: upTrend1 },
+  { symbol: "USD/PLN", name: "Dolar", price: "3.9845", change: "-0.0125", changePercent: "-0.31%", sparklineData: downTrend },
+  { symbol: "GBP/PLN", name: "Funt", price: "5.0234", change: "+0.0156", changePercent: "+0.31%", sparklineData: upTrend2 },
+  { symbol: "CHF/PLN", name: "Frank", price: "4.4567", change: "+0.0045", changePercent: "+0.10%", sparklineData: neutralTrend },
+  { symbol: "EUR/USD", name: "Euro/Dolar", price: "1.0823", change: "+0.0034", changePercent: "+0.31%", sparklineData: upTrend1 },
 ];
 
 // Fallback dane kryptowalut
 const fallbackCrypto: MarketData[] = [
-  { symbol: "BTC", name: "Bitcoin", price: "97,245", change: "+2,345", changePercent: "+2.47%", sparklineData: generateMockData(20, "up") },
-  { symbol: "ETH", name: "Ethereum", price: "3,456", change: "+89", changePercent: "+2.64%", sparklineData: generateMockData(20, "up") },
-  { symbol: "SOL", name: "Solana", price: "234.56", change: "+12.34", changePercent: "+5.56%", sparklineData: generateMockData(20, "up") },
-  { symbol: "XRP", name: "Ripple", price: "2.34", change: "+0.12", changePercent: "+5.41%", sparklineData: generateMockData(20, "up") },
-  { symbol: "ADA", name: "Cardano", price: "1.02", change: "+0.08", changePercent: "+8.51%", sparklineData: generateMockData(20, "up") },
+  { symbol: "BTC", name: "Bitcoin", price: "97,245", change: "+2,345", changePercent: "+2.47%", sparklineData: upTrend1 },
+  { symbol: "ETH", name: "Ethereum", price: "3,456", change: "+89", changePercent: "+2.64%", sparklineData: upTrend2 },
+  { symbol: "SOL", name: "Solana", price: "234.56", change: "+12.34", changePercent: "+5.56%", sparklineData: upTrend1 },
+  { symbol: "XRP", name: "Ripple", price: "2.34", change: "+0.12", changePercent: "+5.41%", sparklineData: upTrend2 },
+  { symbol: "ADA", name: "Cardano", price: "1.02", change: "+0.08", changePercent: "+8.51%", sparklineData: upTrend1 },
 ];
 
 // Fallback dane giełdowe
 const fallbackStocks: MarketData[] = [
-  { symbol: "WIG20", name: "WIG20", price: "2,345.67", change: "+23.45", changePercent: "+1.01%", sparklineData: generateMockData(20, "up") },
-  { symbol: "WIG", name: "WIG", price: "78,234.12", change: "+456.78", changePercent: "+0.59%", sparklineData: generateMockData(20, "up") },
-  { symbol: "S&P500", name: "S&P 500", price: "6,032.38", change: "+33.64", changePercent: "+0.56%", sparklineData: generateMockData(20, "up") },
-  { symbol: "NASDAQ", name: "NASDAQ", price: "19,480.91", change: "+185.78", changePercent: "+0.96%", sparklineData: generateMockData(20, "up") },
-  { symbol: "DAX", name: "DAX", price: "19,933.62", change: "+156.23", changePercent: "+0.79%", sparklineData: generateMockData(20, "neutral") },
+  { symbol: "WIG20", name: "WIG20", price: "2,345.67", change: "+23.45", changePercent: "+1.01%", sparklineData: upTrend1 },
+  { symbol: "WIG", name: "WIG", price: "78,234.12", change: "+456.78", changePercent: "+0.59%", sparklineData: upTrend2 },
+  { symbol: "S&P500", name: "S&P 500", price: "6,032.38", change: "+33.64", changePercent: "+0.56%", sparklineData: upTrend1 },
+  { symbol: "NASDAQ", name: "NASDAQ", price: "19,480.91", change: "+185.78", changePercent: "+0.96%", sparklineData: upTrend2 },
+  { symbol: "DAX", name: "DAX", price: "19,933.62", change: "+156.23", changePercent: "+0.79%", sparklineData: neutralTrend },
 ];
 
 // Kalendarz ekonomiczny
