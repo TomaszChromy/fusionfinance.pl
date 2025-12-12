@@ -4,12 +4,35 @@
  * Konwertuje RSS feeds na JSON dla frontendu
  *
  * Użycie: /api/rss.php?feed=rynki&limit=10
+ *
+ * Cache: Artykuły są aktualizowane przez cron.php co 15 minut
  */
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 header('Cache-Control: public, max-age=300'); // 5 min cache
+
+// Sprawdź czy jest dostępny cache z crona
+$cacheFile = __DIR__ . '/articles_cache.json';
+$useCache = file_exists($cacheFile) && (time() - filemtime($cacheFile)) < 900; // Cache ważny 15 min
+
+if ($useCache && isset($_GET['feed']) && $_GET['feed'] === 'all') {
+    // Serwuj z cache dla feedu 'all'
+    $cacheData = json_decode(file_get_contents($cacheFile), true);
+    if ($cacheData && isset($cacheData['articles'])) {
+        $limit = isset($_GET['limit']) ? min(intval($_GET['limit']), 100) : 10;
+        $articles = array_slice($cacheData['articles'], 0, $limit);
+        echo json_encode([
+            'success' => true,
+            'source' => 'cache',
+            'lastUpdate' => $cacheData['lastUpdate'] ?? date('c'),
+            'count' => count($articles),
+            'articles' => $articles,
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+}
 
 // Definicja feedów RSS - pasujące do kategorii frontendu
 // Źródła: Bankier.pl, Money.pl, Parkiet.com, Puls Biznesu, Cashless, WP Finanse,
