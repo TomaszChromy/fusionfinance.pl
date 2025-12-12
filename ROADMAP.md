@@ -330,7 +330,7 @@
 
 ## 🤝 Contribution
 
-Chcesz pomóc w rozwoju? Sprawdź [issues](https://github.com/your-repo/issues) lub napisz na kontakt@fusionfinance.pl
+Chcesz pomóc w rozwoju? Sprawdź [issues](https://github.com/TomaszChromy/fusionfinance.pl/issues) lub napisz na [tomasz.chromy@outlook.com](mailto:tomasz.chromy@outlook.com)
 
 ---
 
