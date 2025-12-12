@@ -143,11 +143,8 @@ export default function Footer() {
             href="https://tomaszchromy.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-[#0c0d10] hover:bg-[#0f1014] border border-[#c9a962]/10 hover:border-[#c9a962]/40 transition-all duration-300"
+            className="group px-4 py-2 rounded-lg bg-[#0c0d10] hover:bg-[#0f1014] border border-[#c9a962]/10 hover:border-[#c9a962]/40 transition-all duration-300"
           >
-            <div className="w-7 h-7 rounded border border-[#c9a962]/40 bg-gradient-to-br from-[#c9a962]/10 to-transparent flex items-center justify-center">
-              <span className="text-[10px] font-serif font-medium bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">TC</span>
-            </div>
             <span className="text-xs text-[#71717a] group-hover:text-[#c9a962] transition-colors font-medium tracking-wide">tomaszchromy.com</span>
           </a>
           {/* TomSoft Website */}
@@ -155,11 +152,8 @@ export default function Footer() {
             href="https://tomsoft-website.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-center gap-2.5 px-4 py-2.5 rounded-lg bg-[#0c0d10] hover:bg-[#0f1014] border border-[#c9a962]/10 hover:border-[#c9a962]/40 transition-all duration-300"
+            className="group px-4 py-2 rounded-lg bg-[#0c0d10] hover:bg-[#0f1014] border border-[#c9a962]/10 hover:border-[#c9a962]/40 transition-all duration-300"
           >
-            <div className="w-7 h-7 rounded border border-[#c9a962]/40 bg-gradient-to-br from-[#c9a962]/10 to-transparent flex items-center justify-center">
-              <span className="text-[10px] font-serif font-medium bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">TS</span>
-            </div>
             <span className="text-xs text-[#71717a] group-hover:text-[#c9a962] transition-colors font-medium tracking-wide">tomsoft-website.com</span>
           </a>
         </div>
