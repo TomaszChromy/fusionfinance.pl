@@ -216,7 +216,7 @@ const RSS_FEEDS = {
 
 **Tomasz Chromy**
 - Website: [tomaszchromy.com](https://tomaszchromy.com)
-- Company: [TomSoft-Website](https://tomsoft-website.com)
+- Email: [tomasz.chromy@outlook.com](mailto:tomasz.chromy@outlook.com)
 
 ---
 
@@ -235,5 +235,5 @@ Ten projekt jest udostępniony na licencji MIT. Zobacz plik [LICENSE](LICENSE) p
 ---
 
 <p align="center">
-  <sub>Built with ❤️ and ☕ by TomSoft-Website</sub>
+  <sub>Built with ❤️ and ☕ by Tomasz Chromy</sub>
 </p>
