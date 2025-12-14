@@ -1,67 +1,160 @@
-<p align="center">
-  <img src="public/logo.png" alt="FusionFinance Logo" width="200"/>
-</p>
+# FusionFinance.pl - Luksusowy Portal Finansowy
 
-<h1 align="center">FusionFinance.pl</h1>
+> **Profesjonalny portal finansowy z agregatorem wiadomości** - Nowoczesna aplikacja webowa z eleganckim designem i funkcjami premium
 
-<p align="center">
-  <strong>🏦 Luksusowy Polski Portal Finansowy</strong>
-</p>
+Zaawansowany, pełnofunkcjonalny portal finansowy zbudowany w Next.js 16 z React 19, TypeScript i Tailwind CSS. Aplikacja agreguje wiadomości z wiodących źródeł RSS, prezentując je w luksusowym, ciemnym interfejsie ze złotymi akcentami.
 
-<p align="center">
-  <a href="https://fusionfinance.pl">Live Demo</a> •
-  <a href="#funkcjonalności">Funkcjonalności</a> •
-  <a href="#instalacja">Instalacja</a> •
-  <a href="#technologie">Technologie</a> •
-  <a href="ROADMAP.md">Roadmap</a>
-</p>
+## 👨‍💻 Autor i Twórca
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Next.js-16.0.5-black?style=flat-square&logo=next.js" alt="Next.js"/>
-  <img src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react" alt="React"/>
-  <img src="https://img.shields.io/badge/TypeScript-5.0-3178C6?style=flat-square&logo=typescript" alt="TypeScript"/>
-  <img src="https://img.shields.io/badge/Tailwind-3.4-06B6D4?style=flat-square&logo=tailwindcss" alt="Tailwind"/>
-  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License"/>
-</p>
+**Tomasz Chromy** - jedyny twórca i pomysłodawca
+- 🌐 Strona: [tomaszchromy.com](https://tomaszchromy.com)
+- 📧 Email: tomasz.chromy@outlook.com
 
----
+**Copyright © 2024-2025 Tomasz Chromy. Wszelkie prawa zastrzeżone.**
 
-## 📋 O Projekcie
+## 🌟 Główne Funkcje
 
-**FusionFinance.pl** to elegancki, luksusowy portal finansowy stworzony w Polsce. Agreguje najnowsze wiadomości finansowe z wiodących źródeł RSS, prezentując je w nowoczesnym, ciemnym interfejsie z akcentami złota.
+### 🎨 Luksusowy Design
+- **Ciemny motyw premium** ze złotymi akcentami (#c9a962)
+- **Golden Ratio layout** - proporcja 1.618 dla idealnej kompozycji
+- **Fibonacci spacing** - odstępy: 5, 8, 13, 21, 34, 55, 89, 144px
+- **Typografia** - Playfair Display (nagłówki) + Geist (treść)
 
-### ✨ Główne cechy
+### 📰 Agregator Wiadomości
+- **Multi-source RSS** - Bankier.pl, Money.pl, Parkiet.com, PAP
+- **Kategorie** - Rynki, Giełda, Crypto, Waluty, Analizy
+- **Real-time updates** - automatyczne odświeżanie feedów
+- **Smart filtering** - filtrowanie po słowach kluczowych
 
-- 🎨 **Luksusowy design** - Ciemny motyw ze złotymi akcentami (#c9a962)
-- 📐 **Złoty podział** - Layout oparty na proporcji 1.618 (Golden Ratio)
-- 📏 **Fibonacci Spacing** - Odstępy: 5, 8, 13, 21, 34, 55, 89, 144px
-- 📰 **RSS Aggregator** - Automatyczne pobieranie artykułów z Bankier.pl i Investing.com
-- 📱 **Responsive** - Pełna responsywność na wszystkie urządzenia
-- ⚡ **Optymalizacja** - Server-side rendering i lazy loading
-- 🔍 **SEO Ready** - Kompletne metadane, Schema.org, Open Graph
+### 📊 Dane Rynkowe
+- **Live ticker** - kursy walut z animacją
+- **Sparkline charts** - mini wykresy w sidebarze
+- **Tabele NBP** - kursy walut z NBP API
+- **Notowania GPW** - WIG20, mWIG40
 
----
+### 🔐 System Użytkowników
+- **NextAuth.js v5** z JWT
+- **Credentials + Google OAuth**
+- **Profile użytkowników** z preferencjami
+- **Ulubione artykuły** i historia przeglądania
 
-## 🎯 Funkcjonalności
+### 📱 Progressive Web App (PWA)
+- **Instalacja** na urządzeniach mobilnych i desktop
+- **Offline functionality** - podstawowe funkcje bez internetu
+- **Service Worker** dla cache'owania zasobów
+- **Responsive design** - pełna funkcjonalność na wszystkich urządzeniach
 
-### 📊 Sekcje tematyczne
+### 🔔 Interaktywność
+- **Alerty cenowe** - powiadomienia o zmianach kursów
+- **Watchlist** - lista obserwowanych aktywów
+- **Newsletter** - subskrypcja z personalizacją
+- **Dark/Light mode** - przełącznik motywu
 
-| Sekcja | Opis | Źródło RSS |
-|--------|------|------------|
-| **Rynki** | Ogólne wiadomości rynkowe | Bankier.pl, Money.pl, Parkiet.com |
-| **Giełda** | GPW, WIG20, akcje, obligacje | Bankier.pl Giełda, Parkiet.com |
-| **Crypto** | Bitcoin, Ethereum, altcoiny | Bankier.pl, Money.pl |
-| **Waluty** | Forex, kursy walut, NBP | Bankier.pl Waluty, Money.pl |
-| **Analizy** | Analizy techniczne i fundamentalne | Bankier.pl, Parkiet.com |
+## 🛠️ Technologie
 
-### 📄 System artykułów
+### Frontend
+- **Next.js 16** - React framework z App Router i Turbopack
+- **React 19** - najnowsza wersja z Concurrent Features
+- **TypeScript** - statyczne typowanie dla lepszej jakości kodu
+- **Tailwind CSS 3** - utility-first CSS framework
+- **Framer Motion** - animacje i przejścia
 
-- **Paginacja** - 64 artykuły / 8 na stronę
-- **Dynamiczne obrazy** - Oryginalne z RSS lub tematyczne z Unsplash
-- **Generowane treści** - 500+ słów na artykuł
-- **Powiązane artykuły** - Sugestie podobnych tematycznie
+### Backend
+- **Next.js API Routes** - serverless functions
+- **PHP fallback** - dla hostingu współdzielonego (nazwa.pl)
+- **Prisma ORM** - type-safe database access
+- **PostgreSQL** - relacyjna baza danych
 
-### 🎨 Design System
+### SEO & Performance
+- **Server-side rendering** - optymalizacja SEO
+- **Image optimization** - automatyczna optymalizacja
+- **Schema.org** - structured data
+- **Open Graph** - social media meta
+- **Sitemap & Robots.txt** - indeksowanie
+
+## 📋 Wymagania Systemowe
+
+### Minimalne
+- **Node.js**: 18.17+
+- **RAM**: 2GB
+- **Dysk**: 500MB wolnego miejsca
+- **Przeglądarka**: Chrome 90+, Firefox 88+, Safari 14+
+
+### Zalecane
+- **Node.js**: 20.0+
+- **RAM**: 4GB+
+- **Dysk**: 2GB+ (z cache)
+
+## 🚀 Instalacja
+
+### 1. Sklonuj repozytorium
+```bash
+git clone https://github.com/TomaszChromy/fusionfinance.pl.git
+cd fusionfinance.pl
+```
+
+### 2. Zainstaluj zależności
+```bash
+npm install
+```
+
+### 3. Skonfiguruj zmienne środowiskowe
+```bash
+cp .env.example .env.local
+```
+
+### 4. Uruchom aplikację
+```bash
+npm run dev
+```
+
+Aplikacja będzie dostępna pod adresem: **http://localhost:3000**
+
+### Build dla hostingu współdzielonego (nazwa.pl)
+```bash
+npm run build:static
+# Pliki w folderze 'out' - wgraj przez FTP
+```
+
+## 📁 Struktura Projektu
+
+```
+fusionfinance.pl/
+├── app/                    # Next.js App Router
+│   ├── api/               # API endpoints
+│   ├── artykul/           # Strony artykułów
+│   ├── rynki/             # Sekcja Rynki
+│   ├── gielda/            # Sekcja Giełda
+│   ├── crypto/            # Sekcja Crypto
+│   ├── waluty/            # Sekcja Waluty
+│   └── analizy/           # Sekcja Analizy
+├── components/            # Komponenty React
+├── lib/                   # Utilities i konfiguracja
+├── public/                # Pliki statyczne
+│   └── api/              # PHP fallback API
+├── prisma/               # Schema bazy danych
+└── scripts/              # Skrypty build
+```
+
+## 🔧 Dostępne Skrypty
+
+```bash
+npm run dev           # Serwer deweloperski
+npm run build         # Build produkcyjny
+npm run build:static  # Build dla hostingu statycznego
+npm run start         # Uruchom produkcyjnie
+npm run lint          # Sprawdź kod z ESLint
+```
+
+## 📱 Responsywność
+
+| Breakpoint | Szerokość | Układ |
+|------------|-----------|-------|
+| Mobile | < 640px | 1 kolumna |
+| Tablet | 640px - 1024px | 2 kolumny |
+| Desktop | > 1024px | Golden Ratio (61.8% / 38.2%) |
+
+## 🎨 Design System
 
 ```css
 /* Kolory */
@@ -76,155 +169,36 @@ font-serif: Playfair Display (nagłówki)
 font-sans: Geist (treść)
 ```
 
----
+## 📚 Dokumentacja
 
-## 🚀 Instalacja
+- 📖 **[Roadmap](./ROADMAP.md)** - Plan rozwoju projektu
+- ⚖️ **[Licencja](./LICENSE)** - Prawa autorskie
 
-### Wymagania
+## 📞 Kontakt i Wsparcie
 
-- Node.js 18.17+
-- npm / yarn / pnpm
+**Tomasz Chromy** - Autor i Twórca
+- 🌐 Strona: [tomaszchromy.com](https://tomaszchromy.com)
+- 📧 Email: tomasz.chromy@outlook.com
 
-### Kroki instalacji
+W przypadku problemów lub pytań:
+- Utwórz [Issue na GitHub](https://github.com/TomaszChromy/fusionfinance.pl/issues)
+- Wyślij email z opisem problemu
 
-```bash
-# Klonowanie repozytorium
-git clone https://github.com/your-username/fusionfinance.git
-cd fusionfinance
+## ⚖️ Licencja i Prawa Autorskie
 
-# Instalacja zależności
-npm install
+**Copyright © 2024-2025 Tomasz Chromy. Wszelkie prawa zastrzeżone.**
 
-# Uruchomienie serwera deweloperskiego
-npm run dev
+Ten projekt jest własnością intelektualną Tomasza Chromy. Szczegółowe informacje o prawach autorskich i licencji znajdują się w pliku [LICENSE](./LICENSE).
 
-# Build produkcyjny
-npm run build
-npm run start
+### Dozwolone:
+- ✅ Przeglądanie kodu źródłowego
+- ✅ Uczenie się z kodu
+- ✅ Tworzenie forków do celów edukacyjnych
 
-# Build dla hostingu współdzielonego (nazwa.pl)
-npm run build:static
-# Pliki w folderze 'out' - wgraj przez FTP
-```
-
-Otwórz [http://localhost:3000](http://localhost:3000) w przeglądarce.
-
-### Hosting współdzielony (nazwa.pl)
-
-Projekt zawiera PHP proxy (`public/api/rss.php`) dla hostingów bez Node.js:
-1. `npm run build:static` - generuje pliki statyczne
-2. Wgraj zawartość folderu `out/` przez FTP
-3. PHP automatycznie obsłuży pobieranie RSS
-
----
-
-## 🛠️ Technologie
-
-### Frontend
-- **Next.js 16** - React Framework z App Router
-- **React 19** - Biblioteka UI
-- **TypeScript** - Typowanie statyczne
-- **Tailwind CSS 3** - Utility-first CSS
-
-### Animacje
-- **Framer Motion** - Animacje i przejścia
-- **AnimatePresence** - Animacje wejścia/wyjścia
-
-### Dane
-- **rss-parser** - Parsowanie feedów RSS
-- **API Routes** - Serverless endpoints
-
-### SEO & Performance
-- **Next.js Image** - Optymalizacja obrazów
-- **Schema.org** - Structured data
-- **Open Graph** - Social media meta
-- **Sitemap** - Automatyczny sitemap
-
----
-
-## 📁 Struktura projektu
-
-```
-fusionfinance/
-├── app/
-│   ├── api/
-│   │   └── rss/           # API endpoint dla RSS
-│   ├── artykul/
-│   │   └── [slug]/        # Dynamiczne strony artykułów
-│   ├── rynki/             # Sekcja Rynki
-│   ├── gielda/            # Sekcja Giełda
-│   ├── crypto/            # Sekcja Crypto
-│   ├── waluty/            # Sekcja Waluty
-│   ├── analizy/           # Sekcja Analizy
-│   ├── polityka-prywatnosci/
-│   ├── regulamin/
-│   ├── cookies/
-│   ├── layout.tsx         # Root layout + SEO
-│   ├── page.tsx           # Strona główna
-│   └── globals.css        # Style globalne
-├── components/
-│   ├── Header.tsx         # Nawigacja
-│   ├── Footer.tsx         # Stopka
-│   ├── RSSFeatured.tsx    # Wyróżnione artykuły
-│   ├── RSSArticles.tsx    # Lista artykułów
-│   ├── RSSArticlesPaginated.tsx  # Lista z paginacją
-│   └── Pagination.tsx     # Komponent paginacji
-├── public/
-│   ├── favicon.ico
-│   ├── og-image.jpg
-│   └── ...
-└── next.config.ts
-```
-
----
-
-## 🔧 Konfiguracja
-
-### Zmienne środowiskowe
-
-Utwórz plik `.env.local`:
-
-```env
-# Opcjonalne - do weryfikacji wyszukiwarek
-NEXT_PUBLIC_GA_ID=your-google-analytics-id
-```
-
-### Dostosowanie RSS
-
-Edytuj `app/api/rss/route.ts` aby dodać własne źródła RSS:
-
-```typescript
-const RSS_FEEDS = {
-  myFeed: "https://example.com/feed.xml",
-  // ...
-};
-```
-
----
-
-## 📱 Responsywność
-
-| Breakpoint | Szerokość | Układ |
-|------------|-----------|-------|
-| Mobile | < 640px | 1 kolumna |
-| Tablet | 640px - 1024px | 2 kolumny |
-| Desktop | > 1024px | Golden Ratio (61.8% / 38.2%) |
-
----
-
-## 🤝 Autor
-
-**Tomasz Chromy**
-- Website: [tomaszchromy.com](https://tomaszchromy.com)
-- Email: [tomasz.chromy@outlook.com](mailto:tomasz.chromy@outlook.com)
-
----
-
-## 📄 Licencja
-
-Ten projekt jest udostępniony na licencji MIT. Zobacz plik [LICENSE](LICENSE) po więcej szczegółów.
-
----
+### Zabronione bez pisemnej zgody:
+- ❌ Komercyjne wykorzystanie
+- ❌ Redystrybucja kodu
+- ❌ Używanie nazwy "FusionFinance"
 
 ## ⚠️ Disclaimer
 
@@ -235,5 +209,9 @@ Ten projekt jest udostępniony na licencji MIT. Zobacz plik [LICENSE](LICENSE) p
 ---
 
 <p align="center">
-  <sub>Built with ❤️ and ☕ by Tomasz Chromy</sub>
+  <strong><a href="https://tomaszchromy.com">POWERED BY TOMASZ CHROMY</a></strong>
+</p>
+
+<p align="center">
+  <em>FusionFinance.pl - Luksusowy Portal Finansowy</em>
 </p>
