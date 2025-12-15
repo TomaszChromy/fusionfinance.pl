@@ -11,8 +11,6 @@ import { InfoTooltip } from "@/components/Tooltip";
 import { MarketStatusGrid } from "@/components/MarketStatus";
 import { EventCountdown } from "@/components/CountdownTimer";
 import LiveIndicator from "@/components/LiveIndicator";
-import Watchlist from "@/components/Watchlist";
-import MarketCalendar from "@/components/MarketCalendar";
 import EconomicIndicators from "@/components/EconomicIndicators";
 
 export default function RynkiPage() {
@@ -66,48 +64,35 @@ export default function RynkiPage() {
           </div>
 
           {/* Right column - Sidebar */}
-          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
+          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-5">
+            {/* Nagłówek sidebara */}
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
               <div>
                 <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
                 <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
               </div>
             </div>
+
             <MarketSidebar />
 
             {/* Market Status Grid */}
-            <div className="mt-6">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm">🌍</span>
-                <h3 className="text-sm font-medium text-[#f4f4f5]">Status giełd światowych</h3>
-              </div>
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors">
+              <h3 className="text-xs font-semibold text-[#f4f4f5] uppercase tracking-[0.1em] mb-3 flex items-center gap-2">
+                <span>🌍</span> Status giełd światowych
+              </h3>
               <MarketStatusGrid />
             </div>
 
             {/* Upcoming Economic Event */}
-            <div className="mt-6">
-              <EventCountdown
-                eventName="Decyzja FOMC"
-                eventDate={new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)}
-                eventType="meeting"
-              />
-            </div>
-
-            {/* Watchlist */}
-            <div className="mt-6">
-              <Watchlist variant="compact" />
-            </div>
-
-            {/* Market Calendar */}
-            <div className="mt-6">
-              <MarketCalendar variant="compact" />
-            </div>
+            <EventCountdown
+              eventName="Decyzja FOMC"
+              eventDate={new Date(Date.now() + 3 * 24 * 60 * 60 * 1000)}
+              eventType="meeting"
+            />
 
             {/* Economic Indicators */}
-            <div className="mt-6">
-              <EconomicIndicators variant="compact" />
-            </div>
+            <EconomicIndicators variant="compact" />
           </aside>
         </div>
       </div>

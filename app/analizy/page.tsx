@@ -10,10 +10,7 @@ import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
 import Calculator from "@/components/Calculator";
 import Glossary from "@/components/Glossary";
-import CompareAssets from "@/components/CompareAssets";
-import InvestmentIdeas from "@/components/InvestmentIdeas";
 import RiskMeter from "@/components/RiskMeter";
-import TradingTips from "@/components/TradingTips";
 
 export default function AnalizyPage() {
   return (
@@ -70,45 +67,27 @@ export default function AnalizyPage() {
           </div>
 
           {/* Right column - Sidebar */}
-          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-6">
-            {/* Financial Calculator */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-7 bg-gradient-to-b from-[#a78bfa] to-[#8b5cf6] rounded-full" />
-                <div>
-                  <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Kalkulatory</h2>
-                  <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Narzędzia inwestora</p>
-                </div>
+          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-5">
+            {/* Nagłówek sidebara */}
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-7 bg-gradient-to-b from-[#a78bfa] to-[#8b5cf6] rounded-full" />
+              <div>
+                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Narzędzia analityczne</h2>
+                <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Dla inwestorów</p>
               </div>
-              <Calculator />
             </div>
+
+            {/* Financial Calculator */}
+            <Calculator />
 
             {/* Glossary */}
             <Glossary variant="compact" />
 
-            {/* Compare Assets */}
-            <CompareAssets className="mt-6" />
-
-            {/* Investment Ideas */}
-            <InvestmentIdeas variant="cards" maxItems={2} className="mt-6" />
-
             {/* Risk Meter */}
-            <RiskMeter value={45} variant="gauge" className="mt-6" />
-
-            {/* Trading Tips */}
-            <TradingTips variant="carousel" className="mt-6" />
+            <RiskMeter value={45} variant="gauge" />
 
             {/* Market Data */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
-                <div>
-                  <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
-                  <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
-                </div>
-              </div>
-              <MarketSidebar />
-            </div>
+            <MarketSidebar />
           </aside>
         </div>
       </div>

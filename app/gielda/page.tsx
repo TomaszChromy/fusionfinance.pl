@@ -11,8 +11,6 @@ import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
 import HeatMap from "@/components/HeatMap";
 import TrendIndicator from "@/components/TrendIndicator";
-import VolumeChart from "@/components/VolumeChart";
-import AssetDetails from "@/components/AssetDetails";
 
 export default function GieldaPage() {
   return (
@@ -74,41 +72,32 @@ export default function GieldaPage() {
           </div>
 
           {/* Right column - Sidebar */}
-          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
+          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-5">
+            {/* Nagłówek sidebara */}
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-7 bg-gradient-to-b from-[#4ade80] to-[#22c55e] rounded-full" />
               <div>
-                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
+                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane giełdowe</h2>
                 <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
               </div>
             </div>
+
             <MarketSidebar />
 
             {/* Heat Map */}
-            <HeatMap className="mt-6" title="Mapa ciepła WIG20" />
+            <HeatMap title="Mapa ciepła WIG20" />
 
             {/* Trend indicators */}
-            <div className="mt-6 space-y-2">
-              <TrendIndicator direction="up" strength="moderate" label="WIG20" value="+0.54%" />
-              <TrendIndicator direction="down" strength="weak" label="mWIG40" value="-0.23%" />
-              <TrendIndicator direction="up" strength="strong" label="sWIG80" value="+1.12%" />
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors">
+              <h3 className="text-xs font-semibold text-[#f4f4f5] uppercase tracking-[0.1em] mb-3 flex items-center gap-2">
+                <span>📊</span> Trendy indeksów
+              </h3>
+              <div className="space-y-2">
+                <TrendIndicator direction="up" strength="moderate" label="WIG20" value="+0.54%" />
+                <TrendIndicator direction="down" strength="weak" label="mWIG40" value="-0.23%" />
+                <TrendIndicator direction="up" strength="strong" label="sWIG80" value="+1.12%" />
+              </div>
             </div>
-
-            {/* Volume Chart */}
-            <VolumeChart title="Wolumen WIG20" className="mt-6" />
-
-            {/* Featured Asset */}
-            <AssetDetails
-              symbol="PKO"
-              name="PKO Bank Polski"
-              price={48.56}
-              change={1.24}
-              changePercent={2.62}
-              high24h={49.20}
-              low24h={47.10}
-              volume={12500000}
-              className="mt-6"
-            />
           </aside>
         </div>
       </div>

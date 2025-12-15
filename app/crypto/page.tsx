@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import MarketSidebar from "@/components/MarketSidebar";
 import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CategoryBadge } from "@/components/Badge";
@@ -11,9 +10,6 @@ import { InfoTooltip } from "@/components/Tooltip";
 import { CryptoGrid } from "@/components/CryptoPrice";
 import Glossary from "@/components/Glossary";
 import MarketMoodIndicator from "@/components/MarketMoodIndicator";
-import OrderBook from "@/components/OrderBook";
-import RecentTrades from "@/components/RecentTrades";
-import MarketNews from "@/components/MarketNews";
 import PriceComparison from "@/components/PriceComparison";
 
 export default function CryptoPage() {
@@ -71,48 +67,32 @@ export default function CryptoPage() {
           </div>
 
           {/* Right column - Sidebar */}
-          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-6">
-            {/* Crypto Prices */}
-            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-6 bg-gradient-to-b from-[#f7931a] to-[#f59e0b] rounded-full" />
-                <div>
-                  <h2 className="text-sm font-serif font-medium text-[#f4f4f5]">Kursy kryptowalut</h2>
-                  <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Na żywo</p>
-                </div>
+          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-5">
+            {/* Nagłówek sidebara */}
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-7 bg-gradient-to-b from-[#f7931a] to-[#f59e0b] rounded-full" />
+              <div>
+                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane kryptowalut</h2>
+                <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
               </div>
+            </div>
+
+            {/* Crypto Prices */}
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors">
+              <h3 className="text-xs font-semibold text-[#f4f4f5] uppercase tracking-[0.1em] mb-3 flex items-center gap-2">
+                <span>₿</span> Kursy kryptowalut
+              </h3>
               <CryptoGrid limit={6} variant="sidebar" />
             </div>
+
+            {/* Market Mood - Fear & Greed */}
+            <MarketMoodIndicator value={72} />
 
             {/* Glossary */}
             <Glossary variant="compact" />
 
-            {/* Market Mood - Fear & Greed */}
-            <MarketMoodIndicator value={72} className="mt-6" />
-
-            {/* Order Book */}
-            <OrderBook symbol="BTC/USD" className="mt-6" />
-
-            {/* Recent Trades */}
-            <RecentTrades symbol="BTC/USD" className="mt-6" />
-
-            {/* Price Comparison */}
-            <PriceComparison className="mt-6" />
-
-            {/* Market News */}
-            <MarketNews variant="compact" maxItems={4} className="mt-6" />
-
-            {/* Market Data */}
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
-                <div>
-                  <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
-                  <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
-                </div>
-              </div>
-              <MarketSidebar />
-            </div>
+            {/* Price Comparison - uproszczone */}
+            <PriceComparison />
           </aside>
         </div>
       </div>

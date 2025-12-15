@@ -10,8 +10,6 @@ import Footer from "@/components/Footer";
 import MarketStatus from "@/components/MarketStatus";
 import { DailyQuote } from "@/components/QuoteCard";
 import LiveIndicator from "@/components/LiveIndicator";
-import { WeatherStrip } from "@/components/WeatherWidget";
-import Testimonials from "@/components/Testimonials";
 import SocialProof from "@/components/SocialProof";
 import QuickActions from "@/components/QuickActions";
 import NewsTicker from "@/components/NewsTicker";
@@ -62,8 +60,8 @@ export default function Home() {
           {/* PRAWA KOLUMNA - Dane rynkowe */}
           <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-5">
             {/* Nagłówek sidebara */}
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
+            <div className="flex items-center gap-3">
+              <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
               <div>
                 <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
                 <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
@@ -73,11 +71,11 @@ export default function Home() {
             <MarketSidebar />
 
             {/* Market Status */}
-            <div className="mt-5">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm font-medium text-[#f4f4f5]">Status giełd</span>
-              </div>
-              <div className="space-y-3">
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors">
+              <h3 className="text-xs font-semibold text-[#f4f4f5] uppercase tracking-[0.1em] mb-3 flex items-center gap-2">
+                <span>🏛️</span> Status giełd
+              </h3>
+              <div className="space-y-2">
                 <MarketStatus marketId="gpw" variant="compact" />
                 <MarketStatus marketId="nyse" variant="compact" />
                 <MarketStatus marketId="crypto" variant="compact" />
@@ -85,23 +83,7 @@ export default function Home() {
             </div>
 
             {/* Daily Quote */}
-            <DailyQuote className="mt-5" />
-
-            {/* Weather */}
-            <div className="mt-5 p-4 bg-[#0c0d10] border border-white/5 rounded-xl">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm font-medium text-[#f4f4f5]">🌤️ Pogoda w centrach finansowych</span>
-              </div>
-              <WeatherStrip />
-            </div>
-
-            {/* Features */}
-            <div className="mt-5">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-sm font-medium text-[#f4f4f5]">✨ Funkcje projektu</span>
-              </div>
-              <Testimonials autoPlay className="mt-3" />
-            </div>
+            <DailyQuote />
           </aside>
         </motion.div>
 
