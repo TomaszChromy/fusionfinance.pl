@@ -34,26 +34,33 @@ if ($useCache && isset($_GET['feed']) && $_GET['feed'] === 'all') {
     }
 }
 
-// Definicja feedów RSS - pasujące do kategorii frontendu
-// Źródła: Bankier.pl, Money.pl, Parkiet.com, Puls Biznesu, Cashless, WP Finanse,
-//         Kryptomaniak, BiznesAlert, WNP.pl, Forsal.pl
+// Definicja feedów RSS - rozszerzone źródła polskie
+// Źródła: GPW oficjalne, Bankier.pl, Money.pl, Parkiet.com, Puls Biznesu,
+//         Business Insider PL, Stooq, WNP.pl, Forsal.pl, Rzeczpospolita, Interia Biznes
 $feeds = [
     // Rynki finansowe ogólnie - szeroki przekrój
     'rynki' => [
         'https://www.bankier.pl/rss/wiadomosci.xml',
         'https://www.money.pl/rss/rss.xml',
+        'https://businessinsider.com.pl/feed',
         'https://www.pb.pl/rss/wszystko',
         'https://biznesalert.pl/feed/',
         'https://www.wnp.pl/rss/serwis.xml',
         'https://forsal.pl/rss.xml',
+        'https://www.rp.pl/rss/ekonomia',
+        'https://biznes.interia.pl/feed',
     ],
     // Giełda - GPW, akcje, spółki, notowania
     'gielda' => [
+        'https://www.gpw.pl/rss_aktualnosci',
+        'https://www.gpw.pl/rss_komunikaty',
         'https://www.bankier.pl/rss/gielda.xml',
         'https://www.parkiet.com/rss/parkiet.xml',
+        'https://stooq.pl/rss/',
         'https://www.money.pl/rss/gielda.xml',
         'https://www.pb.pl/rss/gielda',
-        'https://forsal.pl/rss/gielda.xml',
+        'https://businessinsider.com.pl/gielda/feed',
+        'https://mybank.pl/news/wiadomosci-gielda-rss.xml',
     ],
     // Kryptowaluty - Bitcoin, Ethereum, blockchain
     'crypto' => [
@@ -62,12 +69,14 @@ $feeds = [
         'https://businessinsider.com.pl/feed',
         'https://www.money.pl/rss/rss.xml',
         'https://forsal.pl/feed',
+        'https://biznes.interia.pl/feed',
     ],
     // Waluty - Forex, kursy walut, NBP
     'waluty' => [
         'https://www.bankier.pl/rss/waluty.xml',
         'https://www.money.pl/rss/waluty.xml',
         'https://forsal.pl/rss/waluty.xml',
+        'https://mybank.pl/news/wiadomosci-rss.xml',
     ],
     // Analizy - prognozy, rekomendacje, raporty
     'analizy' => [
@@ -75,21 +84,27 @@ $feeds = [
         'https://www.pb.pl/rss/wszystko',
         'https://biznesalert.pl/feed/',
         'https://forsal.pl/rss.xml',
+        'https://www.rp.pl/rss/ekonomia',
+        'https://businessinsider.com.pl/feed',
     ],
     // Fintech - banki, innowacje finansowe
     'fintech' => [
         'https://www.cashless.pl/rss',
         'https://finanse.wp.pl/rss.xml',
         'https://www.bankier.pl/rss/finanse.xml',
+        'https://biznes.interia.pl/feed',
     ],
-    // All - wszystkie główne źródła
+    // All - wszystkie główne źródła (zoptymalizowane dla szybkości)
     'all' => [
+        'https://www.gpw.pl/rss_aktualnosci',
         'https://www.bankier.pl/rss/wiadomosci.xml',
+        'https://www.bankier.pl/rss/gielda.xml',
         'https://www.money.pl/rss/rss.xml',
         'https://www.parkiet.com/rss/parkiet.xml',
-        'https://www.pb.pl/rss/wszystko',
-        'https://biznesalert.pl/feed/',
+        'https://businessinsider.com.pl/feed',
+        'https://stooq.pl/rss/',
         'https://forsal.pl/rss.xml',
+        'https://mybank.pl/news/wiadomosci-rss.xml',
     ],
 ];
 
@@ -147,14 +162,74 @@ if (!isset($feeds[$feedType])) {
     exit;
 }
 
-function fetchRSS($url) {
-    // Najpierw spróbuj cURL (bardziej niezawodne)
+// Funkcja równoległego pobierania wielu RSS (curl_multi) - znacznie szybsze!
+function fetchMultipleRSS($urls) {
+    if (!function_exists('curl_multi_init')) {
+        // Fallback do sekwencyjnego pobierania
+        $results = [];
+        foreach ($urls as $url) {
+            $results[$url] = fetchSingleRSS($url);
+        }
+        return $results;
+    }
+
+    $multiHandle = curl_multi_init();
+    $handles = [];
+
+    // Przygotuj wszystkie połączenia
+    foreach ($urls as $url) {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 8, // Skrócony timeout dla szybszego ładowania
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; FusionFinance/1.0)',
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTPHEADER => ['Accept: application/rss+xml, application/xml, text/xml']
+        ]);
+        curl_multi_add_handle($multiHandle, $ch);
+        $handles[$url] = $ch;
+    }
+
+    // Wykonaj wszystkie zapytania równolegle
+    $running = null;
+    do {
+        curl_multi_exec($multiHandle, $running);
+        curl_multi_select($multiHandle);
+    } while ($running > 0);
+
+    // Zbierz wyniki
+    $results = [];
+    libxml_use_internal_errors(true);
+
+    foreach ($handles as $url => $ch) {
+        $content = curl_multi_getcontent($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_multi_remove_handle($multiHandle, $ch);
+
+        if ($content !== false && $httpCode === 200) {
+            $xml = simplexml_load_string($content);
+            $results[$url] = ($xml !== false) ? $xml : null;
+        } else {
+            $results[$url] = null;
+        }
+    }
+
+    curl_multi_close($multiHandle);
+    return $results;
+}
+
+// Funkcja pobierania pojedynczego RSS (fallback)
+function fetchSingleRSS($url) {
     if (function_exists('curl_init')) {
         $ch = curl_init();
         curl_setopt_array($ch, [
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_TIMEOUT => 15,
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_CONNECTTIMEOUT => 5,
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; FusionFinance/1.0)',
             CURLOPT_SSL_VERIFYPEER => false,
@@ -162,16 +237,14 @@ function fetchRSS($url) {
         ]);
         $content = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        curl_close($ch);
 
         if ($content === false || $httpCode !== 200) {
             return null;
         }
     } else {
-        // Fallback do file_get_contents
         $context = stream_context_create([
             'http' => [
-                'timeout' => 10,
+                'timeout' => 8,
                 'user_agent' => 'FusionFinance/1.0 RSS Reader'
             ]
         ]);
@@ -182,14 +255,9 @@ function fetchRSS($url) {
         }
     }
 
-    // Parsuj XML
     libxml_use_internal_errors(true);
     $xml = simplexml_load_string($content);
-    if ($xml === false) {
-        return null;
-    }
-
-    return $xml;
+    return ($xml !== false) ? $xml : null;
 }
 
 // Funkcja czyszcząca tekst boilerplate z różnych źródeł
@@ -337,10 +405,11 @@ function removeDuplicates($items) {
 
 $allItems = [];
 
-// Pobierz z wszystkich URL-i dla danego feedType
+// Pobierz z wszystkich URL-i dla danego feedType - RÓWNOLEGLE (szybsze!)
 $feedUrls = $feeds[$feedType];
-foreach ($feedUrls as $url) {
-    $xml = fetchRSS($url);
+$xmlResults = fetchMultipleRSS($feedUrls);
+
+foreach ($xmlResults as $url => $xml) {
     if ($xml) {
         $items = parseItems($xml, $feedType);
         $allItems = array_merge($allItems, $items);

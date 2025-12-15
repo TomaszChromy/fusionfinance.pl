@@ -23,16 +23,26 @@ if (isset($_GET['key']) && $_GET['key'] !== $CRON_SECRET_KEY) {
 $cacheFile = __DIR__ . '/articles_cache.json';
 $logFile = __DIR__ . '/cron_log.txt';
 
-// RSS Feeds
+// RSS Feeds - rozszerzone źródła polskie
 $RSS_FEEDS = [
+    // Główne portale finansowe
     ['url' => 'https://www.bankier.pl/rss/wiadomosci.xml', 'source' => 'Bankier.pl', 'category' => 'Finanse'],
+    ['url' => 'https://www.bankier.pl/rss/gielda.xml', 'source' => 'Bankier.pl', 'category' => 'Giełda'],
     ['url' => 'https://www.money.pl/rss/rss.xml', 'source' => 'Money.pl', 'category' => 'Gospodarka'],
-    ['url' => 'https://www.parkiet.com/rss.xml', 'source' => 'Parkiet', 'category' => 'Giełda'],
+    ['url' => 'https://www.parkiet.com/rss/parkiet.xml', 'source' => 'Parkiet', 'category' => 'Giełda'],
     ['url' => 'https://stooq.pl/rss/', 'source' => 'Stooq', 'category' => 'Rynki'],
-    ['url' => 'https://www.pb.pl/rss/wszystkie_artykuly.xml', 'source' => 'Puls Biznesu', 'category' => 'Biznes'],
-    ['url' => 'https://businessinsider.com.pl/rss', 'source' => 'Business Insider', 'category' => 'Biznes'],
+    ['url' => 'https://www.pb.pl/rss/wszystko', 'source' => 'Puls Biznesu', 'category' => 'Biznes'],
+    ['url' => 'https://businessinsider.com.pl/feed', 'source' => 'Business Insider', 'category' => 'Biznes'],
     ['url' => 'https://forsal.pl/rss.xml', 'source' => 'Forsal', 'category' => 'Gospodarka'],
-    ['url' => 'https://next.gazeta.pl/pub/rss/next_news.xml', 'source' => 'Next Gazeta', 'category' => 'Technologia'],
+    // GPW oficjalne
+    ['url' => 'https://www.gpw.pl/rss_aktualnosci', 'source' => 'GPW', 'category' => 'Giełda'],
+    ['url' => 'https://www.gpw.pl/rss_komunikaty', 'source' => 'GPW', 'category' => 'Giełda'],
+    // Dodatkowe źródła
+    ['url' => 'https://biznesalert.pl/feed/', 'source' => 'BiznesAlert', 'category' => 'Energia'],
+    ['url' => 'https://www.wnp.pl/rss/serwis.xml', 'source' => 'WNP.pl', 'category' => 'Przemysł'],
+    ['url' => 'https://biznes.interia.pl/feed', 'source' => 'Interia Biznes', 'category' => 'Biznes'],
+    ['url' => 'https://www.rp.pl/rss/ekonomia', 'source' => 'Rzeczpospolita', 'category' => 'Ekonomia'],
+    ['url' => 'https://mybank.pl/news/wiadomosci-rss.xml', 'source' => 'MyBank', 'category' => 'Finanse'],
 ];
 
 function logMessage($message) {
@@ -41,51 +51,105 @@ function logMessage($message) {
     file_put_contents($logFile, "[$timestamp] $message\n", FILE_APPEND | LOCK_EX);
 }
 
-function fetchRSSFeed($url, $source, $category) {
+// Równoległe pobieranie RSS z curl_multi (znacznie szybsze!)
+function fetchAllRSSParallel($feeds) {
+    if (!function_exists('curl_multi_init')) {
+        // Fallback do sekwencyjnego
+        $results = [];
+        foreach ($feeds as $feed) {
+            $results[] = ['feed' => $feed, 'content' => fetchSingleRSS($feed['url'])];
+        }
+        return $results;
+    }
+
+    $multiHandle = curl_multi_init();
+    $handles = [];
+
+    foreach ($feeds as $index => $feed) {
+        $ch = curl_init();
+        curl_setopt_array($ch, [
+            CURLOPT_URL => $feed['url'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_TIMEOUT => 8,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_USERAGENT => 'FusionFinance RSS Aggregator/1.0',
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_HTTPHEADER => ['Accept: application/rss+xml, application/xml, text/xml']
+        ]);
+        curl_multi_add_handle($multiHandle, $ch);
+        $handles[$index] = $ch;
+    }
+
+    // Wykonaj równolegle
+    $running = null;
+    do {
+        curl_multi_exec($multiHandle, $running);
+        curl_multi_select($multiHandle);
+    } while ($running > 0);
+
+    // Zbierz wyniki
+    $results = [];
+    foreach ($handles as $index => $ch) {
+        $content = curl_multi_getcontent($ch);
+        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        curl_multi_remove_handle($multiHandle, $ch);
+
+        $results[] = [
+            'feed' => $feeds[$index],
+            'content' => ($content !== false && $httpCode === 200) ? $content : null
+        ];
+    }
+
+    curl_multi_close($multiHandle);
+    return $results;
+}
+
+function fetchSingleRSS($url) {
     $context = stream_context_create([
         'http' => [
-            'timeout' => 10,
+            'timeout' => 8,
             'user_agent' => 'FusionFinance RSS Aggregator/1.0'
         ]
     ]);
-    
-    $content = @file_get_contents($url, false, $context);
+    return @file_get_contents($url, false, $context);
+}
+
+function parseRSSContent($content, $source, $category) {
     if (!$content) {
-        logMessage("ERROR: Failed to fetch $source ($url)");
+        logMessage("ERROR: Failed to fetch $source");
         return [];
     }
-    
+
     libxml_use_internal_errors(true);
     $xml = simplexml_load_string($content);
     if (!$xml) {
         logMessage("ERROR: Failed to parse XML from $source");
         return [];
     }
-    
+
     $articles = [];
     $items = $xml->channel->item ?? $xml->item ?? [];
-    
+
     foreach ($items as $item) {
         $title = trim((string)($item->title ?? ''));
         $link = trim((string)($item->link ?? ''));
         $description = strip_tags(trim((string)($item->description ?? '')));
         $pubDate = (string)($item->pubDate ?? date('r'));
-        
+
         if (empty($title) || empty($link)) continue;
-        
-        // Ogranicz opis
+
         if (strlen($description) > 300) {
             $description = substr($description, 0, 297) . '...';
         }
-        
-        // Wyciągnij obrazek
+
         $image = '';
         if (isset($item->enclosure['url'])) {
             $image = (string)$item->enclosure['url'];
         } elseif (preg_match('/<img[^>]+src=["\']([^"\']+)["\']/', (string)$item->description, $matches)) {
             $image = $matches[1];
         }
-        
+
         $articles[] = [
             'id' => md5($link),
             'title' => $title,
@@ -98,19 +162,26 @@ function fetchRSSFeed($url, $source, $category) {
             'image' => $image,
         ];
     }
-    
+
     logMessage("OK: Fetched " . count($articles) . " articles from $source");
     return $articles;
 }
 
 // Główna logika
 $startTime = microtime(true);
-logMessage("=== CRON START ===");
+logMessage("=== CRON START (parallel fetch) ===");
 
 $allArticles = [];
 
-foreach ($RSS_FEEDS as $feed) {
-    $articles = fetchRSSFeed($feed['url'], $feed['source'], $feed['category']);
+// Pobierz wszystkie feedy równolegle
+$results = fetchAllRSSParallel($RSS_FEEDS);
+
+foreach ($results as $result) {
+    $articles = parseRSSContent(
+        $result['content'],
+        $result['feed']['source'],
+        $result['feed']['category']
+    );
     $allArticles = array_merge($allArticles, $articles);
 }
 
