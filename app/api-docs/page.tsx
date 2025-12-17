@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Navbar, Footer } from "@/components/layout";
-import { Card } from "@/components/Card";
+import Card from "@/components/Card";
 import Link from "next/link";
 
 export default function ApiDocPage() {

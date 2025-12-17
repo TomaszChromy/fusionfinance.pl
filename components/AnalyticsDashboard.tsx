@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
-import { Card } from "./Card";
+import Card from "./Card";
 import AnimatedCounter from "./AnimatedCounter";
 
 interface AnalyticsData {

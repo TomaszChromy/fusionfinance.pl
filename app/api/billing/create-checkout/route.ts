@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
-import { authConfig } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "");
+const getStripe = () => {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) {
+    return null;
+  }
+  return new Stripe(key);
+};
 
 const priceMap: Record<string, { amount: number; description: string }> = {
   basic: { amount: 2900, description: "FusionFinance Basic - 29 PLN/month" },
@@ -16,7 +21,15 @@ const priceMap: Record<string, { amount: number; description: string }> = {
  */
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authConfig);
+    const stripe = getStripe();
+    if (!stripe) {
+      return NextResponse.json(
+        { error: "Stripe not configured" },
+        { status: 503 }
+      );
+    }
+
+    const session = await auth();
 
     if (!session?.user?.email) {
       return NextResponse.json(
