@@ -1,0 +1,29 @@
+{
+  "extends": "lighthouse:default",
+  "settings": {
+    "onlyCategories": ["performance", "accessibility", "best-practices", "seo"],
+    "chromeFlags": ["--no-sandbox", "--disable-gpu"],
+    "skipAudits": ["unsized-images"],
+    "emulatedFormFactor": "desktop"
+  },
+  "audits": {
+    "first-contentful-paint": {
+      "options": {
+        "scorePODRanges": [
+          { "name": "red", "min": -Infinity, "max": 2000 },
+          { "name": "orange", "min": 2000, "max": 3000 },
+          { "name": "green", "min": 3000, "max": Infinity }
+        ]
+      }
+    },
+    "largest-contentful-paint": {
+      "options": {
+        "scorePODRanges": [
+          { "name": "red", "min": -Infinity, "max": 2500 },
+          { "name": "orange", "min": 2500, "max": 4000 },
+          { "name": "green", "min": 4000, "max": Infinity }
+        ]
+      }
+    }
+  }
+}

@@ -10,27 +10,7 @@ datasource db {
 }
 
 // ============= USERS =============
-
-model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
-  password      String?   // For credentials auth
-  image         String?
-  emailVerified DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // Relations
-  accounts      Account[]
-  sessions      Session[]
-  favorites     Favorite[]
-  alerts        PriceAlert[]
-  watchlist     WatchlistItem[]
-  newsletters   NewsletterSubscription?
-
-  @@map("users")
-}
+// User model jest zdefiniowany na koniec pliku z pełnymi relacjami
 
 model Account {
   id                String  @id @default(cuid())
@@ -76,7 +56,7 @@ model VerificationToken {
 model Favorite {
   id        String   @id @default(cuid())
   userId    String
-  articleId String   // RSS article GUID
+  articleId String // RSS article GUID
   title     String
   url       String
   imageUrl  String?
@@ -94,8 +74,8 @@ model Favorite {
 model PriceAlert {
   id        String   @id @default(cuid())
   userId    String
-  symbol    String   // e.g., "BTC", "EUR/PLN", "PKO"
-  condition String   // "above" | "below"
+  symbol    String // e.g., "BTC", "EUR/PLN", "PKO"
+  condition String // "above" | "below"
   price     Float
   isActive  Boolean  @default(true)
   triggered Boolean  @default(false)
@@ -113,7 +93,7 @@ model WatchlistItem {
   id        String   @id @default(cuid())
   userId    String
   symbol    String
-  type      String   // "stock" | "crypto" | "forex"
+  type      String // "stock" | "crypto" | "forex"
   name      String
   createdAt DateTime @default(now())
 
@@ -126,16 +106,181 @@ model WatchlistItem {
 // ============= NEWSLETTER =============
 
 model NewsletterSubscription {
-  id           String   @id @default(cuid())
-  userId       String?  @unique
-  email        String   @unique
-  isActive     Boolean  @default(true)
-  frequency    String   @default("daily") // "daily" | "weekly"
-  categories   String[] // ["rynki", "crypto", "gielda"]
-  subscribedAt DateTime @default(now())
+  id             String    @id @default(cuid())
+  userId         String?   @unique
+  email          String    @unique
+  isActive       Boolean   @default(true)
+  frequency      String    @default("daily") // "daily" | "weekly"
+  categories     String[] // ["rynki", "crypto", "gielda"]
+  subscribedAt   DateTime  @default(now())
   unsubscribedAt DateTime?
 
   user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   @@map("newsletter_subscriptions")
+}
+
+// ============= ANALYTICS =============
+
+model PageView {
+  id        String   @id @default(cuid())
+  userId    String? // null dla niezalogowanych
+  path      String
+  title     String?
+  referrer  String?
+  duration  Int? // czas spędzony w sekundach
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([path, createdAt])
+  @@index([userId, createdAt])
+  @@map("page_views")
+}
+
+model ArticleView {
+  id          String   @id @default(cuid())
+  userId      String?
+  articleId   String // RSS article GUID
+  title       String
+  slug        String
+  duration    Int? // czas czytania w sekundach
+  scrollDepth Float? // % strony przewinięte
+  createdAt   DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([articleId, createdAt])
+  @@index([userId, createdAt])
+  @@map("article_views")
+}
+
+model Event {
+  id        String   @id @default(cuid())
+  userId    String?
+  eventType String // "click", "share", "bookmark", "alert_created"
+  eventData Json? // dodatkowe dane zdarzenia
+  createdAt DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([eventType, createdAt])
+  @@index([userId, createdAt])
+  @@map("events")
+}
+
+model DailyStats {
+  id          String   @id @default(cuid())
+  date        DateTime @unique
+  totalViews  Int      @default(0)
+  totalUsers  Int      @default(0)
+  avgDuration Float?
+  bounceRate  Float?
+  topArticles Json? // JSON array of top articles
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("daily_stats")
+}
+
+// Aktualizacja User aby zawierał relacje do analytics
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String? // For credentials auth
+  image         String?
+  emailVerified DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts     Account[]
+  sessions     Session[]
+  favorites    Favorite[]
+  alerts       PriceAlert[]
+  watchlist    WatchlistItem[]
+  newsletters  NewsletterSubscription?
+  pageViews    PageView[]
+  articleViews ArticleView[]
+  events       Event[]
+  subscription Subscription?
+  billingHistory BillingHistory[]
+  apiKeys      ApiKey[]
+
+  @@map("users")
+}
+
+// ============= SUBSCRIPTION & BILLING =============
+
+model Subscription {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  plan            String   // "free", "basic", "pro", "enterprise"
+  stripeCustomerId String?
+  stripeSubscriptionId String?
+  status          String   @default("active") // "active", "canceled", "expired"
+  currentPeriodStart DateTime?
+  currentPeriodEnd DateTime?
+  canceledAt      DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("subscriptions")
+}
+
+model BillingHistory {
+  id          String   @id @default(cuid())
+  userId      String
+  stripeInvoiceId String?
+  amount      Int      // w groszach
+  currency    String   @default("PLN")
+  status      String   // "paid", "pending", "failed"
+  description String?
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("billing_history")
+}
+
+// ============= DEVELOPER API =============
+
+model ApiKey {
+  id              String   @id @default(cuid())
+  userId          String
+  name            String   // np. "My App", "Mobile Client"
+  key             String   @unique
+  secret          String
+  isActive        Boolean  @default(true)
+  rateLimit       Int      @default(1000) // requests per day
+  requestsToday   Int      @default(0)
+  lastRequestAt   DateTime?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([key])
+  @@index([userId])
+  @@map("api_keys")
+}
+
+model ApiUsage {
+  id          String   @id @default(cuid())
+  apiKeyId    String
+  endpoint    String   // /api/v1/quotes, /api/v1/markets, etc.
+  method      String   // GET, POST, etc.
+  statusCode  Int
+  responseTime Int      // milliseconds
+  error       String?
+  createdAt   DateTime @default(now())
+
+  @@index([apiKeyId, createdAt])
+  @@index([endpoint])
+  @@map("api_usage")
 }

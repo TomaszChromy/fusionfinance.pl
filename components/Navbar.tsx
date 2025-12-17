@@ -13,6 +13,7 @@ const navLinks = [
   { name: "Crypto", href: "/crypto/" },
   { name: "Waluty", href: "/waluty/" },
   { name: "Analizy", href: "/analizy/" },
+  { name: "Cennik", href: "/cennik/" },
 ];
 
 export default function Navbar() {

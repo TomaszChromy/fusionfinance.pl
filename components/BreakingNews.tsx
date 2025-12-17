@@ -2,16 +2,28 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { getRssApiUrl } from "@/lib/api";
+import { getRssArticleLink } from "@/lib/slug-utils";
 
-const fallbackNews = [
-  "Ładowanie najnowszych wiadomości finansowych...",
+interface NewsItem {
+  title: string;
+  link: string;
+  originalUrl?: string;
+}
+
+const fallbackNews: NewsItem[] = [
+  { title: "Ładowanie najnowszych wiadomości finansowych...", link: "/rynki" },
 ];
 
 export default function BreakingNews() {
-  const [news, setNews] = useState<string[]>(fallbackNews);
-  const [loading, setLoading] = useState(true);
+  const [news, setNews] = useState<NewsItem[]>(fallbackNews);
   const [isPaused, setIsPaused] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     async function fetchBreakingNews() {
@@ -21,30 +33,36 @@ export default function BreakingNews() {
         if (!response.ok) throw new Error("Failed to fetch");
 
         const data = await response.json();
-        const headlines = data.items?.map((item: { title: string }) => item.title) || [];
+        const items: NewsItem[] = data.items?.map((item: { title: string; link: string }) => ({
+          title: item.title,
+          link: getRssArticleLink(item.title, item.link),
+          originalUrl: item.link,
+        })) || [];
 
-        if (headlines.length > 0) {
-          setNews(headlines);
+        if (items.length > 0) {
+          setNews(items);
         }
       } catch {
         setNews([
-          "GPW: Notowania na żywo - śledź rynki finansowe",
-          "Kursy walut NBP - aktualne notowania",
-          "Kryptowaluty - Bitcoin, Ethereum i więcej",
+          { title: "GPW: Notowania na żywo - śledź rynki finansowe", link: "/rynki" },
+          { title: "Kursy walut NBP - aktualne notowania", link: "/waluty" },
+          { title: "Kryptowaluty - Bitcoin, Ethereum i więcej", link: "/crypto" },
         ]);
-      } finally {
-        setLoading(false);
       }
     }
 
     fetchBreakingNews();
-
-    // Odśwież co 5 minut
     const interval = setInterval(fetchBreakingNews, 300000);
     return () => clearInterval(interval);
   }, []);
 
-  // Duplikuj wiadomości 3x dla płynnej animacji
+  // Nie renderuj na serwerze żeby uniknąć hydration mismatch
+  if (!mounted) {
+    return (
+      <div className="bg-gradient-to-r from-[#0f1115] via-[#1a1d24] to-[#0f1115] border-b border-[#c9a962]/30 h-[42px]" />
+    );
+  }
+
   const displayNews = [...news, ...news, ...news];
 
   return (
@@ -54,7 +72,6 @@ export default function BreakingNews() {
       onMouseLeave={() => setIsPaused(false)}
     >
       <div className="flex items-center">
-        {/* Breaking label z animowaną kropką */}
         <div className="bg-gradient-to-r from-[#c9a962] to-[#e4d4a5] px-5 py-2.5 font-bold text-[11px] uppercase tracking-[0.15em] flex-shrink-0 text-[#08090c] flex items-center gap-2 shadow-[4px_0_16px_rgba(201,169,98,0.3)]">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#dc2626] opacity-75"></span>
@@ -63,14 +80,11 @@ export default function BreakingNews() {
           Na żywo
         </div>
 
-        {/* Ticker */}
         <div className="overflow-hidden flex-1 relative">
-          {/* Fade edges */}
           <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-[#0f1115] to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-[#0f1115] to-transparent z-10 pointer-events-none" />
 
           <motion.div
-            key={news.length}
             animate={{ x: isPaused ? undefined : [0, -4500] }}
             transition={{
               x: {
@@ -82,14 +96,15 @@ export default function BreakingNews() {
             }}
             className="flex items-center whitespace-nowrap py-2.5 px-8"
           >
-            {displayNews.map((headline, index) => (
-              <span
+            {displayNews.map((item, index) => (
+              <Link
                 key={index}
-                className="text-[13px] font-medium flex items-center text-[#e4e4e7] mx-6 hover:text-[#c9a962] transition-colors cursor-pointer"
+                href={item.link}
+                className="text-[13px] font-medium flex items-center text-[#e4e4e7] mx-6 hover:text-[#c9a962] transition-colors"
               >
                 <span className="w-1.5 h-1.5 bg-[#c9a962] rounded-full mr-4 flex-shrink-0 opacity-60" />
-                <span className="max-w-[400px] truncate">{headline}</span>
-              </span>
+                <span className="max-w-[400px] truncate">{item.title}</span>
+              </Link>
             ))}
           </motion.div>
         </div>

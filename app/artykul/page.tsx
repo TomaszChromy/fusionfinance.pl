@@ -113,8 +113,12 @@ function ArticleContent() {
   const heroImage = getImageForTitle(title, urlImage);
   const badgeType = getBadgeType({ date: dateStr });
 
-  // Add to history on mount
+  // Add to history on mount - only once per article
+  const addedToHistoryRef = useRef(false);
   useEffect(() => {
+    if (addedToHistoryRef.current) return;
+    addedToHistoryRef.current = true;
+
     const historyId = generateHistoryId(title, sourceUrl);
     addToHistory({
       id: historyId,
@@ -124,7 +128,7 @@ function ArticleContent() {
       source: sourceUrl,
       date: dateStr,
     });
-  }, [title, description, heroImage, sourceUrl, dateStr, addToHistory]);
+  }, [title, sourceUrl]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Always fetch full article content from source
   useEffect(() => {

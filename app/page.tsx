@@ -1,20 +1,29 @@
 ﻿"use client";
 
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
-import BreakingNews from "@/components/BreakingNews";
-import RSSFeatured from "@/components/RSSFeatured";
-import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
-import MarketSidebar from "@/components/MarketSidebar";
-import Footer from "@/components/Footer";
-import MarketStatus from "@/components/MarketStatus";
-import { DailyQuote } from "@/components/QuoteCard";
-import LiveIndicator from "@/components/LiveIndicator";
-import SocialProof from "@/components/SocialProof";
-import QuickActions from "@/components/QuickActions";
-import NewsTicker from "@/components/NewsTicker";
-import MarketMoodIndicator from "@/components/MarketMoodIndicator";
-import MarketNews from "@/components/MarketNews";
+
+// Layout
+import { Navbar, Footer } from "@/components/layout";
+
+// Navigation
+import { BreakingNews } from "@/components/navigation";
+
+// Hero
+import { RSSFeatured } from "@/components/hero";
+
+// News
+import { RSSArticlesPaginated, MarketNews } from "@/components/news";
+
+// Sidebar
+import {
+  MarketSidebar,
+  MarketStatus,
+  MarketMoodIndicator,
+  DailyQuote,
+  LiveIndicator,
+  SocialProof,
+  QuickActions,
+} from "@/components/sidebar";
 
 export default function Home() {
   return (
@@ -22,60 +31,63 @@ export default function Home() {
       <Navbar />
       <BreakingNews />
 
-      <div className="mx-auto max-w-[1400px] px-4 lg:px-6 py-6 lg:py-8">
+      <div className="mx-auto max-w-[1400px] px-4 lg:px-6 py-8 lg:py-12">
 
         {/* SEO H1 - wizualnie ukryty ale dostępny dla SEO */}
         <h1 className="sr-only">FusionFinance - Portal Finansowy z Aktualnymi Wiadomościami z Giełdy, Kryptowalut i Rynków</h1>
 
         {/* HERO - Wyróżnione artykuły */}
-        <RSSFeatured />
+        <section aria-labelledby="featured-heading">
+          <h2 id="featured-heading" className="sr-only">Wyróżnione artykuły</h2>
+          <RSSFeatured />
+        </section>
 
         {/* MAIN CONTENT - Dwie kolumny */}
         <motion.div
           initial={{ opacity: 0, y: 21 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12 mt-10 lg:mt-14"
+          className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-14 mt-12 lg:mt-16"
         >
           {/* LEWA KOLUMNA - Artykuły */}
-          <div>
+          <section aria-labelledby="news-heading">
             {/* Nagłówek sekcji */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#c9a962]/20">
+            <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#c9a962]/20">
               <div className="flex items-center gap-3">
                 <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
                 <div>
-                  <h2 className="text-lg font-serif font-medium text-[#f4f4f5]">Najnowsze wiadomości</h2>
-                  <p className="text-xs text-[#71717a] mt-0.5">Aktualne informacje z rynków finansowych</p>
+                  <h2 id="news-heading" className="text-xl font-serif font-medium text-[#f4f4f5]">Najnowsze wiadomości</h2>
+                  <p className="text-sm text-[#71717a] mt-1">Aktualne informacje z rynków finansowych</p>
                 </div>
               </div>
               <LiveIndicator label="Na żywo" />
             </div>
 
             {/* Lista artykułów */}
-            <div className="bg-[#0c0d10] border border-white/5 rounded-2xl p-5 lg:p-8">
+            <div className="bg-[#0c0d10] border border-white/5 rounded-2xl p-6 lg:p-8">
               <RSSArticlesPaginated feedType="all" totalArticles={80} articlesPerPage={10} />
             </div>
-          </div>
+          </section>
 
           {/* PRAWA KOLUMNA - Dane rynkowe */}
-          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-5">
+          <aside aria-label="Dane rynkowe" className="lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-6">
             {/* Nagłówek sidebara */}
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 mb-2">
               <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
               <div>
-                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
-                <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
+                <h2 className="text-lg font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
+                <p className="text-xs text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na bieżąco</p>
               </div>
             </div>
 
             <MarketSidebar />
 
             {/* Market Status */}
-            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-4 hover:border-white/10 transition-colors">
-              <h3 className="text-xs font-semibold text-[#f4f4f5] uppercase tracking-[0.1em] mb-3 flex items-center gap-2">
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-5 hover:border-white/10 transition-colors">
+              <h3 className="text-xs font-semibold text-[#f4f4f5] uppercase tracking-[0.1em] mb-4 flex items-center gap-2">
                 <span>🏛️</span> Status giełd
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <MarketStatus marketId="gpw" variant="compact" />
                 <MarketStatus marketId="nyse" variant="compact" />
                 <MarketStatus marketId="crypto" variant="compact" />
@@ -87,45 +99,41 @@ export default function Home() {
           </aside>
         </motion.div>
 
-        {/* News Ticker */}
-        <motion.div
+        {/* Market Mood - zwiększony margines */}
+        <motion.section
+          aria-labelledby="mood-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-12"
+          className="mt-16 lg:mt-20"
         >
-          <NewsTicker variant="compact" />
-        </motion.div>
-
-        {/* Market Mood */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-8"
-        >
+          <h2 id="mood-heading" className="sr-only">Nastrój rynkowy</h2>
           <MarketMoodIndicator variant="compact" />
-        </motion.div>
+        </motion.section>
 
-        {/* Market News */}
-        <motion.div
+        {/* Market News - Flash News */}
+        <motion.section
+          aria-labelledby="flash-news-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-8"
+          className="mt-14 lg:mt-16"
         >
+          <h2 id="flash-news-heading" className="sr-only">Szybkie wiadomości</h2>
           <MarketNews maxItems={5} />
-        </motion.div>
+        </motion.section>
 
-        {/* Social Proof Section */}
-        <motion.div
+        {/* Social Proof Section - zwiększony margines */}
+        <motion.section
+          aria-labelledby="stats-heading"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16"
+          className="mt-20 lg:mt-24 mb-8"
         >
-          <SocialProof variant="compact" className="mb-8" />
-        </motion.div>
+          <h2 id="stats-heading" className="sr-only">Statystyki portalu</h2>
+          <SocialProof variant="compact" />
+        </motion.section>
       </div>
 
       <Footer />
