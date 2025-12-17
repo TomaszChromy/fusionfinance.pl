@@ -11,6 +11,7 @@ import { InfoTooltip } from "@/components/Tooltip";
 import Calculator from "@/components/Calculator";
 import Glossary from "@/components/Glossary";
 import RiskMeter from "@/components/RiskMeter";
+import PremiumAnalyses from "@/components/PremiumAnalyses";
 
 export default function AnalizyPage() {
   return (
@@ -37,6 +38,18 @@ export default function AnalizyPage() {
             Analizy fundamentalne i techniczne, prognozy rynkowe, rekomendacje inwestycyjne
           </p>
         </motion.div>
+
+        {/* Premium Analyses Section */}
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#e5c76e] rounded-full" />
+            <div>
+              <h2 className="text-lg font-serif font-medium text-[#f4f4f5]">Ekskluzywne analizy</h2>
+              <p className="text-xs text-[#71717a] mt-0.5">Premium content od naszych ekspertów</p>
+            </div>
+          </div>
+          <PremiumAnalyses />
+        </div>
 
         {/* Two-column layout */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12">

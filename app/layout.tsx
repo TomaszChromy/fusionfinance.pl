@@ -10,6 +10,7 @@ import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import { ToastProvider } from "@/components/Toast";
 import Providers from "@/components/Providers";
+import FinancialChatbot from "@/components/FinancialChatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -283,6 +284,7 @@ export default function RootLayout({
             {children}
             <CookieConsent />
             <ScrollToTop />
+            <FinancialChatbot />
           </ToastProvider>
         </Providers>
       </body>
