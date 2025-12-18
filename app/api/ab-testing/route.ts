@@ -1,10 +1,18 @@
-import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { NextResponse } from "next/server";
 import { getExperiments } from "@/lib/ab-testing";
+
+type ABEventData = {
+  experimentId?: string;
+  variant?: string;
+};
+
+type ABEvent = {
+  eventData: ABEventData | null;
+};
 
 /**
  * GET /api/ab-testing
- * Pobierz statystyki A/B testów
+ * Pobierz statystyki A/B testów (mock bez Prisma)
  */
 export async function GET() {
   try {
@@ -12,25 +20,20 @@ export async function GET() {
     const stats = [];
 
     for (const exp of experiments) {
-      // Pobierz zdarzenia dla każdego eksperymentu
-      const events = await prisma.event.findMany({
-        where: {
-          eventType: "ab_conversion",
-        },
-        select: { eventData: true },
-      });
+      // Mock events - bez Prisma
+      const events: ABEvent[] = [];
 
       // Filtruj po experimentId
       const expEvents = events.filter(
-        (e) => (e.eventData as { experimentId?: string })?.experimentId === exp.id
+        (e: ABEvent) => (e.eventData as ABEventData)?.experimentId === exp.id
       );
 
       // Grupuj po wariantach
       const variantStats: Record<string, number> = {};
       exp.variants.forEach((v) => (variantStats[v] = 0));
 
-      expEvents.forEach((e) => {
-        const variant = (e.eventData as { variant?: string })?.variant;
+      expEvents.forEach((e: ABEvent) => {
+        const variant = (e.eventData as ABEventData)?.variant;
         if (variant && variantStats[variant] !== undefined) {
           variantStats[variant]++;
         }
