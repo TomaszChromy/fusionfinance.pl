@@ -98,7 +98,7 @@ export async function GET(request: NextRequest) {
       totalArticleViews,
       avgDuration: avgDuration._avg.duration || 0,
       bounceRate: parseFloat(String(bounceRate)),
-      topArticles: topArticles.map((article) => ({
+      topArticles: topArticles.map((article: { articleId: string; title: string; _count: { id: number } }) => ({
         articleId: article.articleId,
         title: article.title,
         views: article._count.id,
