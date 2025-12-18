@@ -1,10 +1,26 @@
-import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+// Helper – leniwe pobieranie auth + prisma, żeby nie wywalały się przy imporcie modułu
+async function getDeps() {
+  const [authModule, prismaModule] = await Promise.all([
+    import("@/lib/auth"),
+    import("@/lib/prisma"),
+  ]);
+
+  return {
+    auth: authModule.auth,
+    prisma: prismaModule.prisma,
+  };
+}
+
+export async function GET(_request: NextRequest) {
   try {
+    const { auth, prisma } = await getDeps();
     const session = await auth();
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -21,9 +37,11 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
+    const { auth, prisma } = await getDeps();
     const session = await auth();
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -32,14 +50,17 @@ export async function POST(request: Request) {
     const { symbol, price, condition } = body;
 
     if (!symbol || !price || !condition) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Missing required fields" },
+        { status: 400 }
+      );
     }
 
     const alert = await prisma.priceAlert.create({
       data: {
         userId: session.user.id,
         symbol,
-        price: parseFloat(price),
+        price: parseFloat(String(price)),
         condition,
         isActive: true,
       },
@@ -52,9 +73,11 @@ export async function POST(request: Request) {
   }
 }
 
-export async function DELETE(request: Request) {
+export async function DELETE(request: NextRequest) {
   try {
+    const { auth, prisma } = await getDeps();
     const session = await auth();
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -77,9 +100,11 @@ export async function DELETE(request: Request) {
   }
 }
 
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest) {
   try {
+    const { auth, prisma } = await getDeps();
     const session = await auth();
+
     if (!session?.user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -102,4 +127,3 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
-
