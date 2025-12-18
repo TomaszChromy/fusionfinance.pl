@@ -215,3 +215,4 @@ Ten projekt jest własnością intelektualną Tomasza Chromy. Szczegółowe info
 <p align="center">
   <em>FusionFinance.pl - Luksusowy Portal Finansowy</em>
 </p>
+<!-- Deploy fix test -->
