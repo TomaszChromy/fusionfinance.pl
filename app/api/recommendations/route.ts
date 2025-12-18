@@ -6,11 +6,24 @@ import { prisma } from "@/lib/prisma";
  * GET /api/recommendations?limit=5
  * Pobierz spersonalizowane rekomendacje artykułów dla zalogowanego użytkownika
  */
+
+type PopularArticle = {
+  articleId: string;
+  title: string;
+  _count: { id: number };
+};
+
+type SortedArticle = {
+  articleId: string;
+  title: string;
+  views: number;
+};
+
 export async function GET(request: NextRequest) {
   try {
     const session = await auth();
     const { searchParams } = new URL(request.url);
-    const limit = parseInt(searchParams.get("limit") || "5");
+    const limit = parseInt(searchParams.get("limit") || "5", 10);
 
     if (!session?.user?.id) {
       // Jeśli użytkownik niezalogowany, zwróć najpopularniejsze artykuły
@@ -25,12 +38,14 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         type: "popular",
-        recommendations: popularArticles.map((article) => ({
-          articleId: article.articleId,
-          title: article.title,
-          views: article._count.id,
-          reason: "Popular this week",
-        })),
+        recommendations: popularArticles.map(
+          (article: PopularArticle) => ({
+            articleId: article.articleId,
+            title: article.title,
+            views: article._count.id,
+            reason: "Popular this week",
+          })
+        ),
       });
     }
 
@@ -55,12 +70,14 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         type: "popular",
-        recommendations: popularArticles.map((article) => ({
-          articleId: article.articleId,
-          title: article.title,
-          views: article._count.id,
-          reason: "Popular this week",
-        })),
+        recommendations: popularArticles.map(
+          (article: PopularArticle) => ({
+            articleId: article.articleId,
+            title: article.title,
+            views: article._count.id,
+            reason: "Popular this week",
+          })
+        ),
       });
     }
 
@@ -97,13 +114,13 @@ export async function GET(request: NextRequest) {
       })
     );
 
-    const sorted = grouped
+    const sorted: SortedArticle[] = grouped
       .sort((a, b) => b.views - a.views)
       .slice(0, limit);
 
     return NextResponse.json({
       type: "personalized",
-      recommendations: sorted.map((article) => ({
+      recommendations: sorted.map((article: SortedArticle) => ({
         articleId: article.articleId,
         title: article.title,
         views: article.views,
