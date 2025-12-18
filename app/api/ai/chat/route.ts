@@ -1,76 +1,66 @@
-import { NextRequest, NextResponse } from "next/server";
-import { OpenAI } from "openai";
+import { NextResponse } from "next/server";
+import OpenAI from "openai";
 
-const getOpenAI = () => {
-  const key = process.env.OPENAI_API_KEY;
-  if (!key) return null;
-  return new OpenAI({ apiKey: key });
-};
+const client = new OpenAI({
+  apiKey: process.env.FUSION_OPENAI_API_KEY,
+});
 
-const SYSTEM_PROMPT = `Jesteś ekspertem finansowym o imieniu FinBot. Pomagasz użytkownikom w:
-- Wyjaśnianiu pojęć finansowych (akcje, obligacje, ETF, kryptowaluty, forex)
-- Analizie rynków i trendów
-- Podstawach inwestowania i oszczędzania
-- Wyjaśnianiu wskaźników ekonomicznych (PKB, inflacja, stopy procentowe)
+const SYSTEM_PROMPT = `Jesteś FinBotem, asystentem finansowym na stronie FusionFinance.pl.
+Odpowiadasz krótko, konkretnie, po polsku.
+Pomagasz w kwestiach finansowych, giełdowych, kryptowalut i ekonomii.
+NIE dajesz konkretnych rekomendacji inwestycyjnych - tylko informacje edukacyjne.`;
 
-Zasady:
-1. Odpowiadaj po polsku, krótko i rzeczowo
-2. NIE dawaj konkretnych rekomendacji inwestycyjnych
-3. Zawsze przypominaj o ryzyku inwestycyjnym
-4. Używaj prostego języka
-5. Jeśli nie wiesz - przyznaj się`;
-
-interface ChatMessage {
-  role: "user" | "assistant";
-  content: string;
-}
-
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const openai = getOpenAI();
-    if (!openai) {
+    console.log(
+      "[FinBot] OpenAI key prefix:",
+      process.env.FUSION_OPENAI_API_KEY?.slice(0, 15)
+    );
+
+    if (!process.env.FUSION_OPENAI_API_KEY) {
       return NextResponse.json(
-        { error: "AI service not configured", fallback: true },
-        { status: 503 }
+        { error: "Brak FUSION_OPENAI_API_KEY" },
+        { status: 500 }
       );
     }
 
-    const { message, history = [] } = await request.json();
+    const body = await req.json().catch(() => null);
 
-    if (!message || message.length > 500) {
+    if (!body || typeof body.message !== "string" || !body.message.trim()) {
       return NextResponse.json(
-        { error: "Message required (max 500 chars)" },
+        { error: "Brak pola 'message' w body" },
         { status: 400 }
       );
     }
 
-    const messages: Array<{ role: "system" | "user" | "assistant"; content: string }> = [
-      { role: "system", content: SYSTEM_PROMPT },
-      ...history.slice(-6).map((m: ChatMessage) => ({
-        role: m.role,
-        content: m.content,
-      })),
-      { role: "user", content: message },
-    ];
+    const userMessage = body.message.trim();
 
-    const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
-      messages,
-      max_tokens: 300,
+    // Klasyczne API chat completions
+    const completion = await client.chat.completions.create({
+      model: "gpt-4o-mini",
+      messages: [
+        { role: "system", content: SYSTEM_PROMPT },
+        { role: "user", content: userMessage },
+      ],
+      max_tokens: 500,
       temperature: 0.7,
     });
 
-    const reply = completion.choices[0].message.content?.trim() || "Przepraszam, nie mogę teraz odpowiedzieć.";
+    const reply = completion.choices[0]?.message?.content?.trim()
+      || "Przepraszam, nie udało się przetworzyć odpowiedzi.";
 
-    return NextResponse.json({
-      reply,
-      tokensUsed: completion.usage?.total_tokens || 0,
-    });
-  } catch (error) {
-    console.error("Chat error:", error);
+    return NextResponse.json({ reply });
+
+  } catch (error: any) {
+    console.error("[/api/ai/chat] error:", error);
+
+    // Szczegółowy błąd dla debugowania
+    const errorMessage = error?.message || "Unknown error";
+    const errorCode = error?.code || error?.status || 500;
+
     return NextResponse.json(
-      { error: "Failed to process message" },
-      { status: 500 }
+      { error: `FinBot error: ${errorMessage}` },
+      { status: typeof errorCode === 'number' ? errorCode : 500 }
     );
   }
 }
