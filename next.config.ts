@@ -30,16 +30,6 @@ const nextConfig: NextConfig = {
     ],
   },
 
-  // ✅ POZWÓL budować mimo błędów TS
-  typescript: {
-    ignoreBuildErrors: true,
-  },
-
-  // ✅ POZWÓL budować mimo błędów ESLint
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-
   // Wyłącz generowanie source maps w produkcji
   productionBrowserSourceMaps: false,
 
