@@ -6,6 +6,7 @@
   "author": "Tomasz Chromy <tomasz@tomaszchromy.com>",
   "homepage": "https://fusionfinance.pl",
   "scripts": {
+    "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
     "prebuild:static": "node scripts/prepare-static.js",
