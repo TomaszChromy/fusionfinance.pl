@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import TopBanner from "@/components/TopBanner";
 import CurrencyTicker from "@/components/CurrencyTicker";
@@ -285,6 +286,7 @@ export default function RootLayout({
             <CookieConsent />
             <ScrollToTop />
             <FinancialChatbot />
+            <SpeedInsights />
           </ToastProvider>
         </Providers>
       </body>

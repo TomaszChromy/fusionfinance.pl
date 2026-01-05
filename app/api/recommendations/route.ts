@@ -57,6 +57,8 @@ export async function GET(request: NextRequest) {
       take: 20,
     });
 
+    type UserView = typeof userViews[0];
+
     if (userViews.length === 0) {
       // Jeśli brak historii, zwróć popularne
       const popularArticles = await prisma.articleView.groupBy({
@@ -82,7 +84,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Ekstrakcja słów kluczowych z historii
-    const keywords = extractKeywords(userViews.map((v) => v.title));
+    const keywords = extractKeywords(userViews.map((v: UserView) => v.title));
 
     // Szukaj artykułów zawierających podobne słowa kluczowe
     const recommendedArticles = await prisma.articleView.findMany({
@@ -95,7 +97,7 @@ export async function GET(request: NextRequest) {
         })),
         NOT: {
           articleId: {
-            in: userViews.map((v) => v.articleId),
+            in: userViews.map((v: UserView) => v.articleId),
           },
         },
       },
@@ -104,9 +106,11 @@ export async function GET(request: NextRequest) {
       take: limit * 2, // Pobierz więcej aby mieć wybór
     });
 
+    type RecommendedArticle = typeof recommendedArticles[0];
+
     // Groupuj i sortuj po popularności
     const grouped = await Promise.all(
-      recommendedArticles.map(async (article) => {
+      recommendedArticles.map(async (article: RecommendedArticle) => {
         const viewCount = await prisma.articleView.count({
           where: { articleId: article.articleId },
         });
@@ -115,7 +119,7 @@ export async function GET(request: NextRequest) {
     );
 
     const sorted: SortedArticle[] = grouped
-      .sort((a, b) => b.views - a.views)
+      .sort((a: SortedArticle, b: SortedArticle) => b.views - a.views)
       .slice(0, limit);
 
     return NextResponse.json({
