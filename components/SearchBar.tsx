@@ -66,10 +66,9 @@ export default function SearchBar({ onClose, isOpen = true }: SearchBarProps) {
     const timer = setTimeout(async () => {
       setLoading(true);
       try {
-        const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-          ? `/api/rss?feed=all&limit=50`
-          : `/api/rss.php?feed=all&limit=50`;
-        
+        const { getRssApiUrl } = await import("@/lib/api");
+        const apiUrl = getRssApiUrl("all", 50);
+
         const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();

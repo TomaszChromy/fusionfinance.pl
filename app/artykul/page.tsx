@@ -132,29 +132,34 @@ function ArticleContent() {
 
   // Always fetch full article content from source
   useEffect(() => {
-    if (sourceUrl && sourceUrl !== "#") {
-      setLoading(true);
-      fetch(`/api/article?url=${encodeURIComponent(sourceUrl)}`)
-        .then(res => res.json())
-        .then(data => {
+    async function fetchArticle() {
+      if (sourceUrl && sourceUrl !== "#") {
+        setLoading(true);
+        try {
+          const { getArticleApiUrl } = await import("@/lib/api");
+          const apiUrl = getArticleApiUrl(sourceUrl);
+          const res = await fetch(apiUrl);
+          const data = await res.json();
           if (data.content && data.content.length > 100) {
             setArticleContent(data.content);
           } else if (initialContent && initialContent.length > 50) {
             setArticleContent(initialContent);
           }
-        })
-        .catch(() => {
+        } catch {
           // Use initial content on error
           if (initialContent) {
             setArticleContent(initialContent);
           }
-        })
-        .finally(() => setLoading(false));
-    } else {
-      // No source URL, use initial content
-      setArticleContent(initialContent || description || "");
-      setLoading(false);
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        // No source URL, use initial content
+        setArticleContent(initialContent || description || "");
+        setLoading(false);
+      }
     }
+    fetchArticle();
   }, [sourceUrl, initialContent, description]);
 
   // Parse content into paragraphs

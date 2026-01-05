@@ -87,9 +87,8 @@ function SearchContent() {
       setLoading(true);
       try {
         const feedParam = category === "all" ? "all" : category;
-        const apiUrl = typeof window !== 'undefined' && window.location.hostname === 'localhost'
-          ? `/api/rss?feed=${feedParam}&limit=100`
-          : `/api/rss.php?feed=${feedParam}&limit=100`;
+        const { getRssApiUrl } = await import("@/lib/api");
+        const apiUrl = getRssApiUrl(feedParam, 100);
 
         const response = await fetch(apiUrl);
         if (response.ok) {
