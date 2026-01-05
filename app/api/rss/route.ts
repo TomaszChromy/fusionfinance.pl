@@ -203,7 +203,7 @@ async function fetchRSSFeed(url: string): Promise<RSSItem[]> {
   try {
     const response = await fetch(url, {
       headers: { "User-Agent": "Mozilla/5.0 FusionFinance RSS Reader" },
-      next: { revalidate: 300 },
+      next: { revalidate: 900 }, // 15 minut
     });
     
     if (!response.ok) return [];
