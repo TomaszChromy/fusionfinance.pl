@@ -27,25 +27,24 @@ export default function CryptoSection() {
   useEffect(() => {
     async function fetchCryptoData() {
       try {
-        // CoinGecko API (darmowe, bez klucza)
-        const response = await fetch(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,binancecoin,ripple&order=market_cap_desc&sparkline=false&price_change_percentage=24h"
-        );
-        if (!response.ok) throw new Error("CoinGecko API error");
+        // Proxy API (avoids CORS issues)
+        const response = await fetch("/api/crypto?ids=bitcoin,ethereum,solana,binancecoin,ripple");
+        if (!response.ok) throw new Error("Crypto API error");
 
-        const data = await response.json();
+        const json = await response.json();
+        if (!json.success || !json.data) throw new Error("Invalid response");
 
-        const newData: CryptoData[] = data.map((coin: {
+        const newData: CryptoData[] = json.data.map((coin: {
           name: string;
           symbol: string;
-          current_price: number;
-          price_change_percentage_24h: number;
+          price: number;
+          change24h: number;
         }) => ({
           name: coin.name,
-          symbol: coin.symbol.toUpperCase(),
-          price: `$${coin.current_price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
-          change: `${coin.price_change_percentage_24h >= 0 ? "+" : ""}${coin.price_change_percentage_24h.toFixed(2)}%`,
-          isPositive: coin.price_change_percentage_24h >= 0,
+          symbol: coin.symbol,
+          price: `$${coin.price.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`,
+          change: `${coin.change24h >= 0 ? "+" : ""}${coin.change24h.toFixed(2)}%`,
+          isPositive: coin.change24h >= 0,
         }));
 
         if (newData.length > 0) setCryptoData(newData);
@@ -57,7 +56,7 @@ export default function CryptoSection() {
     }
 
     fetchCryptoData();
-    const interval = setInterval(fetchCryptoData, 30000); // Odśwież co 30 sekund
+    const interval = setInterval(fetchCryptoData, 60000); // Odśwież co 60 sekund
     return () => clearInterval(interval);
   }, []);
 

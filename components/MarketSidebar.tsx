@@ -162,26 +162,25 @@ export default function MarketSidebar() {
       } catch { /* use fallback */ }
     }
 
-    // Fetch crypto data from CoinGecko
+    // Fetch crypto data via proxy API (avoids CORS issues)
     async function fetchCrypto() {
       try {
-        const res = await fetch(
-          "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=bitcoin,ethereum,solana,ripple,cardano&order=market_cap_desc&sparkline=false&price_change_percentage=24h"
-        );
+        const res = await fetch("/api/crypto?ids=bitcoin,ethereum,solana,ripple,cardano");
         if (!res.ok) return;
-        const data = await res.json();
-        const newData: MarketData[] = data.map((coin: {
+        const json = await res.json();
+        if (!json.success || !json.data) return;
+        const newData: MarketData[] = json.data.map((coin: {
           symbol: string;
           name: string;
-          current_price: number;
-          price_change_24h: number;
-          price_change_percentage_24h: number;
+          price: number;
+          changeValue?: number;
+          change24h: number;
         }) => ({
-          symbol: coin.symbol.toUpperCase(),
+          symbol: coin.symbol,
           name: coin.name,
-          price: coin.current_price.toLocaleString("en-US", { minimumFractionDigits: 2 }),
-          change: `${coin.price_change_24h >= 0 ? "+" : ""}${coin.price_change_24h.toFixed(2)}`,
-          changePercent: `${coin.price_change_percentage_24h >= 0 ? "+" : ""}${coin.price_change_percentage_24h.toFixed(2)}%`,
+          price: coin.price.toLocaleString("en-US", { minimumFractionDigits: 2 }),
+          change: `${(coin.changeValue ?? 0) >= 0 ? "+" : ""}${(coin.changeValue ?? 0).toFixed(2)}`,
+          changePercent: `${coin.change24h >= 0 ? "+" : ""}${coin.change24h.toFixed(2)}%`,
         }));
         if (newData.length > 0) setCryptoData(newData);
       } catch { /* use fallback */ }

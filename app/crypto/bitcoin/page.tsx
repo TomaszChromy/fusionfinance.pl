@@ -42,10 +42,15 @@ export default function BitcoinPage() {
   useEffect(() => {
     async function fetchPrice() {
       try {
-        const res = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,pln&include_24hr_change=true");
+        const res = await fetch("/api/crypto?type=simple&ids=bitcoin&currency=usd");
         if (!res.ok) throw new Error("Failed");
-        const data = await res.json();
-        setPrice({ usd: data.bitcoin.usd, pln: data.bitcoin.pln, change24h: data.bitcoin.usd_24h_change });
+        const json = await res.json();
+        const btc = json.data?.find((c: { id: string }) => c.id === "bitcoin");
+        if (btc) {
+          setPrice({ usd: btc.price, pln: btc.pricePln || btc.price * 4, change24h: btc.change24h });
+        } else {
+          throw new Error("Bitcoin not found");
+        }
       } catch {
         setPrice({ usd: 97500, pln: 389000, change24h: 2.5 });
       }
