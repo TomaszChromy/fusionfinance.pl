@@ -1,123 +1,68 @@
-# FusionFinance.pl - Luksusowy Portal Finansowy
+# FusionFinance.pl
 
-> **Profesjonalny portal finansowy z agregatorem wiadomości** - Nowoczesna aplikacja webowa z eleganckim designem i funkcjami premium
+Profesjonalny agregator wiadomości i danych rynkowych w eleganckim, ciemnym interfejsie. Next.js 16 + React 19 + TypeScript + Tailwind. Docelowo (koniec 2026) pełna PWA z offline, push i synchronizacją w tle.
 
-Zaawansowany, pełnofunkcjonalny portal finansowy zbudowany w Next.js 16 z React 19, TypeScript i Tailwind CSS. Aplikacja agreguje wiadomości z wiodących źródeł RSS, prezentując je w luksusowym, ciemnym interfejsie ze złotymi akcentami.
+## Autor
+- **Tomasz Chromy** – założyciel i jedyny twórca  
+  🌐 [tomaszchromy.com](https://tomaszchromy.com) · 📧 tomasz.chromy@outlook.com
 
-## 👨‍💻 Autor i Twórca
+## Kluczowe cechy
+- **Agregacja treści**: kuracja wiodących portali finansowych (Money, Bankier, ISBnews, PAP) z jasną atrybucją źródła.
+- **Dane rynkowe**: kursy NBP, indeksy GPW, kryptowaluty (BTC/ETH/alt), makro wskaźniki i wyceny w PLN/USD.
+- **UX premium**: ciemny motyw ze złotymi akcentami, typografia Playfair + Geist, layout w proporcjach Golden Ratio.
+- **Użytkownicy**: NextAuth v5 (credentials + Google), ulubione, historia, ustawienia, alerty, watchlist.
+- **Statyczny eksport**: tryb `STATIC_EXPORT=true` dla hostingu współdzielonego (nazwa.pl) z PHP fallback (API w `public/api`).
+- **PWA planowana na koniec 2026**: pełny offline, push, sync w tle, tryb oszczędzania danych (kamień milowy w roadmapie).
 
-**Tomasz Chromy** - jedyny twórca i pomysłodawca
-- 🌐 Strona: [tomaszchromy.com](https://tomaszchromy.com)
-- 📧 Email: tomasz.chromy@outlook.com
+## Stos technologiczny
+- **Frontend**: Next.js 16 (App Router, Turbopack), React 19, TypeScript, Tailwind CSS, Framer Motion.
+- **Backend**: Next.js API Routes + Prisma ORM (PostgreSQL), fallback PHP dla środowisk bez Node.
+- **Jakość/SEO**: Schema.org, Open Graph, sitemap/robots, sanity checks dla API, rate limiting w middleware.
 
-**Copyright © 2024-2025 Tomasz Chromy. Wszelkie prawa zastrzeżone.**
+## Wymagania
+- Node.js 18.17+ (zalecane 20+)
+- npm 9+ / 10+
+- PostgreSQL (dla funkcji bazodanowych); tryb statyczny działa bez DB
 
-## 🌟 Główne Funkcje
-
-### 🎨 Luksusowy Design
-- **Ciemny motyw premium** ze złotymi akcentami (#c9a962)
-- **Golden Ratio layout** - proporcja 1.618 dla idealnej kompozycji
-- **Fibonacci spacing** - odstępy: 5, 8, 13, 21, 34, 55, 89, 144px
-- **Typografia** - Playfair Display (nagłówki) + Geist (treść)
-
-### 📰 Agregator Wiadomości
-- **Multi-source RSS** - Bankier.pl, Money.pl, Parkiet.com, PAP
-- **Kategorie** - Rynki, Giełda, Crypto, Waluty, Analizy
-- **Real-time updates** - automatyczne odświeżanie feedów
-- **Smart filtering** - filtrowanie po słowach kluczowych
-
-### 📊 Dane Rynkowe
-- **Live ticker** - kursy walut z animacją
-- **Sparkline charts** - mini wykresy w sidebarze
-- **Tabele NBP** - kursy walut z NBP API
-- **Notowania GPW** - WIG20, mWIG40
-
-### 🔐 System Użytkowników
-- **NextAuth.js v5** z JWT
-- **Credentials + Google OAuth**
-- **Profile użytkowników** z preferencjami
-- **Ulubione artykuły** i historia przeglądania
-
-### 📱 Progressive Web App (PWA)
-- **Instalacja** na urządzeniach mobilnych i desktop
-- **Offline functionality** - podstawowe funkcje bez internetu
-- **Service Worker** dla cache'owania zasobów
-- **Responsive design** - pełna funkcjonalność na wszystkich urządzeniach
-
-### 🔔 Interaktywność
-- **Alerty cenowe** - powiadomienia o zmianach kursów
-- **Watchlist** - lista obserwowanych aktywów
-- **Newsletter** - subskrypcja z personalizacją
-- **Dark/Light mode** - przełącznik motywu
-
-## 🛠️ Technologie
-
-### Frontend
-- **Next.js 16** - React framework z App Router i Turbopack
-- **React 19** - najnowsza wersja z Concurrent Features
-- **TypeScript** - statyczne typowanie dla lepszej jakości kodu
-- **Tailwind CSS 3** - utility-first CSS framework
-- **Framer Motion** - animacje i przejścia
-
-### Backend
-- **Next.js API Routes** - serverless functions
-- **PHP fallback** - dla hostingu współdzielonego (nazwa.pl)
-- **Prisma ORM** - type-safe database access
-- **PostgreSQL** - relacyjna baza danych
-
-### SEO & Performance
-- **Server-side rendering** - optymalizacja SEO
-- **Image optimization** - automatyczna optymalizacja
-- **Schema.org** - structured data
-- **Open Graph** - social media meta
-- **Sitemap & Robots.txt** - indeksowanie
-
-## 📋 Wymagania Systemowe
-
-### Minimalne
-- **Node.js**: 18.17+
-- **RAM**: 2GB
-- **Dysk**: 500MB wolnego miejsca
-- **Przeglądarka**: Chrome 90+, Firefox 88+, Safari 14+
-
-### Zalecane
-- **Node.js**: 20.0+
-- **RAM**: 4GB+
-- **Dysk**: 2GB+ (z cache)
-
-## 🚀 Instalacja
-
-### 1. Sklonuj repozytorium
+## Szybki start (dev)
 ```bash
 git clone https://github.com/TomaszChromy/fusionfinance.pl.git
 cd fusionfinance.pl
-```
-
-### 2. Zainstaluj zależności
-```bash
 npm install
-```
-
-### 3. Skonfiguruj zmienne środowiskowe
-```bash
-cp .env.example .env.local
-```
-Kluczowe wartości do uzupełnienia w `.env.local`: `AUTH_SECRET`, `NEXTAUTH_URL` (np. http://localhost:3000), `DATABASE_URL` (PostgreSQL), `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`, `STRIPE_SECRET_KEY`, `RESEND_API_KEY`, `FUSION_OPENAI_API_KEY`, `CRON_SECRET`.
-
-Jeśli chcesz korzystać z redakcyjnych artykułów w bazie, po ustawieniu `DATABASE_URL` uruchom:
-```bash
-npx prisma migrate dev --name articles
-npx prisma generate
-```
-
-### 4. Uruchom aplikację
-```bash
+cp .env.example .env.local   # uzupełnij klucze: AUTH_SECRET/NEXTAUTH_URL/DATABASE_URL itp.
 npm run dev
 ```
+Aplikacja: http://localhost:3000
 
-Aplikacja będzie dostępna pod adresem: **http://localhost:3000**
+## Build i deployment
+- **Produkcja (SSR)**: `npm run build && npm run start`
+- **Statyczny eksport (nazwa.pl)**: `npm run build:static`  
+  - przed buildem skrypt przenosi `/app/api` do `.api-backup`, a po eksporcie przywraca API i kopiuje `.htaccess`/`robots.txt` do `out/`.
+  - artefakty do wgrania: folder `out/`
 
-### Build dla hostingu współdzielonego (nazwa.pl)
+## Migracje i Prisma (opcjonalnie)
+```bash
+npx prisma migrate dev --name init
+npx prisma generate
+```
+Wymaga ustawionego `DATABASE_URL`.
+
+## Skrypty npm
+- `npm run dev` – środowisko deweloperskie
+- `npm run build` – build produkcyjny (SSR)
+- `npm run build:static` – statyczny eksport z PWA fallbackiem
+- `npm run start` – start produkcyjny
+- `npm run lint` – lintowanie
+- `npm run typecheck` – kontrola typów
+
+## Roadmap (skrót)
+- 2025: stabilizacja danych, audyt SEO/Performance, automatyzacja QA, monitoring.
+- 2026: pełna PWA (offline, push, sync), tryb low-data, usprawnienia dostępności AA.
+Szczegóły: patrz `ROADMAP.md`.
+
+## Licencja
+Wszelkie prawa zastrzeżone © 2024-2026 Tomasz Chromy.  
+Użycie komercyjne wymaga zgody autora. Pełny tekst: `LICENSE`.
 ```bash
 npm run build:static
 # Pliki w folderze 'out' - wgraj przez FTP

@@ -10,7 +10,7 @@ const REDAKCJA = [
   {
     name: "Tomasz Chromy",
     role: "Założyciel & Główny Redaktor",
-    bio: "Twórca FusionFinance.pl. Pasjonat technologii i finansów. Zajmuje się rozwojem platformy i agregacją treści finansowych.",
+    bio: "Twórca FusionFinance.pl. Odpowiada za strategię produktu, kurację źródeł, rozwój technologii i standardy jakości danych.",
     avatar: "TC",
     links: { website: "https://tomaszchromy.com" },
   },
@@ -48,7 +48,7 @@ export default function ORedakcjiPage() {
       <div className="mx-auto max-w-[900px] px-4 lg:px-6 py-12">
         <PageHero
           title="O redakcji"
-          subtitle="Kim jesteśmy, skąd bierzemy treści i jak dbamy o jakość agregatora."
+          subtitle="Kim jesteśmy, jak weryfikujemy źródła i jak dbamy o rzetelność agregacji finansowej."
           eyebrow="Informacje"
           badge="Polski agregator"
         />
@@ -72,11 +72,12 @@ export default function ORedakcjiPage() {
               <strong className="text-[#f4f4f5]">Zasady:</strong>
             </p>
             <ul className="space-y-2 ml-4">
-              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Agregujemy treści z wiarygodnych źródeł (Money.pl, Bankier.pl, ISBnews, PAP)</li>
-              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Zawsze podajemy źródło oryginalnego artykułu</li>
-              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Dane rynkowe pobieramy z oficjalnych API (NBP, CoinGecko)</li>
-              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Nie tworzymy własnych rekomendacji inwestycyjnych</li>
-              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Projekt jest open source i transparentny</li>
+              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Kurujemy wyłącznie wiarygodne źródła (Money.pl, Bankier.pl, ISBnews, PAP), każdemu feedowi przypisujemy etykietę źródła.</li>
+              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Dane rynkowe pobieramy z oficjalnych API (NBP, CoinGecko); błędy lub braki sygnalizujemy na widoku.</li>
+              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Nie publikujemy rekomendacji inwestycyjnych; agregacja ma charakter informacyjny.</li>
+              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Każdy materiał zawiera atrybucję do źródła i link do oryginału.</li>
+              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> AI wspiera automatyzację (deduplikacja, streszczenia), ale decyzje redakcyjne są ludzkie.</li>
+              <li className="flex items-start gap-2"><span className="text-[#c9a962]">•</span> Roadmapa i kod są transparentne; cele PWA wyznaczone na koniec 2026.</li>
             </ul>
           </div>
         </motion.section>
@@ -142,6 +143,7 @@ export default function ORedakcjiPage() {
               { name: "PAP Biznes", type: "Agencja prasowa" },
               { name: "NBP", type: "Kursy walut" },
               { name: "CoinGecko", type: "Kryptowaluty" },
+              { name: "GPW", type: "Indeksy i notowania" },
             ].map((source) => (
               <div key={source.name} className="text-center p-3 bg-white/[0.02] rounded-lg">
                 <p className="text-sm font-medium text-[#f4f4f5]">{source.name}</p>
@@ -158,15 +160,18 @@ export default function ORedakcjiPage() {
           transition={{ delay: 0.5 }}
           className="text-center py-8"
         >
-          <p className="text-[#71717a] text-sm mb-4">
-            Masz pytania do redakcji? Skontaktuj się z nami:
+          <p className="text-[#71717a] text-sm mb-3">
+            Masz pytania do redakcji, zgłoszenia źródeł lub błąd w danych?
           </p>
-          <Link
-            href="mailto:tomasz.chromy@outlook.com"
-            className="text-[#c9a962] hover:text-[#e4d4a5] transition-colors"
-          >
-            tomasz.chromy@outlook.com
-          </Link>
+          <div className="flex flex-col items-center gap-2 text-sm">
+            <Link
+              href="mailto:tomasz.chromy@outlook.com"
+              className="text-[#c9a962] hover:text-[#e4d4a5] transition-colors"
+            >
+              tomasz.chromy@outlook.com
+            </Link>
+            <span className="text-[#52525b] text-xs">Odpowiadamy w 24–48h (dni robocze)</span>
+          </div>
         </motion.section>
       </div>
 

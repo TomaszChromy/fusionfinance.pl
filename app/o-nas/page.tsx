@@ -9,15 +9,16 @@ import Testimonials from "@/components/Testimonials";
 import PageHero from "@/components/PageHero";
 
 const TIMELINE_EVENTS = [
-  { id: "1", date: "2024 Q1", title: "Powstanie projektu", description: "Start prac nad FusionFinance jako agregator newsów finansowych" },
-  { id: "2", date: "2024 Q2", title: "MVP", description: "Pierwsza wersja z RSS, kursami walut i dark mode" },
-  { id: "3", date: "2024 Q3", title: "Rozbudowa", description: "Dodanie GPW, kryptowalut, kalkulatorów i słownika" },
-  { id: "4", date: "2024 Q4", title: "PWA", description: "Wersja Progressive Web App z offline i powiadomieniami" },
+  { id: "1", date: "2024 Q1", title: "Powstanie projektu", description: "Start prac nad FusionFinance jako precyzyjny agregator newsów finansowych." },
+  { id: "2", date: "2024 Q2", title: "MVP", description: "Pierwsza wersja: RSS, kursy walut NBP, dark mode, architektura Next.js 16." },
+  { id: "3", date: "2024 Q3-Q4", title: "Rozbudowa", description: "GPW, crypto, kalkulatory, testy Lighthouse, twarde standardy dostępności." },
+  { id: "4", date: "2025", title: "Stabilizacja & bezpieczeństwo", description: "Monitoring, rate limiting, audyt SEO/Performance, konsolidacja API." },
+  { id: "5", date: "2026 (koniec)", title: "PWA Enterprise", description: "Instalowalna aplikacja z pełnym offline, push, sync w tle i trybem oszczędzania danych." },
 ];
 
 const TEAM = [
-  { name: "Tomasz Chromy", role: "Założyciel & Developer", icon: "👨‍💻" },
-  { name: "AI Assistant", role: "Współtwórca kodu", icon: "🤖" },
+  { name: "Tomasz Chromy", role: "Założyciel & Lead Developer", icon: "👨‍💻" },
+  { name: "AI Systems", role: "Asysta inżynieryjna (automatyzacje, QA, research)", icon: "🤖" },
 ];
 
 export default function ONasPage() {
@@ -27,12 +28,12 @@ export default function ONasPage() {
 
       <main className="flex-1 py-8">
         <div className="mx-auto max-w-[1000px] px-4 lg:px-6">
-          <PageHero
-            title="O FusionFinance"
-            subtitle="Agregujemy najlepsze polskie źródła finansowe w jednym eleganckim miejscu. Money, Bankier, Portal S24, IndependentTrader, eGospodarka, Obserwator."
-            eyebrow="Informacje"
-            badge="Polski agregator"
-          />
+        <PageHero
+          title="O FusionFinance"
+          subtitle="Jedno miejsce do monitorowania rynków, finansów osobistych i inwestycji. Kuratorujemy wiarygodne źródła, dbamy o jakość danych i estetykę interfejsu."
+          eyebrow="Informacje"
+          badge="Polski agregator"
+        />
 
           {/* Mission */}
           <motion.div
@@ -45,11 +46,24 @@ export default function ONasPage() {
               <span>🎯</span> Nasza misja
             </h2>
             <p className="text-[#a1a1aa] leading-relaxed">
-              FusionFinance powstał z potrzeby posiadania jednego, eleganckiego miejsca do śledzenia 
-              wszystkich informacji finansowych. Agregujemy newsy z najlepszych polskich portali, 
-              prezentujemy aktualne kursy walut z NBP, notowania giełdowe i kryptowaluty. 
-              Wszystko w luksusowym, ciemnym interfejsie zaprojektowanym z myślą o profesjonalistach.
+              FusionFinance powstał, by łączyć wiarygodne dane rynkowe z nowoczesnym doświadczeniem użytkownika. Stawiamy
+              na przejrzystość, szybkość i konsekwentny design premium, tak by analitycy, inwestorzy i pasjonaci finansów
+              mogli pracować na sprawdzonych informacjach w jednym miejscu.
             </p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 text-sm text-[#a1a1aa]">
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <p className="text-[#c9a962] text-xs uppercase tracking-[0.1em] mb-1">Wiarygodność</p>
+                <p>Kuracja źródeł, jasne atrybucje, walidacja feedów i alarmy na wypadek błędów danych.</p>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <p className="text-[#c9a962] text-xs uppercase tracking-[0.1em] mb-1">Dostępność</p>
+                <p>UX mobile-first, kontrasty AA, klawiatura i skróty, tryb oszczędzania danych.</p>
+              </div>
+              <div className="bg-white/5 border border-white/10 rounded-xl p-4">
+                <p className="text-[#c9a962] text-xs uppercase tracking-[0.1em] mb-1">Bezpieczeństwo</p>
+                <p>Rate limiting, sanity checks dla API, monitorowanie uptime i logów anomalii.</p>
+              </div>
+            </div>
           </motion.div>
 
           {/* Features Grid */}
@@ -60,12 +74,12 @@ export default function ONasPage() {
             className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12"
           >
             {[
-              { icon: "📰", title: "Agregacja newsów", desc: "Z 6+ wiodących portali" },
-              { icon: "💹", title: "Kursy walut", desc: "Dane z NBP w czasie rzeczywistym" },
-              { icon: "📊", title: "Notowania GPW", desc: "WIG20, mWIG40 i więcej" },
-              { icon: "₿", title: "Kryptowaluty", desc: "Bitcoin, Ethereum i altcoiny" },
-              { icon: "🧮", title: "Kalkulatory", desc: "Procent składany, kredyty, ROI" },
-              { icon: "📱", title: "PWA", desc: "Działa offline, można instalować" },
+              { icon: "📰", title: "Agregacja newsów", desc: "Kuracja wiodących portali, de-duplikacja, tagowanie" },
+              { icon: "💹", title: "Kursy walut i stopy", desc: "NBP + wskaźniki makro, cache z walidacją" },
+              { icon: "📊", title: "Notowania GPW", desc: "WIG20, mWIG40, głębokie kategorie i filtry" },
+              { icon: "₿", title: "Kryptowaluty", desc: "BTC, ETH, altcoiny, wyceny w PLN i USD" },
+              { icon: "🧮", title: "Kalkulatory", desc: "Kredyt, procent składany, ROI, hedging FX" },
+              { icon: "📱", title: "PWA 2026", desc: "Pełny offline + push, produkcja do końca 2026" },
             ].map((feature, i) => (
               <div key={i} className="bg-[#0c0d10] border border-white/5 rounded-xl p-5 hover:border-[#c9a962]/20 transition-colors">
                 <span className="text-2xl mb-2 block">{feature.icon}</span>
@@ -80,17 +94,17 @@ export default function ONasPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="mb-12"
-          >
-            <h2 className="text-lg font-medium text-[#f4f4f5] mb-6 flex items-center gap-2">
-              <span>📅</span> Historia projektu
-            </h2>
-            <Timeline items={TIMELINE_EVENTS} />
-          </motion.div>
+          className="mb-12"
+        >
+          <h2 className="text-lg font-medium text-[#f4f4f5] mb-6 flex items-center gap-2">
+            <span>📅</span> Historia projektu
+          </h2>
+          <Timeline items={TIMELINE_EVENTS} />
+        </motion.div>
 
-          {/* Team */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
+        {/* Team */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
             className="mb-12"

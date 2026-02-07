@@ -6,12 +6,10 @@ import ShareButtons from "@/components/ShareButtons";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { FALLBACK_ARTICLES } from "@/data/articles-fallback";
 
-const isStaticExport = process.env.STATIC_EXPORT === "true";
-export const dynamic = "force-dynamic";
-export const dynamicParams = true;
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
-  return [];
+  return FALLBACK_ARTICLES.map(article => ({ slug: article.slug }));
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
@@ -42,13 +40,6 @@ async function fetchArticle(slug: string, baseUrl: string): Promise<ArticlePaylo
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (isStaticExport) {
-    return {
-      title: "Artykuł | FusionFinance",
-      description: "Wersja statyczna nie renderuje dynamicznych artykułów.",
-    };
-  }
-
   const baseUrl = BASE_URL;
   try {
     const data = await fetchArticle(slug, baseUrl);
@@ -102,33 +93,6 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  if (isStaticExport) {
-    return (
-      <main className="min-h-screen bg-[#08090c]">
-        <Navbar />
-        <div className="mx-auto max-w-4xl px-5 lg:px-8 py-14 text-center space-y-6">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 text-[#c9a962] text-xs uppercase tracking-[0.12em]">
-            Wersja statyczna
-          </div>
-          <h1 className="font-serif text-3xl lg:text-4xl text-[#f4f4f5] font-medium">
-            Artykuły dynamiczne dostępne tylko w pełnej wersji serwera
-          </h1>
-          <p className="text-[#a1a1aa] max-w-2xl mx-auto">
-            Ta instancja została zbudowana jako statyczna na potrzeby hostingu współdzielonego. 
-            Aby przeczytać artykuły z pełnymi danymi, skorzystaj z wersji dynamicznej lub przejdź na stronę główną.
-          </p>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center px-5 py-3 bg-[#c9a962] text-[#08090c] rounded-xl font-medium hover:bg-[#e4d4a5] transition-colors"
-          >
-            Wróć na stronę główną
-          </a>
-        </div>
-        <Footer />
-      </main>
-    );
-  }
-
   const baseUrl = BASE_URL;
   let article: ArticlePayload["item"];
 
