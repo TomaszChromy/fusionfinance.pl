@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ShareButtons from "@/components/ShareButtons";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import { FALLBACK_ARTICLES } from "@/data/articles-fallback";
 
 const isStaticExport = process.env.STATIC_EXPORT === "true";
 export const dynamic = "force-dynamic";
@@ -39,7 +40,8 @@ async function fetchArticle(slug: string, baseUrl: string): Promise<ArticlePaylo
   return res.json();
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   if (isStaticExport) {
     return {
       title: "Artykuł | FusionFinance",
@@ -49,7 +51,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   const baseUrl = BASE_URL;
   try {
-    const data = await fetchArticle(params.slug, baseUrl);
+    const data = await fetchArticle(slug, baseUrl);
     const article = data.item;
     if (!article) return {};
 
@@ -76,11 +78,30 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       },
     };
   } catch {
-    return {};
+    const fallback = FALLBACK_ARTICLES.find(a => a.slug === slug);
+    if (!fallback) return {};
+    return {
+      title: fallback.title,
+      description: fallback.summary?.slice(0, 160),
+      openGraph: {
+        title: fallback.title,
+        description: fallback.summary?.slice(0, 160),
+        url: `${BASE_URL}/artykuly/${fallback.slug}`,
+        images: fallback.coverImage ? [{ url: fallback.coverImage, width: 1200, height: 630, alt: fallback.title }] : undefined,
+        type: "article",
+      },
+      twitter: {
+        card: "summary_large_image",
+        title: fallback.title,
+        description: fallback.summary?.slice(0, 160),
+        images: fallback.coverImage ? [fallback.coverImage] : undefined,
+      },
+    };
   }
 }
 
-export default async function ArticlePage({ params }: { params: { slug: string } }) {
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   if (isStaticExport) {
     return (
       <main className="min-h-screen bg-[#08090c]">
@@ -112,10 +133,11 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   let article: ArticlePayload["item"];
 
   try {
-    const data = await fetchArticle(params.slug, baseUrl);
+    const data = await fetchArticle(slug, baseUrl);
     article = data.item;
   } catch {
-    article = undefined;
+    const fallback = FALLBACK_ARTICLES.find(a => a.slug === slug);
+    article = fallback ? { id: fallback.slug, ...fallback } : undefined;
   }
 
   if (!article) {
