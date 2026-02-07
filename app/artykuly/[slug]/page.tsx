@@ -5,14 +5,15 @@ import Footer from "@/components/Footer";
 import ShareButtons from "@/components/ShareButtons";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
-export const dynamicParams = false;
+const isStaticExport = process.env.STATIC_EXPORT === "true";
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 export async function generateStaticParams() {
-  return [{ slug: "placeholder" }];
+  return [];
 }
 
-const isStaticExport = process.env.STATIC_EXPORT === "true";
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://fusionfinance.pl";
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
 interface ArticlePayload {
   item?: {
