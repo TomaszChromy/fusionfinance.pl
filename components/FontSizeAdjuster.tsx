@@ -23,26 +23,24 @@ export default function FontSizeAdjuster({
   defaultSize = 16,
   className = "",
 }: FontSizeAdjusterProps) {
-  const [fontSize, setFontSize] = useState(defaultSize);
-  const [mounted, setMounted] = useState(false);
-
-  // Load saved font size
-  useEffect(() => {
-    setMounted(true);
+  const [fontSize, setFontSize] = useState(() => {
+    if (typeof window === "undefined") return defaultSize;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const size = parseInt(saved, 10);
         if (size >= minSize && size <= maxSize) {
-          setFontSize(size);
+          return size;
         }
       }
     } catch {}
-  }, [minSize, maxSize]);
+    return defaultSize;
+  });
+  const mounted = typeof window !== "undefined";
 
   // Apply font size to target elements
   useEffect(() => {
-    if (!mounted) return;
+    if (typeof document === "undefined") return;
     
     const elements = document.querySelectorAll(targetSelector);
     elements.forEach((el) => {
@@ -53,7 +51,7 @@ export default function FontSizeAdjuster({
     try {
       localStorage.setItem(STORAGE_KEY, fontSize.toString());
     } catch {}
-  }, [fontSize, targetSelector, mounted]);
+  }, [fontSize, targetSelector]);
 
   const decrease = () => {
     setFontSize((prev) => Math.max(minSize, prev - step));
@@ -110,16 +108,15 @@ export default function FontSizeAdjuster({
 
 // Compact version with just icon buttons
 export function FontSizeButtons({ className = "" }: { className?: string }) {
-  const [fontSize, setFontSize] = useState(16);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
+  const [fontSize, setFontSize] = useState(() => {
+    if (typeof window === "undefined") return 16;
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
-      if (saved) setFontSize(parseInt(saved, 10));
+      if (saved) return parseInt(saved, 10);
     } catch {}
-  }, []);
+    return 16;
+  });
+  const mounted = typeof window !== "undefined";
 
   useEffect(() => {
     if (!mounted) return;
@@ -151,4 +148,3 @@ export function FontSizeButtons({ className = "" }: { className?: string }) {
     </div>
   );
 }
-

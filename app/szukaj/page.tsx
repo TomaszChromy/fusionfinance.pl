@@ -11,10 +11,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { NoSearchResults } from "@/components/EmptyState";
 import { CardSkeleton } from "@/components/Skeleton";
-import { ChipGroup } from "@/components/Chip";
 import Badge from "@/components/Badge";
 import { SourceAvatar } from "@/components/Avatar";
 import SearchSuggestions from "@/components/SearchSuggestions";
+import PageHero from "@/components/PageHero";
 
 interface SearchResult {
   title: string;
@@ -199,7 +199,7 @@ function SearchContent() {
         <div className="space-y-4">
           <p className="text-sm text-[#71717a] mb-6">
             Znaleziono <span className="text-[#c9a962] font-medium">{filteredResults.length}</span> wyników
-            {query && <> dla "{query}"</>}
+            {query && <> dla &ldquo;{query}&rdquo;</>}
             {category !== "all" && <> w kategorii <span className="text-[#c9a962]">{category}</span></>}
           </p>
           {filteredResults.map((result, index) => {
@@ -260,13 +260,12 @@ export default function SearchPage() {
     <main className="min-h-screen bg-[#08090c]">
       <Navbar />
       <div className="mx-auto max-w-[1000px] px-4 lg:px-6 py-8 lg:py-12">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="w-[55px] h-[3px] bg-gradient-to-r from-[#c9a962] to-[#9a7b3c] rounded-full" />
-          </div>
-          <h1 className="font-serif text-3xl lg:text-4xl font-medium text-[#f4f4f5]">Wyszukiwarka</h1>
-          <p className="text-[#a1a1aa] mt-2">Przeszukaj wszystkie artykuły finansowe</p>
-        </motion.div>
+        <PageHero
+          title="Wyszukiwarka"
+          subtitle="Przeszukaj wszystkie artykuły finansowe z Money, Bankier, S24, IndependentTrader, eGospodarka, Obserwator."
+          eyebrow="Narzędzia"
+          badge="Agregator PL"
+        />
         <Suspense fallback={<div className="animate-pulse h-96 bg-white/5 rounded-xl" />}>
           <SearchContent />
         </Suspense>
@@ -275,4 +274,3 @@ export default function SearchPage() {
     </main>
   );
 }
-

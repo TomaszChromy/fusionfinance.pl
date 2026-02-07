@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-import crypto from "crypto";
+import { getPlnRates } from "@/lib/rates";
+import { auth } from "@/lib/auth";
+import { hasFeatureAccess } from "@/lib/features";
 
 /**
  * GET /api/v1/quotes
@@ -9,6 +11,15 @@ import crypto from "crypto";
  */
 export async function GET(request: NextRequest) {
   try {
+    const session = await auth();
+    const canUseApi = await hasFeatureAccess(session?.user?.id, "api.quotes");
+    if (!canUseApi) {
+      return NextResponse.json(
+        { error: "API dostępne tylko w planie BASIC/PRO. Zaloguj się i ulepsz plan." },
+        { status: 402 }
+      );
+    }
+
     const { searchParams } = new URL(request.url);
     const apiKey = searchParams.get("apiKey");
     const pairs = searchParams.get("pairs") || "EUR/PLN,USD/PLN,GBP/PLN";
@@ -51,14 +62,47 @@ export async function GET(request: NextRequest) {
     // Zaloguj użycie API
     const startTime = Date.now();
 
-    // TODO: Pobierz rzeczywiste dane kursów z RSS lub bazy
-    // Na razie zwrócę mock data
-    const quotes = pairs.split(",").map((pair) => ({
-      pair: pair.trim(),
-      bid: (Math.random() * 5 + 3).toFixed(4),
-      ask: (Math.random() * 5 + 3.1).toFixed(4),
-      timestamp: new Date().toISOString(),
-    }));
+    const { rates, fetchedAt, source } = await getPlnRates();
+
+    const quotes = pairs.split(",").map((pairRaw) => {
+      const pair = pairRaw.trim().toUpperCase();
+      const [base, quote] = pair.split("/");
+
+      if (!base || !quote) {
+        return {
+          pair,
+          error: "Invalid pair format. Use BASE/QUOTE, e.g., EUR/PLN",
+        };
+      }
+
+      // We primarily support */PLN and PLN/* conversions
+      let mid: number | null = null;
+      if (quote === "PLN" && rates[base]) {
+        mid = rates[base];
+      } else if (base === "PLN" && rates[quote]) {
+        mid = 1 / rates[quote];
+      }
+
+      if (mid === null) {
+        return {
+          pair,
+          error: "Pair not supported",
+        };
+      }
+
+      const spread = mid * 0.0015; // ~0.15% spread
+      const bid = +(mid - spread).toFixed(4);
+      const ask = +(mid + spread).toFixed(4);
+
+      return {
+        pair,
+        bid,
+        ask,
+        mid: +mid.toFixed(4),
+        timestamp: fetchedAt,
+        source,
+      };
+    });
 
     const responseTime = Date.now() - startTime;
 

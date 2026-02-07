@@ -27,15 +27,9 @@ export default function RiskMeter({
   className = "",
 }: RiskMeterProps) {
   const [displayValue, setDisplayValue] = useState(0);
-  const [mounted, setMounted] = useState(false);
   const risk = useMemo(() => getRiskLevel(value), [value]);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!mounted) return;
     const duration = 1000;
     const steps = 60;
     const increment = value / steps;
@@ -50,9 +44,7 @@ export default function RiskMeter({
       }
     }, duration / steps);
     return () => clearInterval(interval);
-  }, [value, mounted]);
-
-  if (!mounted) return null;
+  }, [value]);
 
   if (variant === "compact") {
     return (
@@ -180,4 +172,3 @@ export default function RiskMeter({
     </div>
   );
 }
-

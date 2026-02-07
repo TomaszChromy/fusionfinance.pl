@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { motion, useInView, useSpring, useTransform } from "framer-motion";
 
 interface AnimatedCounterProps {
@@ -24,7 +24,7 @@ export default function AnimatedCounter({
 }: AnimatedCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [hasAnimated, setHasAnimated] = useState(false);
+  const hasAnimatedRef = useRef(false);
 
   const spring = useSpring(0, {
     stiffness: 50,
@@ -45,11 +45,11 @@ export default function AnimatedCounter({
   });
 
   useEffect(() => {
-    if (isInView && !hasAnimated) {
+    if (isInView && !hasAnimatedRef.current) {
       spring.set(value);
-      setHasAnimated(true);
+      hasAnimatedRef.current = true;
     }
-  }, [isInView, value, spring, hasAnimated]);
+  }, [isInView, value, spring]);
 
   return (
     <span ref={ref} className={className}>
@@ -131,4 +131,3 @@ export function PercentageCounter({
     </div>
   );
 }
-

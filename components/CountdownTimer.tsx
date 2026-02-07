@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 
 interface CountdownTimerProps {
   targetDate: Date;
@@ -34,6 +34,28 @@ function calculateTimeLeft(targetDate: Date): TimeLeft {
   };
 }
 
+type TimeUnitVariant = {
+  textSize: string;
+  padding: string;
+  labelSize: string;
+};
+
+const TimeUnit = ({ value, label, variant }: { value: number; label: string; variant: TimeUnitVariant }) => (
+  <div className="flex flex-col items-center">
+    <motion.div
+      key={value}
+      initial={{ y: -10, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      className={`font-mono font-bold ${variant.textSize} text-[#f4f4f5] bg-[#0c0d10] border border-white/10 rounded-lg ${variant.padding}`}
+    >
+      {value.toString().padStart(2, "0")}
+    </motion.div>
+    <span className={`text-[#71717a] uppercase tracking-wider mt-1 ${variant.labelSize}`}>
+      {label}
+    </span>
+  </div>
+);
+
 export default function CountdownTimer({
   targetDate,
   title,
@@ -42,13 +64,11 @@ export default function CountdownTimer({
   variant = "default",
   className = "",
 }: CountdownTimerProps) {
-  const [timeLeft, setTimeLeft] = useState<TimeLeft>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [isClient, setIsClient] = useState(false);
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
+    calculateTimeLeft(targetDate)
+  );
 
   useEffect(() => {
-    setIsClient(true);
-    setTimeLeft(calculateTimeLeft(targetDate));
-
     const timer = setInterval(() => {
       const newTimeLeft = calculateTimeLeft(targetDate);
       setTimeLeft(newTimeLeft);
@@ -62,28 +82,15 @@ export default function CountdownTimer({
     return () => clearInterval(timer);
   }, [targetDate, onComplete]);
 
-  if (!isClient) return null;
-
-  const TimeUnit = ({ value, label }: { value: number; label: string }) => (
-    <div className="flex flex-col items-center">
-      <motion.div
-        key={value}
-        initial={{ y: -10, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        className={`font-mono font-bold ${
-          variant === "compact" ? "text-xl" : variant === "minimal" ? "text-lg" : "text-3xl"
-        } text-[#f4f4f5] bg-[#0c0d10] border border-white/10 rounded-lg ${
-          variant === "compact" ? "px-2 py-1" : variant === "minimal" ? "px-1.5 py-0.5" : "px-4 py-2"
-        }`}
-      >
-        {value.toString().padStart(2, "0")}
-      </motion.div>
-      <span className={`text-[#71717a] uppercase tracking-wider mt-1 ${
-        variant === "minimal" ? "text-[8px]" : "text-[10px]"
-      }`}>
-        {label}
-      </span>
-    </div>
+  const timeUnitVariant = useMemo(
+    () => ({
+      textSize:
+        variant === "compact" ? "text-xl" : variant === "minimal" ? "text-lg" : "text-3xl",
+      padding:
+        variant === "compact" ? "px-2 py-1" : variant === "minimal" ? "px-1.5 py-0.5" : "px-4 py-2",
+      labelSize: variant === "minimal" ? "text-[8px]" : "text-[10px]",
+    }),
+    [variant]
   );
 
   if (variant === "minimal") {
@@ -109,13 +116,13 @@ export default function CountdownTimer({
       )}
       
       <div className="flex items-center justify-center gap-3">
-        <TimeUnit value={timeLeft.days} label="Dni" />
+        <TimeUnit value={timeLeft.days} label="Dni" variant={timeUnitVariant} />
         <span className="text-2xl text-[#c9a962] font-bold">:</span>
-        <TimeUnit value={timeLeft.hours} label="Godz" />
+        <TimeUnit value={timeLeft.hours} label="Godz" variant={timeUnitVariant} />
         <span className="text-2xl text-[#c9a962] font-bold">:</span>
-        <TimeUnit value={timeLeft.minutes} label="Min" />
+        <TimeUnit value={timeLeft.minutes} label="Min" variant={timeUnitVariant} />
         <span className="text-2xl text-[#c9a962] font-bold">:</span>
-        <TimeUnit value={timeLeft.seconds} label="Sek" />
+        <TimeUnit value={timeLeft.seconds} label="Sek" variant={timeUnitVariant} />
       </div>
     </div>
   );
@@ -164,4 +171,3 @@ export function EventCountdown({
     </div>
   );
 }
-

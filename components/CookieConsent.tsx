@@ -1,23 +1,17 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 
 const COOKIE_CONSENT_KEY = "fusionfinance_cookie_consent";
 
 export default function CookieConsent() {
-  const [isVisible, setIsVisible] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    setIsLoaded(true);
+  const [isVisible, setIsVisible] = useState<boolean>(() => {
+    if (typeof window === "undefined") return false;
     const consent = localStorage.getItem(COOKIE_CONSENT_KEY);
-    if (!consent) {
-      // Delay showing the banner for better UX
-      setTimeout(() => setIsVisible(true), 1500);
-    }
-  }, []);
+    return !consent;
+  });
 
   const acceptAll = () => {
     localStorage.setItem(COOKIE_CONSENT_KEY, JSON.stringify({
@@ -38,8 +32,6 @@ export default function CookieConsent() {
     }));
     setIsVisible(false);
   };
-
-  if (!isLoaded) return null;
 
   return (
     <AnimatePresence>
@@ -101,4 +93,3 @@ export default function CookieConsent() {
     </AnimatePresence>
   );
 }
-

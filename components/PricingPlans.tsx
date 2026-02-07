@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Card from "./Card";
-import Button from "./Button";
 import { useState } from "react";
 
 interface PricingPlan {
@@ -119,7 +118,6 @@ const pricingPlans: PricingPlan[] = [
 ];
 
 export default function PricingPlans() {
-  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleSubscribe = async (planId: string) => {
@@ -179,7 +177,7 @@ export default function PricingPlans() {
 
       {/* Pricing Cards Grid */}
       <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {pricingPlans.map((plan, index) => (
+        {pricingPlans.map((plan) => (
           <motion.div
             key={plan.id}
             variants={itemVariants}

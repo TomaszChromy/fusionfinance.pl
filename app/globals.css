@@ -17,6 +17,11 @@
    ============================================ */
 
 :root {
+  /* Golden ratio scale */
+  --phi: 1.618;
+  --phi-gap: calc(1rem * 1.618);
+  --phi-gap-lg: calc(1rem * 1.618 * 1.25);
+
   /* Luxury Dark Theme */
   --bg-primary: #08090c;
   --bg-secondary: #0f1115;

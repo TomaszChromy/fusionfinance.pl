@@ -6,7 +6,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { CardSkeleton } from "./Skeleton";
 import { SourceAvatar } from "./Avatar";
-import Badge from "./Badge";
 
 interface RSSItem {
   title: string;
@@ -17,6 +16,14 @@ interface RSSItem {
   source: string;
   category?: string;
   image?: string;
+}
+
+interface RSSFeaturedProps {
+  feedType?: string;
+  limit?: number;
+  title?: string;
+  description?: string;
+  eyebrow?: string;
 }
 
 // HD obrazy kategoryzowane tematycznie
@@ -143,7 +150,13 @@ function createArticleUrl(article: RSSItem, index: number): string {
   return `/artykul/?${params.toString()}`;
 }
 
-export default function RSSFeatured() {
+export default function RSSFeatured({
+  feedType = "all",
+  limit = 6,
+  title = "Wyróżnione artykuły",
+  description = "Najważniejsze informacje ze świata finansów",
+  eyebrow = "Top news",
+}: RSSFeaturedProps) {
   const [articles, setArticles] = useState<RSSItem[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -152,7 +165,7 @@ export default function RSSFeatured() {
       try {
         // Use Next.js API on port 3000, PHP API on static export
         const { getRssApiUrl } = await import("@/lib/api");
-        const apiUrl = getRssApiUrl("all", 6);
+        const apiUrl = getRssApiUrl(feedType, limit);
         const response = await fetch(apiUrl);
         if (response.ok) {
           const data = await response.json();
@@ -164,7 +177,7 @@ export default function RSSFeatured() {
       setLoading(false);
     }
     loadArticles();
-  }, []);
+  }, [feedType, limit]);
 
   if (loading) {
     return (
@@ -192,8 +205,9 @@ export default function RSSFeatured() {
         <div className="flex items-center gap-3">
           <div className="w-1 h-8 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
           <div>
-            <h2 className="text-xl lg:text-2xl font-serif font-medium text-[#f4f4f5] tracking-tight">Wyróżnione artykuły</h2>
-            <p className="text-xs text-[#71717a] mt-0.5">Najważniejsze informacje ze świata finansów</p>
+            <p className="text-[11px] uppercase tracking-[0.14em] text-[#c9a962]">{eyebrow}</p>
+            <h2 className="text-xl lg:text-2xl font-serif font-medium text-[#f4f4f5] tracking-tight">{title}</h2>
+            <p className="text-xs text-[#71717a] mt-0.5">{description}</p>
           </div>
         </div>
         <div className="hidden md:flex items-center gap-3">
@@ -341,4 +355,3 @@ export default function RSSFeatured() {
     </section>
   );
 }
-

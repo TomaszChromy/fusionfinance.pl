@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import Timeline from "@/components/Timeline";
 import SocialProof from "@/components/SocialProof";
 import Testimonials from "@/components/Testimonials";
+import PageHero from "@/components/PageHero";
 
 const TIMELINE_EVENTS = [
   { id: "1", date: "2024 Q1", title: "Powstanie projektu", description: "Start prac nad FusionFinance jako agregator newsów finansowych" },
@@ -26,19 +27,12 @@ export default function ONasPage() {
 
       <main className="flex-1 py-8">
         <div className="mx-auto max-w-[1000px] px-4 lg:px-6">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-3xl lg:text-4xl font-serif font-medium text-[#f4f4f5] mb-3">
-              O <span className="bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">FusionFinance</span>
-            </h1>
-            <p className="text-[#71717a] text-sm max-w-lg mx-auto">
-              Twój osobisty agregator wiadomości finansowych. Wszystko w jednym miejscu.
-            </p>
-          </motion.div>
+          <PageHero
+            title="O FusionFinance"
+            subtitle="Agregujemy najlepsze polskie źródła finansowe w jednym eleganckim miejscu. Money, Bankier, Portal S24, IndependentTrader, eGospodarka, Obserwator."
+            eyebrow="Informacje"
+            badge="Polski agregator"
+          />
 
           {/* Mission */}
           <motion.div
@@ -139,4 +133,3 @@ export default function ONasPage() {
     </div>
   );
 }
-

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
     // Oblicz datę rozpoczęcia
     const now = new Date();
-    let startDate = new Date();
+    const startDate = new Date();
 
     switch (range) {
       case "1d":

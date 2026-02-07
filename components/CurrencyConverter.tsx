@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface Currency {
   code: string;
@@ -20,54 +20,73 @@ const CURRENCIES: Currency[] = [
   { code: "NOK", name: "Korona norweska", flag: "🇳🇴" },
 ];
 
-// Mock exchange rates (in production, fetch from API)
 const MOCK_RATES: Record<string, number> = {
   PLN: 1,
-  EUR: 0.22,
-  USD: 0.24,
-  GBP: 0.19,
-  CHF: 0.21,
-  JPY: 36.5,
-  CZK: 5.6,
-  NOK: 2.6,
+  EUR: 4.32,
+  USD: 3.95,
+  GBP: 5.02,
+  CHF: 4.46,
+  JPY: 0.027,
+  CZK: 0.18,
+  NOK: 0.35,
 };
 
 interface CurrencyConverterProps {
   className?: string;
 }
 
+const CurrencySelect = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
+  <select
+    value={value}
+    onChange={(e) => onChange(e.target.value)}
+    className="bg-[#08090c] border border-white/10 rounded-lg px-3 py-2 text-sm text-[#f4f4f5] focus:border-[#c9a962]/50 outline-none cursor-pointer"
+  >
+    {CURRENCIES.map((c) => (
+      <option key={c.code} value={c.code}>
+        {c.flag} {c.code}
+      </option>
+    ))}
+  </select>
+);
+
 export default function CurrencyConverter({ className = "" }: CurrencyConverterProps) {
   const [amount, setAmount] = useState<string>("100");
   const [fromCurrency, setFromCurrency] = useState("PLN");
   const [toCurrency, setToCurrency] = useState("EUR");
-  const [result, setResult] = useState<number>(0);
+  const [rates, setRates] = useState<Record<string, number>>(MOCK_RATES);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    let isMounted = true;
+    const load = async () => {
+      try {
+        setLoading(true);
+        const res = await fetch("/api/forex?symbols=PLN,EUR,USD,GBP,CHF,JPY,CZK,NOK", { cache: "no-store" });
+        const data = await res.json();
+        if (isMounted && data?.rates) {
+          setRates(prev => ({ ...prev, ...data.rates }));
+        }
+      } catch (error) {
+        console.error("Forex fetch error:", error);
+      } finally {
+        if (isMounted) setLoading(false);
+      }
+    };
+    load();
+    return () => { isMounted = false; };
+  }, []);
+  const result = useMemo(() => {
     const numAmount = parseFloat(amount) || 0;
-    const fromRate = MOCK_RATES[fromCurrency];
-    const toRate = MOCK_RATES[toCurrency];
-    const converted = (numAmount / fromRate) * toRate;
-    setResult(converted);
-  }, [amount, fromCurrency, toCurrency]);
+    const fromRate = rates[fromCurrency] ?? 1;
+    const toRate = rates[toCurrency] ?? 1;
+    const amountInPln = numAmount * fromRate; // rates are wyrażone w PLN
+    return amountInPln / toRate;
+  }, [amount, fromCurrency, toCurrency, rates]);
 
   const swapCurrencies = () => {
     setFromCurrency(toCurrency);
     setToCurrency(fromCurrency);
   };
-
-  const CurrencySelect = ({ value, onChange }: { value: string; onChange: (v: string) => void }) => (
-    <select
-      value={value}
-      onChange={(e) => onChange(e.target.value)}
-      className="bg-[#08090c] border border-white/10 rounded-lg px-3 py-2 text-sm text-[#f4f4f5] focus:border-[#c9a962]/50 outline-none cursor-pointer"
-    >
-      {CURRENCIES.map((c) => (
-        <option key={c.code} value={c.code}>
-          {c.flag} {c.code}
-        </option>
-      ))}
-    </select>
-  );
 
   return (
     <div className={`bg-[#0c0d10] border border-white/5 rounded-xl p-5 ${className}`}>
@@ -109,7 +128,7 @@ export default function CurrencyConverter({ className = "" }: CurrencyConverterP
 
       {/* To */}
       <div className="mb-4">
-        <label className="text-[10px] text-[#71717a] uppercase tracking-wider mb-1.5 block">Wynik</label>
+        <label className="text-[10px] text-[#71717a] uppercase tracking-wider mb-1.5 block">Wynik {loading ? "(ładowanie kursów...)" : ""}</label>
         <div className="flex gap-2">
           <div className="flex-1 bg-[#08090c] border border-white/10 rounded-lg px-3 py-2">
             <motion.span
@@ -127,9 +146,8 @@ export default function CurrencyConverter({ className = "" }: CurrencyConverterP
 
       {/* Exchange Rate Info */}
       <div className="text-center text-xs text-[#52525b]">
-        1 {fromCurrency} = {(MOCK_RATES[toCurrency] / MOCK_RATES[fromCurrency]).toFixed(4)} {toCurrency}
+        1 {fromCurrency} = {(rates[fromCurrency] && rates[toCurrency] ? (rates[fromCurrency] / rates[toCurrency]) : 1).toFixed(4)} {toCurrency}
       </div>
     </div>
   );
 }
-

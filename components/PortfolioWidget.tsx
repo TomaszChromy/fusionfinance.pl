@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface PortfolioItem {
   symbol: string;
@@ -25,14 +25,7 @@ interface PortfolioWidgetProps {
 }
 
 export default function PortfolioWidget({ variant = "default", className = "" }: PortfolioWidgetProps) {
-  const [portfolio, setPortfolio] = useState<PortfolioItem[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    // In real app, load from localStorage or API
-    setPortfolio(MOCK_PORTFOLIO);
-    setIsLoaded(true);
-  }, []);
+  const [portfolio] = useState<PortfolioItem[]>(() => MOCK_PORTFOLIO);
 
   const totalValue = portfolio.reduce((acc, item) => acc + item.quantity * item.currentPrice, 0);
   const totalCost = portfolio.reduce((acc, item) => acc + item.quantity * item.buyPrice, 0);
@@ -127,4 +120,3 @@ export default function PortfolioWidget({ variant = "default", className = "" }:
     </div>
   );
 }
-

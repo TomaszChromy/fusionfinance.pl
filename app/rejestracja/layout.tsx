@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Rejestracja - Załóż Konto",
-  description: "Załóż darmowe konto na FusionFinance.pl. Alerty cenowe, watchlist, ulubione artykuły i newsletter.",
+  description: "Załóż darmowe konto na FusionFinance.pl. Alerty cenowe, watchlist i ulubione artykuły.",
   robots: { index: true, follow: true },
   alternates: {
     canonical: "https://fusionfinance.pl/rejestracja",
@@ -12,4 +12,3 @@ export const metadata: Metadata = {
 export default function RejestracjaLayout({ children }: { children: React.ReactNode }) {
   return children;
 }
-

@@ -9,9 +9,9 @@ import ScrollToTop from "@/components/ScrollToTop";
 import OfflineIndicator from "@/components/OfflineIndicator";
 import KeyboardShortcuts from "@/components/KeyboardShortcuts";
 import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
+import DevCacheReset from "@/components/DevCacheReset";
 import { ToastProvider } from "@/components/Toast";
 import Providers from "@/components/Providers";
-import FinancialChatbot from "@/components/FinancialChatbot";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -277,7 +277,7 @@ export default function RootLayout({
       >
         <Providers>
           <ToastProvider>
-            <ServiceWorkerRegistration />
+            {process.env.NODE_ENV === "production" ? <ServiceWorkerRegistration /> : <DevCacheReset />}
             <OfflineIndicator />
             <KeyboardShortcuts />
             <TopBanner />
@@ -285,7 +285,6 @@ export default function RootLayout({
             {children}
             <CookieConsent />
             <ScrollToTop />
-            <FinancialChatbot />
             <SpeedInsights />
           </ToastProvider>
         </Providers>

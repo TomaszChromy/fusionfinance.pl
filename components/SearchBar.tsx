@@ -179,7 +179,7 @@ export default function SearchBar({ onClose, isOpen = true }: SearchBarProps) {
                 onClick={handleSearch}
                 className="w-full py-2 text-center text-sm text-[#c9a962] hover:text-[#e4d4a5] transition-colors"
               >
-                Zobacz wszystkie wyniki dla "{query}" →
+                Zobacz wszystkie wyniki dla &ldquo;{query}&rdquo; →
               </button>
             </div>
           </motion.div>
@@ -188,4 +188,3 @@ export default function SearchBar({ onClose, isOpen = true }: SearchBarProps) {
     </div>
   );
 }
-

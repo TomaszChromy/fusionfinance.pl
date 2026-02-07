@@ -33,10 +33,12 @@ interface NotificationCenterProps {
 
 export default function NotificationCenter({ className = "" }: NotificationCenterProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<Notification[]>(() => MOCK_NOTIFICATIONS);
+  const [now, setNow] = useState(() => Date.now());
 
   useEffect(() => {
-    setNotifications(MOCK_NOTIFICATIONS);
+    const interval = setInterval(() => setNow(Date.now()), 60000);
+    return () => clearInterval(interval);
   }, []);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -52,7 +54,7 @@ export default function NotificationCenter({ className = "" }: NotificationCente
   };
 
   const formatTime = (date: Date) => {
-    const diff = Date.now() - date.getTime();
+    const diff = now - date.getTime();
     if (diff < 60000) return "Teraz";
     if (diff < 3600000) return `${Math.floor(diff / 60000)} min temu`;
     if (diff < 86400000) return `${Math.floor(diff / 3600000)} godz. temu`;
@@ -162,4 +164,3 @@ export default function NotificationCenter({ className = "" }: NotificationCente
     </div>
   );
 }
-

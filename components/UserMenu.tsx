@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function UserMenu() {
   const { data: session, status } = useSession();
@@ -49,10 +50,12 @@ export default function UserMenu() {
         className="flex items-center gap-2 p-1 rounded-full hover:bg-white/[0.05] transition-colors"
       >
         {session.user.image ? (
-          <img
+          <Image
             src={session.user.image}
             alt={session.user.name || "User"}
-            className="w-8 h-8 rounded-full object-cover border border-[#c9a962]/30"
+            width={32}
+            height={32}
+            className="rounded-full object-cover border border-[#c9a962]/30"
           />
         ) : (
           <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#c9a962] to-[#8b6914] flex items-center justify-center text-xs font-medium text-[#08090c]">
@@ -128,4 +131,3 @@ export default function UserMenu() {
     </div>
   );
 }
-

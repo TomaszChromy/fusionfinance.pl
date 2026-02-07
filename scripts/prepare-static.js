@@ -2,6 +2,7 @@
  * FusionFinance.pl - Prepare for Static Export
  * Tymczasowo przenosi API routes przed static build
  */
+/* eslint-disable @typescript-eslint/no-require-imports */
 
 const fs = require('fs');
 const path = require('path');
@@ -30,4 +31,3 @@ if (fs.existsSync(apiDir)) {
 }
 
 console.log('🚀 Gotowe do build:static');
-

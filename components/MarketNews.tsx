@@ -63,8 +63,9 @@ export default function MarketNews({
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Failed to fetch");
         const data = await response.json();
-        const items = (data.items?.slice(0, maxItems) || []).map((item: any) => ({
+        const items = (data.items?.slice(0, maxItems) || []).map((item: NewsItem) => ({
           ...item,
+          source: item.source || "default",
           link: getRssArticleLink(item.title, item.link),
           originalUrl: item.link,
         }));
@@ -163,4 +164,3 @@ export default function MarketNews({
     </div>
   );
 }
-

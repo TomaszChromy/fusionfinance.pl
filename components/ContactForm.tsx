@@ -18,13 +18,11 @@ interface FormErrors {
 }
 
 interface ContactFormProps {
-  variant?: "default" | "compact" | "inline";
   onSubmit?: (data: FormData) => void;
   className?: string;
 }
 
 export default function ContactForm({
-  variant = "default",
   onSubmit,
   className = "",
 }: ContactFormProps) {
@@ -166,4 +164,3 @@ export default function ContactForm({
     </form>
   );
 }
-

@@ -1,13 +1,13 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import MarketSidebar from "@/components/MarketSidebar";
-import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
 import Breadcrumbs from "@/components/Breadcrumbs";
+import PageHero from "@/components/PageHero";
 import { CategoryBadge } from "@/components/Badge";
-import { InfoTooltip } from "@/components/Tooltip";
+import NBPCurrencyTable from "@/components/NBPCurrencyTable";
+import CurrencyStrength from "@/components/CurrencyStrength";
+import PriceComparison from "@/components/PriceComparison";
 
 export default function WalutyPage() {
   return (
@@ -16,64 +16,42 @@ export default function WalutyPage() {
 
       <div className="mx-auto max-w-[1400px] px-5 lg:px-8 py-[34px]">
         <Breadcrumbs />
-        {/* Page header */}
-        <motion.div
-          initial={{ opacity: 0, y: 21 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-[34px]"
-        >
-          <div className="flex items-center gap-3 mb-[13px]">
-            <div className="w-[55px] h-[3px] bg-gradient-to-r from-[#60a5fa] to-[#3b82f6] rounded-full" />
-          </div>
-          <div className="flex items-center gap-3 mb-[13px]">
-            <h1 className="font-serif text-4xl lg:text-5xl font-medium text-[#f4f4f5]">Waluty</h1>
-            <CategoryBadge category="waluty" />
-          </div>
-          <p className="text-[15px] text-[#a1a1aa] max-w-2xl leading-relaxed">
-            Kursy walut NBP, FOREX, EUR/PLN, USD/PLN, GBP/PLN - najnowsze wiadomości walutowe
-          </p>
-        </motion.div>
+        <PageHero
+          title="Waluty"
+          subtitle="FX, PLN, EUR/USD, GBP, CHF – kursy, makro, hedging i nastroje na rynku walutowym."
+          eyebrow="Forex & PLN"
+          badge="Live"
+          accentFrom="#60a5fa"
+          accentTo="#3b82f6"
+          rightSlot={<CategoryBadge category="waluty" />}
+        />
 
-        {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12">
-          {/* Left column - Articles */}
-          <div>
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#60a5fa]/20">
-              <div className="flex items-center gap-3">
-                <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
-                <div>
-                  <h2 className="text-lg font-serif font-medium text-[#f4f4f5]">Wiadomości walutowe</h2>
-                  <p className="text-xs text-[#71717a] mt-0.5">Kursy walut NBP, FOREX, analizy</p>
-                </div>
-              </div>
-              <div className="hidden md:flex items-center gap-2 text-[10px] text-[#71717a] uppercase tracking-wider font-medium">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#60a5fa] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-[#60a5fa]"></span>
-                </span>
-                Na żywo
-                <InfoTooltip content="Artykuły aktualizowane automatycznie co 5 minut" />
-              </div>
-            </div>
+        <div className="space-y-8 lg:space-y-10">
+          <NBPCurrencyTable />
 
-            {/* Lista artykułów */}
-            <div className="bg-[#0c0d10] border border-white/5 rounded-2xl p-5 lg:p-8">
-              <RSSArticlesPaginated feedType="waluty" totalArticles={80} articlesPerPage={12} />
-            </div>
+          <div className="grid gap-6 lg:grid-cols-2">
+            <CurrencyStrength />
+            <PriceComparison />
           </div>
 
-          {/* Right column - Sidebar */}
-          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-1 h-7 bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
-              <div>
-                <h2 className="text-base font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
-                <p className="text-[10px] text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na żywo</p>
+          <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-r from-[#0c0d10] via-[#0f131c] to-[#0c0d10] p-5 lg:p-6">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_24%,rgba(96,165,250,0.12),transparent_38%)]" />
+            <div className="relative flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+              <div className="space-y-1">
+                <p className="text-[11px] uppercase tracking-[0.14em] text-[#60a5fa]">FX alert</p>
+                <h3 className="text-lg font-serif text-[#f4f4f5]">Ustaw progi na EUR/PLN, USD/PLN i inne pary</h3>
+                <p className="text-sm text-[#a1a1aa] max-w-2xl">
+                  Monitoruj ruchy PLN, dodaj pary walutowe do alertów i watchlisty. Powiadomienia lecą z naszego API bez konieczności logowania.
+                </p>
               </div>
+              <a
+                href="/alerty/"
+                className="px-4 py-2 rounded-lg bg-[#60a5fa] text-[#0b1220] text-sm font-semibold hover:brightness-110 transition"
+              >
+                Konfiguruj alert
+              </a>
             </div>
-            <MarketSidebar />
-          </aside>
+          </div>
         </div>
       </div>
 
@@ -81,4 +59,3 @@ export default function WalutyPage() {
     </main>
   );
 }
-

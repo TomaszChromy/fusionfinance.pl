@@ -1,10 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import MarketSidebar from "@/components/MarketSidebar";
-import RSSArticlesPaginated from "@/components/RSSArticlesPaginated";
+import ArticlesPaginated from "@/components/ArticlesPaginated";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import { CategoryBadge } from "@/components/Badge";
 import { InfoTooltip } from "@/components/Tooltip";
@@ -12,6 +10,8 @@ import Calculator from "@/components/Calculator";
 import Glossary from "@/components/Glossary";
 import RiskMeter from "@/components/RiskMeter";
 import PremiumAnalyses from "@/components/PremiumAnalyses";
+import EditorialArticles from "@/components/EditorialArticles";
+import PageHero from "@/components/PageHero";
 
 export default function AnalizyPage() {
   return (
@@ -20,24 +20,13 @@ export default function AnalizyPage() {
 
       <div className="mx-auto max-w-[1400px] px-5 lg:px-8 py-[34px]">
         <Breadcrumbs />
-        {/* Page header */}
-        <motion.div
-          initial={{ opacity: 0, y: 21 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="mb-[34px]"
-        >
-          <div className="flex items-center gap-3 mb-[13px]">
-            <div className="w-[55px] h-[3px] bg-gradient-to-r from-[#a78bfa] to-[#8b5cf6] rounded-full" />
-          </div>
-          <div className="flex items-center gap-3 mb-[13px]">
-            <h1 className="font-serif text-4xl lg:text-5xl font-medium text-[#f4f4f5]">Analizy</h1>
-            <CategoryBadge category="analizy" />
-          </div>
-          <p className="text-[15px] text-[#a1a1aa] max-w-2xl leading-relaxed">
-            Analizy fundamentalne i techniczne, prognozy rynkowe, rekomendacje inwestycyjne
-          </p>
-        </motion.div>
+        <PageHero
+          title="Analizy"
+          subtitle="Fundamentalne i techniczne, prognozy, rekomendacje – w stylu money.pl/bankier/obserwator."
+          eyebrow="Narzędzia"
+          badge="Agregator PL"
+          rightSlot={<CategoryBadge category="analizy" />}
+        />
 
         {/* Premium Analyses Section */}
         <div className="mb-12">
@@ -51,8 +40,20 @@ export default function AnalizyPage() {
           <PremiumAnalyses />
         </div>
 
+        {/* Editorial articles */}
+        <div className="mb-12">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-1 h-7 bg-gradient-to-b from-[#a78bfa] to-[#8b5cf6] rounded-full" />
+            <div>
+              <h2 className="text-lg font-serif font-medium text-[#f4f4f5]">Artykuły redakcyjne</h2>
+              <p className="text-xs text-[#71717a] mt-0.5">Treści przygotowane przez zespół FusionFinance</p>
+            </div>
+          </div>
+          <EditorialArticles limit={6} category="analizy" />
+        </div>
+
         {/* Two-column layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-[1.618fr_1fr] gap-8 lg:gap-12">
           {/* Left column - Articles */}
           <div>
             <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#a78bfa]/20">
@@ -75,12 +76,12 @@ export default function AnalizyPage() {
 
             {/* Lista artykułów */}
             <div className="bg-[#0c0d10] border border-white/5 rounded-2xl p-5 lg:p-8">
-              <RSSArticlesPaginated feedType="analizy" totalArticles={80} articlesPerPage={12} />
+              <ArticlesPaginated category="analizy" articlesPerPage={12} />
             </div>
           </div>
 
           {/* Right column - Sidebar */}
-          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-5">
+          <aside className="lg:sticky lg:top-20 lg:self-start lg:max-h-[calc(100vh-100px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-6">
             {/* Nagłówek sidebara */}
             <div className="flex items-center gap-3">
               <div className="w-1 h-7 bg-gradient-to-b from-[#a78bfa] to-[#8b5cf6] rounded-full" />
@@ -90,17 +91,47 @@ export default function AnalizyPage() {
               </div>
             </div>
 
+            {/* Snapshot – harmoniczne proporcje */}
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <h3 className="text-sm font-medium text-[#f4f4f5]">Szybki pulpit</h3>
+                <span className="text-[10px] text-[#c9a962] uppercase tracking-wide">φ layout</span>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-white/5 rounded-lg p-3 border border-white/5">
+                  <p className="text-[11px] text-[#71717a]">Stopa NBP</p>
+                  <p className="text-lg font-semibold text-[#f4f4f5]">5,75%</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-3 border border-white/5">
+                  <p className="text-[11px] text-[#71717a]">Inflacja CPI</p>
+                  <p className="text-lg font-semibold text-[#f4f4f5]">5,3%</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-3 border border-white/5">
+                  <p className="text-[11px] text-[#71717a]">EUR/PLN</p>
+                  <p className="text-lg font-semibold text-[#f4f4f5]">4,32</p>
+                </div>
+                <div className="bg-white/5 rounded-lg p-3 border border-white/5">
+                  <p className="text-[11px] text-[#71717a]">BTC/USD</p>
+                  <p className="text-lg font-semibold text-[#f4f4f5]">42 500</p>
+                </div>
+              </div>
+            </div>
+
             {/* Financial Calculator */}
-            <Calculator />
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-5">
+              <Calculator />
+            </div>
 
             {/* Glossary */}
-            <Glossary variant="compact" />
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-5">
+              <Glossary variant="compact" />
+            </div>
 
             {/* Risk Meter */}
-            <RiskMeter value={45} variant="gauge" />
+            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-5">
+              <RiskMeter value={45} variant="gauge" />
+            </div>
 
-            {/* Market Data */}
-            <MarketSidebar />
           </aside>
         </div>
       </div>
@@ -109,4 +140,3 @@ export default function AnalizyPage() {
     </main>
   );
 }
-

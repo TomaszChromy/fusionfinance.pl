@@ -3,28 +3,18 @@
 import { motion } from "framer-motion";
 import { Navbar, Footer } from "@/components/layout";
 import AnalyticsDashboard from "@/components/AnalyticsDashboard";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function AnalyticsPage() {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
   const router = useRouter();
-  const [isClient, setIsClient] = useState(false);
-
   useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    if (isClient && status === "unauthenticated") {
+    if (status === "unauthenticated") {
       router.push("/logowanie?redirect=/panel/analytics");
     }
-  }, [status, isClient, router]);
-
-  if (!isClient) {
-    return null;
-  }
+  }, [status, router]);
 
   if (status === "loading") {
     return (
@@ -38,9 +28,7 @@ export default function AnalyticsPage() {
     );
   }
 
-  if (status === "unauthenticated") {
-    return null;
-  }
+  if (status === "unauthenticated") return null;
 
   return (
     <main className="min-h-screen bg-[#08090c]">

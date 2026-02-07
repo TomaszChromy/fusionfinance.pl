@@ -100,7 +100,7 @@ export default function UsdPlnPage() {
               <ul className="ml-4 space-y-1">
                 <li>• <strong className="text-[#c9a962]">Polityka FED</strong> – decyzje o stopach procentowych w USA</li>
                 <li>• <strong className="text-[#c9a962]">Dane makro</strong> – PKB, zatrudnienie, inflacja w USA</li>
-                <li>• <strong className="text-[#c9a962]">Geopolityka</strong> – dolar jako "safe haven" w kryzysach</li>
+                <li>• <strong className="text-[#c9a962]">Geopolityka</strong> – dolar jako &ldquo;safe haven&rdquo; w kryzysach</li>
                 <li>• <strong className="text-[#c9a962]">Ceny surowców</strong> – ropa i gaz notowane w USD</li>
               </ul>
             </div>
@@ -154,4 +154,3 @@ export default function UsdPlnPage() {
     </main>
   );
 }
-

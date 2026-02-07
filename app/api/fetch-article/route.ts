@@ -1,6 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-
-// @ts-ignore
 import { load } from "cheerio";
 
 export const runtime = "nodejs";

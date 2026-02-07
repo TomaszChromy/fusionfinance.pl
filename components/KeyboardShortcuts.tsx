@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 
@@ -14,7 +14,7 @@ export default function KeyboardShortcuts() {
   const [showHelp, setShowHelp] = useState(false);
   const router = useRouter();
 
-  const shortcuts: Shortcut[] = [
+  const shortcuts: Shortcut[] = useMemo(() => ([
     { key: "?", description: "Pokaż skróty klawiszowe", action: () => setShowHelp(true) },
     { key: "h", description: "Strona główna", action: () => router.push("/") },
     { key: "r", description: "Rynki", action: () => router.push("/rynki") },
@@ -26,7 +26,7 @@ export default function KeyboardShortcuts() {
     { key: "/", description: "Wyszukiwarka", action: () => document.querySelector<HTMLButtonElement>('[data-search-trigger]')?.click() },
     { key: "t", description: "Przełącz motyw", action: () => document.querySelector<HTMLButtonElement>('[data-theme-toggle]')?.click() },
     { key: "Escape", description: "Zamknij modal", action: () => setShowHelp(false) },
-  ];
+  ]), [router]);
 
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     // Don't trigger when typing in inputs
@@ -103,4 +103,3 @@ export default function KeyboardShortcuts() {
     </AnimatePresence>
   );
 }
-

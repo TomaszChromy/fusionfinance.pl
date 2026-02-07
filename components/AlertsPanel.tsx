@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface PriceAlertItem {
   id: string;
@@ -26,12 +26,8 @@ interface AlertsPanelProps {
 }
 
 export default function AlertsPanel({ variant = "default", className = "" }: AlertsPanelProps) {
-  const [alerts, setAlerts] = useState<PriceAlertItem[]>([]);
+  const [alerts, setAlerts] = useState<PriceAlertItem[]>(MOCK_ALERTS);
   const [showForm, setShowForm] = useState(false);
-
-  useEffect(() => {
-    setAlerts(MOCK_ALERTS);
-  }, []);
 
   const toggleAlert = (id: string) => {
     setAlerts((prev) =>
@@ -176,4 +172,3 @@ export default function AlertsPanel({ variant = "default", className = "" }: Ale
     </div>
   );
 }
-

@@ -17,33 +17,33 @@ const STORAGE_KEY = "fusionfinance_history";
 const MAX_HISTORY = 30;
 
 export function useHistory() {
-  const [history, setHistory] = useState<HistoryItem[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Load history from localStorage on mount
-  useEffect(() => {
+  const [history, setHistory] = useState<HistoryItem[]>(() => {
+    if (typeof window === "undefined") return [];
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as HistoryItem[];
-        setHistory(parsed);
+        return JSON.parse(stored) as HistoryItem[];
       }
     } catch {
       console.error("Failed to load history");
     }
+    return [];
+  });
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
     setIsLoaded(true);
   }, []);
 
   // Save history to localStorage whenever it changes
   useEffect(() => {
-    if (isLoaded) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
-      } catch {
-        console.error("Failed to save history");
-      }
+    if (typeof window === "undefined") return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(history));
+    } catch {
+      console.error("Failed to save history");
     }
-  }, [history, isLoaded]);
+  }, [history]);
 
   const addToHistory = useCallback((item: Omit<HistoryItem, "viewedAt">) => {
     setHistory(prev => {
@@ -89,4 +89,3 @@ export function generateHistoryId(title: string, source?: string): string {
   }
   return Math.abs(hash).toString(36);
 }
-

@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Link from "next/link";
+import PageHero from "@/components/PageHero";
 
 export default function DisclaimerPage() {
   return (
@@ -11,18 +12,12 @@ export default function DisclaimerPage() {
       <Navbar />
 
       <div className="mx-auto max-w-[900px] px-4 lg:px-6 py-12">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <h1 className="text-3xl lg:text-4xl font-serif font-medium text-[#f4f4f5] mb-3">
-            Zastrzeżenie <span className="bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">prawne</span>
-          </h1>
-          <p className="text-[#71717a] text-sm">
-            Ważne informacje dotyczące korzystania z serwisu FusionFinance.pl
-          </p>
-        </motion.div>
+        <PageHero
+          title="Zastrzeżenie prawne"
+          subtitle="Ważne informacje dotyczące korzystania z serwisu FusionFinance."
+          eyebrow="Informacje prawne"
+          badge="Aktualizacja: 30 listopada 2025"
+        />
 
         <div className="space-y-8">
           {/* Main disclaimer */}
@@ -140,4 +135,3 @@ export default function DisclaimerPage() {
     </main>
   );
 }
-

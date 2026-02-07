@@ -59,7 +59,6 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const token = authHeader.slice(7);
     // TODO: Validate token i pobierz userId
 
     // Tymczasowo: pobierz userId z query params (tylko dla dev!)

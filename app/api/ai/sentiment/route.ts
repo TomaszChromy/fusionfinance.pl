@@ -9,7 +9,7 @@ export const runtime = "nodejs";
  */
 export async function POST(request: NextRequest) {
   try {
-    const { text, language = "pl" } = await request.json();
+    const { text } = await request.json();
 
     if (!text) {
       return NextResponse.json(
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const sentiment = analyzeSentiment(text, language);
+    const sentiment = analyzeSentiment(text);
 
     return NextResponse.json(sentiment);
   } catch (error) {
@@ -40,7 +40,7 @@ interface SentimentResult {
 /**
  * Prosty algorytm analizy sentymentu dla polskiego tekstu finansowego
  */
-function analyzeSentiment(text: string, language: string = "pl"): SentimentResult {
+function analyzeSentiment(text: string): SentimentResult {
   const lowerText = text.toLowerCase();
 
   // Słowa kluczowe dla polskiego

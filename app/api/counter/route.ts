@@ -6,7 +6,7 @@ export const runtime = "nodejs";
 
 // In-memory counter (resets on cold start, but works on Vercel)
 // For persistent storage, use Vercel KV or a database
-let memoryCounter = {
+const memoryCounter = {
   total: 2547, // Base visits
   today: 0,
   date: new Date().toISOString().split("T")[0],
@@ -60,4 +60,3 @@ export async function GET(request: Request) {
     date: memoryCounter.date,
   });
 }
-

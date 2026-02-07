@@ -3,10 +3,12 @@ import { useSession } from "next-auth/react";
 
 export function useArticleViewTracking(articleId: string, title: string, slug: string) {
   const { data: session } = useSession();
-  const startTimeRef = useRef<number>(Date.now());
+  const startTimeRef = useRef<number>(0);
   const maxScrollRef = useRef<number>(0);
 
   useEffect(() => {
+    startTimeRef.current = Date.now();
+
     const handleScroll = () => {
       const scrollPercentage =
         (window.scrollY /

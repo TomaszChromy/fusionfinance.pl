@@ -1,7 +1,9 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
+import { useRouter } from "next/navigation";
+import type React from "react";
 
 interface Suggestion {
   id: string;
@@ -40,40 +42,37 @@ export default function SearchSuggestions({
   placeholder = "Szukaj artykułów, kursów, aktywów...",
   onSearch,
 }: SearchSuggestionsProps) {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
+  const [filtered, setFiltered] = useState<Suggestion[]>([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    if (query.length > 0) {
-      const filtered = SUGGESTIONS_DATA.filter(
-        (s) => s.text.toLowerCase().includes(query.toLowerCase())
-      );
-      setSuggestions(filtered.slice(0, 6));
-      setIsOpen(true);
-      setSelectedIndex(-1);
-    } else {
-      setSuggestions([]);
-      setIsOpen(false);
-    }
-  }, [query]);
+  const updateQuery = (value: string) => {
+    const results = value
+      ? SUGGESTIONS_DATA.filter((s) => s.text.toLowerCase().includes(value.toLowerCase())).slice(0, 6)
+      : [];
+    setQuery(value);
+    setFiltered(results);
+    setIsOpen(results.length > 0);
+    setSelectedIndex(-1);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown") {
       e.preventDefault();
-      setSelectedIndex((prev) => Math.min(prev + 1, suggestions.length - 1));
+      setSelectedIndex((prev) => Math.min(prev + 1, filtered.length - 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
       setSelectedIndex((prev) => Math.max(prev - 1, -1));
     } else if (e.key === "Enter") {
       e.preventDefault();
-      if (selectedIndex >= 0 && suggestions[selectedIndex]) {
-        handleSelect(suggestions[selectedIndex]);
+      if (selectedIndex >= 0 && filtered[selectedIndex]) {
+        handleSelect(filtered[selectedIndex]);
       } else if (query) {
         onSearch?.(query);
-        window.location.href = `/szukaj?q=${encodeURIComponent(query)}`;
+        router.push(`/szukaj?q=${encodeURIComponent(query)}`);
       }
     } else if (e.key === "Escape") {
       setIsOpen(false);
@@ -83,7 +82,7 @@ export default function SearchSuggestions({
 
   const handleSelect = (suggestion: Suggestion) => {
     if (suggestion.url) {
-      window.location.href = suggestion.url;
+      router.push(suggestion.url);
     }
     setQuery("");
     setIsOpen(false);
@@ -96,7 +95,7 @@ export default function SearchSuggestions({
           ref={inputRef}
           type="text"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => updateQuery(e.target.value)}
           onFocus={() => query && setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder={placeholder}
@@ -105,7 +104,7 @@ export default function SearchSuggestions({
         <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#52525b]">🔍</span>
         {query && (
           <button
-            onClick={() => { setQuery(""); setIsOpen(false); }}
+            onClick={() => updateQuery("")}
             className="absolute right-3 top-1/2 -translate-y-1/2 text-[#52525b] hover:text-[#a1a1aa] transition-colors"
           >
             ✕
@@ -114,7 +113,7 @@ export default function SearchSuggestions({
       </div>
 
       <AnimatePresence>
-        {isOpen && suggestions.length > 0 && (
+        {isOpen && filtered.length > 0 && (
           <>
             <motion.div
               initial={{ opacity: 0 }}
@@ -129,7 +128,7 @@ export default function SearchSuggestions({
               exit={{ opacity: 0, y: 5 }}
               className="absolute left-0 right-0 top-full mt-2 bg-[#0c0d10] border border-white/10 rounded-xl shadow-2xl overflow-hidden z-50"
             >
-              {suggestions.map((suggestion, index) => (
+              {filtered.map((suggestion, index) => (
                 <button
                   key={suggestion.id}
                   onClick={() => handleSelect(suggestion)}
@@ -157,4 +156,3 @@ export default function SearchSuggestions({
     </div>
   );
 }
-

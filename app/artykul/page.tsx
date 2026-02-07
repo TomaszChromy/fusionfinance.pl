@@ -8,11 +8,9 @@ import { Suspense, useEffect, useState, useRef } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import RSSArticles from "@/components/RSSArticles";
-import MarketSidebar from "@/components/MarketSidebar";
 import ShareButtons from "@/components/ShareButtons";
 import FavoriteButton from "@/components/FavoriteButton";
 import ReadingProgressBar from "@/components/ReadingProgressBar";
-import RelatedArticles from "@/components/RelatedArticles";
 import { useHistory, generateHistoryId } from "@/hooks/useHistory";
 // Nowe komponenty
 import BackButton from "@/components/BackButton";
@@ -318,24 +316,9 @@ export default function ArticlePage() {
       <ReadingProgressBar showPercentage />
       <Navbar />
       <main className="max-w-[1400px] mx-auto px-5 lg:px-8 py-[55px]">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-[55px]">
-          {/* Left column - Article */}
-          <Suspense fallback={<div className="text-center py-20">Ładowanie artykułu...</div>}>
-            <ArticleContent />
-          </Suspense>
-
-          {/* Right column - Sidebar */}
-          <div className="lg:sticky lg:top-[21px] lg:self-start space-y-[21px]">
-            <div className="flex items-center gap-3 mb-[13px]">
-              <div className="w-[4px] h-[28px] bg-gradient-to-b from-[#60a5fa] to-[#3b82f6] rounded-full" />
-              <div>
-                <h2 className="text-[16px] font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
-                <p className="text-[11px] text-[#71717a] mt-0.5">Aktualizowane na żywo</p>
-              </div>
-            </div>
-            <MarketSidebar />
-          </div>
-        </div>
+        <Suspense fallback={<div className="text-center py-20">Ładowanie artykułu...</div>}>
+          <ArticleContent />
+        </Suspense>
 
         {/* Related articles */}
         <section className="mt-[89px] pt-[55px] border-t border-white/5">
@@ -350,4 +333,3 @@ export default function ArticlePage() {
     </div>
   );
 }
-

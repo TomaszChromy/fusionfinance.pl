@@ -10,14 +10,14 @@ import { BreakingNews } from "@/components/navigation";
 
 // Hero
 import { RSSFeatured } from "@/components/hero";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 // News
-import { RSSArticlesPaginated, MarketNews } from "@/components/news";
+import { MarketNews } from "@/components/news";
+import ArticlesPaginated from "@/components/ArticlesPaginated";
 
 // Sidebar
 import {
-  MarketSidebar,
-  MarketStatus,
   MarketMoodIndicator,
   DailyQuote,
   LiveIndicator,
@@ -35,6 +35,7 @@ export default function Home() {
 
         {/* SEO H1 - wizualnie ukryty ale dostępny dla SEO */}
         <h1 className="sr-only">FusionFinance - Portal Finansowy z Aktualnymi Wiadomościami z Giełdy, Kryptowalut i Rynków</h1>
+        <Breadcrumbs />
 
         {/* HERO - Wyróżnione artykuły */}
         <section aria-labelledby="featured-heading">
@@ -42,62 +43,53 @@ export default function Home() {
           <RSSFeatured />
         </section>
 
-        {/* MAIN CONTENT - Dwie kolumny */}
-        <motion.div
+        {/* MAIN CONTENT */}
+        <motion.section
           initial={{ opacity: 0, y: 21 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-10 lg:gap-14 mt-12 lg:mt-16"
+          className="mt-12 lg:mt-16 space-y-6"
         >
-          {/* LEWA KOLUMNA - Artykuły */}
-          <section aria-labelledby="news-heading">
-            {/* Nagłówek sekcji */}
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#c9a962]/20">
+          <section aria-labelledby="news-heading" className="space-y-6">
+            <div className="flex items-center justify-between pb-4 border-b border-[#c9a962]/20">
               <div className="flex items-center gap-3">
                 <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
                 <div>
-                  <h2 id="news-heading" className="text-xl font-serif font-medium text-[#f4f4f5]">Najnowsze wiadomości</h2>
-                  <p className="text-sm text-[#71717a] mt-1">Aktualne informacje z rynków finansowych</p>
+                  <h2 id="news-heading" className="text-xl font-serif font-medium text-[#f4f4f5]">Artykuły</h2>
                 </div>
               </div>
               <LiveIndicator label="Na żywo" />
             </div>
 
-            {/* Lista artykułów */}
             <div className="bg-[#0c0d10] border border-white/5 rounded-2xl p-6 lg:p-8">
-              <RSSArticlesPaginated feedType="all" totalArticles={80} articlesPerPage={10} />
+              <ArticlesPaginated articlesPerPage={14} />
+            </div>
+
+            <DailyQuote />
+
+            {/* CTA w miejscu dawnej kolumny bocznej */}
+            <div className="relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-r from-[#0c0d10] via-[#11131a] to-[#0c0d10] p-6 lg:p-7">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(201,169,98,0.08),transparent_36%)]" />
+              <div className="relative flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                <div className="space-y-1">
+                  <p className="text-[11px] uppercase tracking-[0.14em] text-[#c9a962]">Alerty + watchlista</p>
+                  <h3 className="text-lg font-serif text-[#f4f4f5]">Podbij ważne tematy i kursy, które śledzisz</h3>
+                  <p className="text-sm text-[#a1a1aa] max-w-2xl">
+                    Włącz powiadomienia dla swoich ulubionych spółek, walut i kryptowalut. Synchronizacja między urządzeniami bez logowania do bazy.
+                  </p>
+                </div>
+                <div className="flex gap-3">
+                  <a href="/alerty/" className="px-4 py-2 rounded-lg bg-[#c9a962] text-[#08090c] text-sm font-semibold hover:brightness-110 transition">
+                    Skonfiguruj alerty
+                  </a>
+                  <a href="/watchlista/" className="px-4 py-2 rounded-lg border border-[#c9a962]/50 text-[#c9a962] text-sm font-semibold hover:border-[#c9a962] transition">
+                    Otwórz watchlistę
+                  </a>
+                </div>
+              </div>
             </div>
           </section>
-
-          {/* PRAWA KOLUMNA - Dane rynkowe */}
-          <aside aria-label="Dane rynkowe" className="lg:sticky lg:top-24 lg:self-start lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto scrollbar-thin scrollbar-thumb-[#c9a962]/20 scrollbar-track-transparent space-y-6">
-            {/* Nagłówek sidebara */}
-            <div className="flex items-center gap-3 mb-2">
-              <div className="w-1 h-7 bg-gradient-to-b from-[#c9a962] to-[#9a7b3c] rounded-full" />
-              <div>
-                <h2 className="text-lg font-serif font-medium text-[#f4f4f5]">Dane rynkowe</h2>
-                <p className="text-xs text-[#71717a] mt-0.5 uppercase tracking-wider">Aktualizowane na bieżąco</p>
-              </div>
-            </div>
-
-            <MarketSidebar />
-
-            {/* Market Status */}
-            <div className="bg-[#0c0d10] border border-white/5 rounded-xl p-5 hover:border-white/10 transition-colors">
-              <h3 className="text-xs font-semibold text-[#f4f4f5] uppercase tracking-[0.1em] mb-4 flex items-center gap-2">
-                <span>🏛️</span> Status giełd
-              </h3>
-              <div className="space-y-3">
-                <MarketStatus marketId="gpw" variant="compact" />
-                <MarketStatus marketId="nyse" variant="compact" />
-                <MarketStatus marketId="crypto" variant="compact" />
-              </div>
-            </div>
-
-            {/* Daily Quote */}
-            <DailyQuote />
-          </aside>
-        </motion.div>
+        </motion.section>
 
         {/* Market Mood - zwiększony margines */}
         <motion.section

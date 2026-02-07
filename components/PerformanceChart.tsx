@@ -48,7 +48,7 @@ export default function PerformanceChart({
   const [period, setPeriod] = useState("1Y");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
-  const { min, max, path, areaPath, points, totalChange, percentChange } = useMemo(() => {
+  const { path, areaPath, points, totalChange, percentChange } = useMemo(() => {
     const values = data.map((d) => d.value);
     const minVal = Math.min(...values);
     const maxVal = Math.max(...values);
@@ -188,4 +188,3 @@ export default function PerformanceChart({
     </div>
   );
 }
-

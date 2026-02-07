@@ -3,7 +3,6 @@
 import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 
 interface Recommendation {
   articleId: string;
@@ -19,7 +18,6 @@ interface RecommendationsProps {
 export default function RecommendedArticles({ limit = 5 }: RecommendationsProps) {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const [loading, setLoading] = useState(true);
-  const { data: session } = useSession();
 
   useEffect(() => {
     const fetchRecommendations = async () => {

@@ -5,6 +5,7 @@ import NBPCurrencyTable from "@/components/NBPCurrencyTable";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import CurrencyConverter from "@/components/CurrencyConverter";
 import CurrencyStrength from "@/components/CurrencyStrength";
+import PageHero from "@/components/PageHero";
 
 export const metadata = {
   title: "Kursy walut NBP - Aktualne notowania | FusionFinance.pl",
@@ -20,15 +21,12 @@ export default function KursyWalutPage() {
       <main className="flex-1 py-8">
         <div className="mx-auto max-w-[1200px] px-4 lg:px-6">
           <Breadcrumbs />
-          {/* Page Header */}
-          <div className="mb-8 mt-4">
-            <h1 className="text-3xl lg:text-4xl font-serif font-medium text-[#f4f4f5] mb-2">
-              Kursy <span className="bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">walut</span>
-            </h1>
-            <p className="text-[#71717a] text-sm">
-              Aktualne kursy średnie walut obcych według Narodowego Banku Polskiego
-            </p>
-          </div>
+          <PageHero
+            title="Kursy walut"
+            subtitle="Aktualne kursy NBP, tabela A/B oraz szybki kalkulator wymiany. PLN vs EUR, USD, GBP, CHF."
+            eyebrow="Forex & PLN"
+            badge="NBP feed"
+          />
           
           {/* Currency Converter */}
           <div className="mb-8">
@@ -82,4 +80,3 @@ export default function KursyWalutPage() {
     </div>
   );
 }
-

@@ -8,12 +8,11 @@ import NotificationCenter from "./NotificationCenter";
 import UserMenu from "./UserMenu";
 
 const navLinks = [
-  { name: "Rynki", href: "/rynki/" },
-  { name: "Giełda", href: "/gielda/" },
-  { name: "Crypto", href: "/crypto/" },
-  { name: "Waluty", href: "/waluty/" },
-  { name: "Analizy", href: "/analizy/" },
-  { name: "Cennik", href: "/cennik/" },
+  { name: "Polska", href: "/rynki/" },
+  { name: "Świat", href: "/swiat/" },
+  { name: "Notowania giełdowe", href: "/gielda/" },
+  { name: "Kursy walut", href: "/kursy-walut/" },
+  { name: "Kursy krypto", href: "/crypto/" },
 ];
 
 export default function Navbar() {
@@ -111,7 +110,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-0.5">
+          <nav className="hidden md:flex items-center gap-0.5 mx-auto">
             {navLinks.map((item, index) => (
               <motion.div
                 key={item.name}

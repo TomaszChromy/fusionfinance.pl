@@ -50,21 +50,14 @@ export default function TradingTips({
   className = "",
 }: TradingTipsProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (!autoRotate || !mounted) return;
+    if (!autoRotate) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % tips.length);
     }, rotateInterval);
     return () => clearInterval(interval);
-  }, [autoRotate, rotateInterval, tips.length, mounted]);
-
-  if (!mounted) return null;
+  }, [autoRotate, rotateInterval, tips.length]);
 
   const currentTip = tips[currentIndex];
   const config = categoryConfig[currentTip.category];
@@ -160,4 +153,3 @@ export default function TradingTips({
     </div>
   );
 }
-

@@ -1,7 +1,7 @@
 "use client";
 
+import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
 import AddToWatchlistButton from "./AddToWatchlistButton";
 import CreateAlertButton from "./CreateAlertButton";
 
@@ -11,8 +11,9 @@ interface CryptoData {
   name: string;
   price: number;
   change24h: number;
-  marketCap: string;
-  volume24h: string;
+  marketCap: number | string;
+  volume24h: number | string;
+  image?: string;
   icon?: string;
 }
 
@@ -29,16 +30,17 @@ const CRYPTO_ICONS: Record<string, string> = {
 
 // Mock crypto data
 const MOCK_CRYPTO: CryptoData[] = [
-  { id: "bitcoin", symbol: "BTC", name: "Bitcoin", price: 97450.32, change24h: 2.45, marketCap: "$1.92T", volume24h: "$48.2B" },
-  { id: "ethereum", symbol: "ETH", name: "Ethereum", price: 3654.18, change24h: -1.23, marketCap: "$439B", volume24h: "$21.5B" },
-  { id: "bnb", symbol: "BNB", name: "BNB", price: 642.55, change24h: 0.87, marketCap: "$96B", volume24h: "$2.1B" },
-  { id: "xrp", symbol: "XRP", name: "XRP", price: 2.34, change24h: 5.67, marketCap: "$134B", volume24h: "$8.9B" },
-  { id: "solana", symbol: "SOL", name: "Solana", price: 228.45, change24h: -3.21, marketCap: "$108B", volume24h: "$5.4B" },
-  { id: "cardano", symbol: "ADA", name: "Cardano", price: 1.12, change24h: 1.45, marketCap: "$39B", volume24h: "$1.2B" },
+  { id: "bitcoin", symbol: "BTC", name: "Bitcoin", price: 97450.32, change24h: 2.45, marketCap: 1.92e12, volume24h: 48.2e9 },
+  { id: "ethereum", symbol: "ETH", name: "Ethereum", price: 3654.18, change24h: -1.23, marketCap: 439e9, volume24h: 21.5e9 },
+  { id: "bnb", symbol: "BNB", name: "BNB", price: 642.55, change24h: 0.87, marketCap: 96e9, volume24h: 2.1e9 },
+  { id: "xrp", symbol: "XRP", name: "XRP", price: 2.34, change24h: 5.67, marketCap: 134e9, volume24h: 8.9e9 },
+  { id: "solana", symbol: "SOL", name: "Solana", price: 228.45, change24h: -3.21, marketCap: 108e9, volume24h: 5.4e9 },
+  { id: "cardano", symbol: "ADA", name: "Cardano", price: 1.12, change24h: 1.45, marketCap: 39e9, volume24h: 1.2e9 },
 ];
 
 interface CryptoPriceProps {
   cryptoId?: string;
+  data?: CryptoData;
   variant?: "default" | "compact" | "card" | "ticker";
   showDetails?: boolean;
   className?: string;
@@ -46,24 +48,24 @@ interface CryptoPriceProps {
 
 export default function CryptoPrice({
   cryptoId = "bitcoin",
+  data,
   variant = "default",
   showDetails = false,
   className = "",
 }: CryptoPriceProps) {
-  const [crypto, setCrypto] = useState<CryptoData | null>(null);
-  const [prevPrice, setPrevPrice] = useState<number>(0);
+  const crypto = data || MOCK_CRYPTO.find((c) => c.id === cryptoId) || MOCK_CRYPTO[0];
+  const tickerCoins = data ? [data] : MOCK_CRYPTO;
 
-  useEffect(() => {
-    const data = MOCK_CRYPTO.find((c) => c.id === cryptoId) || MOCK_CRYPTO[0];
-    setPrevPrice(crypto?.price || data.price);
-    setCrypto(data);
-  }, [cryptoId, crypto?.price]);
-
-  if (!crypto) return null;
-
-  const isPositive = crypto.change24h >= 0;
-  const priceChanged = prevPrice !== crypto.price;
-  const priceUp = crypto.price > prevPrice;
+  const change = Number.isFinite(crypto.change24h) ? crypto.change24h : 0;
+  const isPositive = change >= 0;
+  const formatMoney = (value: number | string) => {
+    if (typeof value === "string") return value;
+    if (!Number.isFinite(value)) return "-";
+    if (value >= 1e12) return `${(value / 1e12).toFixed(2)}T`;
+    if (value >= 1e9) return `${(value / 1e9).toFixed(2)}B`;
+    if (value >= 1e6) return `${(value / 1e6).toFixed(2)}M`;
+    return value.toLocaleString();
+  };
 
   if (variant === "compact") {
     return (
@@ -72,7 +74,7 @@ export default function CryptoPrice({
         <span className="text-xs font-medium text-[#f4f4f5]">{crypto.symbol}</span>
         <span className="text-xs text-[#a1a1aa]">${crypto.price.toLocaleString()}</span>
         <span className={`text-xs font-medium ${isPositive ? "text-[#4ade80]" : "text-[#f87171]"}`}>
-          {isPositive ? "+" : ""}{crypto.change24h.toFixed(2)}%
+          {isPositive ? "+" : ""}{change.toFixed(2)}%
         </span>
       </div>
     );
@@ -81,14 +83,15 @@ export default function CryptoPrice({
   if (variant === "ticker") {
     return (
       <div className={`flex items-center gap-4 ${className}`}>
-        {MOCK_CRYPTO.slice(0, 5).map((c) => {
-          const positive = c.change24h >= 0;
+        {tickerCoins.slice(0, 5).map((c) => {
+          const delta = Number.isFinite(c.change24h) ? c.change24h : 0;
+          const positive = delta >= 0;
           return (
             <div key={c.id} className="flex items-center gap-2">
               <span className="text-sm">{CRYPTO_ICONS[c.symbol] || "●"}</span>
               <span className="text-xs text-[#a1a1aa]">{c.symbol}</span>
               <span className={`text-xs font-medium ${positive ? "text-[#4ade80]" : "text-[#f87171]"}`}>
-                {positive ? "+" : ""}{c.change24h.toFixed(2)}%
+                {positive ? "+" : ""}{delta.toFixed(2)}%
               </span>
             </div>
           );
@@ -105,9 +108,16 @@ export default function CryptoPrice({
       >
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#c9a962]/10 flex items-center justify-center text-xl text-[#c9a962]">
-              {CRYPTO_ICONS[crypto.symbol] || "●"}
-            </div>
+            {crypto.image ? (
+              <div className="w-10 h-10 rounded-full bg-white/5 overflow-hidden flex items-center justify-center">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src={crypto.image} alt={crypto.name} className="w-full h-full object-cover" />
+              </div>
+            ) : (
+              <div className="w-10 h-10 rounded-full bg-[#c9a962]/10 flex items-center justify-center text-xl text-[#c9a962]">
+                {CRYPTO_ICONS[crypto.symbol] || "●"}
+              </div>
+            )}
             <div>
               <p className="text-sm font-medium text-[#f4f4f5]">{crypto.name}</p>
               <p className="text-xs text-[#71717a]">{crypto.symbol}</p>
@@ -115,14 +125,14 @@ export default function CryptoPrice({
           </div>
           <div className={`px-2 py-1 rounded-lg ${isPositive ? "bg-[#4ade80]/10" : "bg-[#f87171]/10"}`}>
             <span className={`text-xs font-medium ${isPositive ? "text-[#4ade80]" : "text-[#f87171]"}`}>
-              {isPositive ? "▲" : "▼"} {Math.abs(crypto.change24h).toFixed(2)}%
+              {isPositive ? "▲" : "▼"} {Math.abs(change).toFixed(2)}%
             </span>
           </div>
         </div>
         <AnimatePresence mode="wait">
           <motion.p
             key={crypto.price}
-            initial={{ opacity: 0, y: priceUp ? 10 : -10 }}
+            initial={{ opacity: 0, y: isPositive ? 10 : -10 }}
             animate={{ opacity: 1, y: 0 }}
             className="text-2xl font-bold text-[#f4f4f5]"
           >
@@ -133,11 +143,11 @@ export default function CryptoPrice({
           <div className="mt-3 pt-3 border-t border-white/5 grid grid-cols-2 gap-2 text-xs">
             <div>
               <span className="text-[#52525b]">Market Cap</span>
-              <p className="text-[#a1a1aa] font-medium">{crypto.marketCap}</p>
+              <p className="text-[#a1a1aa] font-medium">${formatMoney(crypto.marketCap)}</p>
             </div>
             <div>
               <span className="text-[#52525b]">Volume 24h</span>
-              <p className="text-[#a1a1aa] font-medium">{crypto.volume24h}</p>
+              <p className="text-[#a1a1aa] font-medium">${formatMoney(crypto.volume24h)}</p>
             </div>
           </div>
         )}
@@ -164,7 +174,7 @@ export default function CryptoPrice({
       <div className="text-right">
         <p className="text-sm font-medium text-[#f4f4f5]">${crypto.price.toLocaleString()}</p>
         <p className={`text-xs font-medium ${isPositive ? "text-[#4ade80]" : "text-[#f87171]"}`}>
-          {isPositive ? "+" : ""}{crypto.change24h.toFixed(2)}%
+          {isPositive ? "+" : ""}{change.toFixed(2)}%
         </p>
       </div>
     </div>
@@ -181,12 +191,53 @@ export function CryptoGrid({
   className?: string;
   variant?: "grid" | "sidebar" | "list";
 }) {
+  const [coins, setCoins] = useState<CryptoData[]>(MOCK_CRYPTO.slice(0, limit));
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      setLoading(true);
+      try {
+        const res = await fetch(`/api/crypto?limit=${limit}`, { cache: "no-store" });
+        if (!res.ok) throw new Error("Błąd pobierania");
+        const data = await res.json();
+        const items = Array.isArray(data?.items) ? data.items : [];
+        if (!mounted) return;
+        setCoins(items.length ? items : MOCK_CRYPTO.slice(0, limit));
+        setError(items.length ? null : "Brak danych z API, pokazujemy dane przykładowe.");
+      } catch {
+        if (!mounted) return;
+        setCoins(MOCK_CRYPTO.slice(0, limit));
+        setError("Nie udało się pobrać kursów, pokazujemy dane przykładowe.");
+      } finally {
+        if (mounted) setLoading(false);
+      }
+    };
+    load();
+    return () => {
+      mounted = false;
+    };
+  }, [limit]);
+
+  const visibleCoins = useMemo(() => coins.slice(0, limit), [coins, limit]);
+
+  const renderError = () =>
+    error ? (
+      <div className="col-span-2 md:col-span-3 text-[12px] text-[#f97316] mb-1">
+        {error}
+      </div>
+    ) : null;
+
   // Sidebar variant - compact 2-column grid optimized for narrow sidebars
   if (variant === "sidebar") {
     return (
       <div className={`grid grid-cols-2 gap-2 ${className}`}>
-        {MOCK_CRYPTO.slice(0, limit).map((crypto) => {
-          const isPositive = crypto.change24h >= 0;
+        {renderError()}
+        {visibleCoins.map((crypto) => {
+          const delta = Number.isFinite(crypto.change24h) ? crypto.change24h : 0;
+          const isPositive = delta >= 0;
           return (
             <div
               key={crypto.id}
@@ -207,7 +258,7 @@ export function CryptoGrid({
               <div className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[10px] font-medium ${
                 isPositive ? "bg-[#4ade80]/10 text-[#4ade80]" : "bg-[#f87171]/10 text-[#f87171]"
               }`}>
-                {isPositive ? "▲" : "▼"} {Math.abs(crypto.change24h).toFixed(2)}%
+                {isPositive ? "▲" : "▼"} {Math.abs(delta).toFixed(2)}%
               </div>
             </div>
           );
@@ -220,8 +271,9 @@ export function CryptoGrid({
   if (variant === "list") {
     return (
       <div className={`space-y-2 ${className}`}>
-        {MOCK_CRYPTO.slice(0, limit).map((crypto) => (
-          <CryptoPrice key={crypto.id} cryptoId={crypto.id} variant="default" />
+        {renderError()}
+        {visibleCoins.map((crypto) => (
+          <CryptoPrice key={crypto.id} data={crypto} cryptoId={crypto.id} variant="default" />
         ))}
       </div>
     );
@@ -230,10 +282,15 @@ export function CryptoGrid({
   // Default grid variant
   return (
     <div className={`grid grid-cols-2 md:grid-cols-3 gap-3 ${className}`}>
-      {MOCK_CRYPTO.slice(0, limit).map((crypto) => (
-        <CryptoPrice key={crypto.id} cryptoId={crypto.id} variant="card" />
+      {renderError()}
+      {visibleCoins.map((crypto) => (
+        <CryptoPrice key={crypto.id} data={crypto} cryptoId={crypto.id} variant="card" showDetails />
       ))}
+      {loading && !visibleCoins.length && (
+        <div className="col-span-2 md:col-span-3 text-[12px] text-[#71717a]">
+          Ładuję aktualne kursy...
+        </div>
+      )}
     </div>
   );
 }
-

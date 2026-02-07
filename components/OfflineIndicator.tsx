@@ -4,13 +4,12 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function OfflineIndicator() {
-  const [isOnline, setIsOnline] = useState(true);
+  const [isOnline, setIsOnline] = useState<boolean>(() =>
+    typeof navigator !== "undefined" ? navigator.onLine : true
+  );
   const [showBanner, setShowBanner] = useState(false);
 
   useEffect(() => {
-    // Check initial state
-    setIsOnline(navigator.onLine);
-
     const handleOnline = () => {
       setIsOnline(true);
       // Show "back online" banner briefly
@@ -89,11 +88,11 @@ export default function OfflineIndicator() {
 
 // Hook for checking online status
 export function useOnlineStatus() {
-  const [isOnline, setIsOnline] = useState(true);
+  const [isOnline, setIsOnline] = useState<boolean>(() =>
+    typeof navigator !== "undefined" ? navigator.onLine : true
+  );
 
   useEffect(() => {
-    setIsOnline(navigator.onLine);
-
     const handleOnline = () => setIsOnline(true);
     const handleOffline = () => setIsOnline(false);
 
@@ -108,4 +107,3 @@ export function useOnlineStatus() {
 
   return isOnline;
 }
-

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface WeatherData {
   city: string;
@@ -48,16 +48,9 @@ export default function WeatherWidget({
   className = "",
 }: WeatherWidgetProps) {
   const [currentCity, setCurrentCity] = useState(0);
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const weather = MOCK_WEATHER[currentCity];
   const impact = MARKET_IMPACT[weather.condition];
-
-  if (!isClient) return null;
 
   if (variant === "compact") {
     return (
@@ -149,4 +142,3 @@ export function WeatherStrip({ className = "" }: { className?: string }) {
     </div>
   );
 }
-

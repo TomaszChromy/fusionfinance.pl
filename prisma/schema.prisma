@@ -103,23 +103,6 @@ model WatchlistItem {
   @@map("watchlist")
 }
 
-// ============= NEWSLETTER =============
-
-model NewsletterSubscription {
-  id             String    @id @default(cuid())
-  userId         String?   @unique
-  email          String    @unique
-  isActive       Boolean   @default(true)
-  frequency      String    @default("daily") // "daily" | "weekly"
-  categories     String[] // ["rynki", "crypto", "gielda"]
-  subscribedAt   DateTime  @default(now())
-  unsubscribedAt DateTime?
-
-  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
-
-  @@map("newsletter_subscriptions")
-}
-
 // ============= ANALYTICS =============
 
 model PageView {
@@ -184,6 +167,43 @@ model DailyStats {
   @@map("daily_stats")
 }
 
+// ============= ARTICLES (CMS-lite) =============
+
+model Article {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  summary     String   @db.Text
+  content     String   @db.Text
+  coverImage  String?
+  category    String?
+  tags        String[]
+  source      String?  // optional external source
+  publishedAt DateTime @default(now())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  views       ArticleViewLocal[]
+
+  @@index([publishedAt])
+  @@map("articles")
+}
+
+model ArticleViewLocal {
+  id         String   @id @default(cuid())
+  articleId  String
+  userId     String?
+  duration   Int?
+  createdAt  DateTime @default(now())
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([articleId, createdAt])
+  @@index([userId, createdAt])
+  @@map("article_views_local")
+}
+
 // Aktualizacja User aby zawierał relacje do analytics
 model User {
   id            String    @id @default(cuid())
@@ -201,7 +221,6 @@ model User {
   favorites    Favorite[]
   alerts       PriceAlert[]
   watchlist    WatchlistItem[]
-  newsletters  NewsletterSubscription?
   pageViews    PageView[]
   articleViews ArticleView[]
   events       Event[]

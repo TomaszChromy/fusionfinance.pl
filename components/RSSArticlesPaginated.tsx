@@ -9,7 +9,6 @@ import FavoriteButton from "./FavoriteButton";
 import { ListSkeleton } from "./Skeleton";
 import { ErrorState } from "./EmptyState";
 import { SourceAvatar } from "./Avatar";
-import Badge from "./Badge";
 
 interface RSSItem {
   title: string;
@@ -253,79 +252,70 @@ export default function RSSArticlesPaginated({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.3 }}
-          className="space-y-4"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-5"
         >
           {currentArticles.map((article, index) => {
             const imageUrl = getImageForArticle(index + (currentPage - 1) * articlesPerPage, article.title, article.image);
             return (
               <motion.article
                 key={article.link + index}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.03 }}
-                whileHover={{ scale: 1.005, x: 4 }}
-                className="group"
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: index * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                whileHover={{ scale: 1.01 }}
+                className="group bg-[#0c0d10] border border-white/5 rounded-2xl overflow-hidden hover:border-[#c9a962]/30 hover:shadow-[0_12px_40px_rgba(201,169,98,0.08)] transition-all duration-300 flex flex-col"
               >
-                <Link
-                  href={createArticleUrl(article, index + (currentPage - 1) * articlesPerPage)}
-                  className="flex gap-5 p-4 -mx-4 rounded-xl cursor-pointer transition-all duration-300 hover:bg-white/[0.03] border border-transparent hover:border-[#c9a962]/20 hover:shadow-[0_0_30px_rgba(201,169,98,0.05)]"
-                >
+                <Link href={createArticleUrl(article, index + (currentPage - 1) * articlesPerPage)} className="flex flex-col h-full">
                   {showImage && (
-                    <div className="relative w-[120px] h-[90px] lg:w-[180px] lg:h-[120px] flex-shrink-0 overflow-hidden rounded-xl border border-white/10 group-hover:border-[#c9a962]/30 transition-all duration-300 shadow-lg group-hover:shadow-[0_8px_30px_rgba(0,0,0,0.4)]">
+                    <div className="relative aspect-[16/9] w-full overflow-hidden">
                       <Image
                         src={imageUrl}
                         alt={article.title}
                         fill
-                        className="object-cover transition-all duration-500 group-hover:scale-110 group-hover:brightness-110"
-                        sizes="(max-width: 1024px) 120px, 180px"
+                        className="object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-110"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
                         unoptimized
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                      {/* Play icon overlay */}
-                      <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div className="w-10 h-10 rounded-full bg-[#c9a962]/90 flex items-center justify-center shadow-lg">
-                          <svg className="w-4 h-4 text-[#08090c] ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M8 5v14l11-7z"/>
-                          </svg>
-                        </div>
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+                      <div className="absolute top-3 left-3 flex items-center gap-2">
+                        <span className="px-2 py-1 rounded-full bg-black/60 text-[10px] uppercase tracking-[0.1em] text-white">
+                          {article.source || "news"}
+                        </span>
+                        <span className="px-2 py-1 rounded-full bg-[#c9a962]/90 text-[10px] uppercase tracking-[0.1em] text-[#08090c]">
+                          {formatPolishDate(article.date)}
+                        </span>
                       </div>
                     </div>
                   )}
-                  <div className="flex-1 min-w-0 flex flex-col justify-between py-1">
-                    <div>
-                      <h3 className="font-serif text-[16px] lg:text-[18px] font-medium text-[#f4f4f5] leading-snug mb-2 group-hover:text-[#c9a962] transition-colors duration-200 line-clamp-2">
-                        {article.title}
-                      </h3>
-                      <p className="text-[13px] text-[#a1a1aa] leading-relaxed line-clamp-2 lg:line-clamp-3 group-hover:text-[#d4d4d8] transition-colors duration-200">
-                        {article.description}
-                      </p>
-                    </div>
-                    <div className="flex items-center gap-3 mt-3">
+                  <div className="flex-1 p-5 flex flex-col gap-3">
+                    <div className="flex items-center gap-2 text-[11px] text-[#a1a1aa] uppercase tracking-[0.1em]">
                       <SourceAvatar source={article.source || "news"} size="xs" />
-                      <span className="text-[10px] text-[#71717a] uppercase tracking-[0.08em] font-medium">
-                        {formatPolishDate(article.date)}
-                      </span>
-                      <span className="w-1 h-1 rounded-full bg-[#c9a962]/40" />
-                      <span className="text-[12px] text-[#c9a962] font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center gap-1">
+                      <span>{formatPolishDate(article.date)}</span>
+                    </div>
+                    <h3 className="font-serif text-[17px] lg:text-[19px] font-semibold text-[#f4f4f5] leading-snug group-hover:text-[#c9a962] transition-colors duration-200 line-clamp-2">
+                      {article.title}
+                    </h3>
+                    <p className="text-[14px] text-[#a1a1aa] leading-relaxed line-clamp-3 group-hover:text-[#d4d4d8] transition-colors duration-200">
+                      {article.description}
+                    </p>
+                    <div className="mt-auto flex items-center justify-between pt-2 border-t border-white/5">
+                      <span className="text-[12px] text-[#c9a962] font-medium flex items-center gap-1">
                         Czytaj więcej
-                        <svg className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                         </svg>
                       </span>
+                      <FavoriteButton
+                        article={{
+                          title: article.title,
+                          description: article.description,
+                          image: imageUrl,
+                          source: article.source,
+                          date: formatPolishDate(article.date),
+                        }}
+                        size="sm"
+                      />
                     </div>
-                  </div>
-                  {/* Favorite button */}
-                  <div className="flex-shrink-0 self-center">
-                    <FavoriteButton
-                      article={{
-                        title: article.title,
-                        description: article.description,
-                        image: imageUrl,
-                        source: article.source,
-                        date: formatPolishDate(article.date),
-                      }}
-                      size="sm"
-                    />
                   </div>
                 </Link>
               </motion.article>
@@ -338,4 +328,3 @@ export default function RSSArticlesPaginated({
     </div>
   );
 }
-

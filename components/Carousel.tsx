@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence, PanInfo } from "framer-motion";
 import { ReactNode, useState, useCallback, useEffect } from "react";
+import Image from "next/image";
 
 interface CarouselProps {
   children: ReactNode[];
@@ -148,10 +149,12 @@ export function ImageCarousel({
     <Carousel className={className}>
       {images.map((image, index) => (
         <div key={index} className="relative" style={{ aspectRatio }}>
-          <img
+          <Image
             src={image.src}
             alt={image.alt}
-            className="w-full h-full object-cover rounded-xl"
+            fill
+            className="object-cover rounded-xl"
+            unoptimized
           />
           {image.caption && (
             <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent rounded-b-xl">
@@ -163,4 +166,3 @@ export function ImageCarousel({
     </Carousel>
   );
 }
-

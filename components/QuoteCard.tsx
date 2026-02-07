@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface QuoteCardProps {
   quote: string;
@@ -47,7 +48,7 @@ export default function QuoteCard({
           
           <div className="flex items-center gap-4">
             {avatarUrl ? (
-              <img src={avatarUrl} alt={author} className="w-14 h-14 rounded-full object-cover border-2 border-[#c9a962]/30" />
+              <Image src={avatarUrl} alt={author} width={56} height={56} className="rounded-full object-cover border-2 border-[#c9a962]/30" unoptimized />
             ) : (
               <div className="w-14 h-14 rounded-full bg-gradient-to-br from-[#c9a962] to-[#9a7b3c] flex items-center justify-center text-[#08090c] font-serif text-xl font-bold">
                 {author.charAt(0)}
@@ -76,7 +77,7 @@ export default function QuoteCard({
       
       <div className="flex items-center gap-3 ml-8">
         {avatarUrl ? (
-          <img src={avatarUrl} alt={author} className="w-8 h-8 rounded-full object-cover" />
+          <Image src={avatarUrl} alt={author} width={32} height={32} className="rounded-full object-cover" unoptimized />
         ) : (
           <div className="w-8 h-8 rounded-full bg-[#c9a962]/20 flex items-center justify-center text-[#c9a962] text-xs font-bold">
             {author.charAt(0)}
@@ -130,7 +131,7 @@ export function ExpertQuote({
       <p className="text-sm text-[#a1a1aa] italic mb-4">&ldquo;{quote}&rdquo;</p>
       <div className="flex items-center gap-3">
         {avatarUrl ? (
-          <img src={avatarUrl} alt={author} className="w-10 h-10 rounded-full object-cover" />
+          <Image src={avatarUrl} alt={author} width={40} height={40} className="rounded-full object-cover" unoptimized />
         ) : (
           <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c9a962] to-[#9a7b3c] flex items-center justify-center text-[#08090c] font-bold">
             {author.charAt(0)}
@@ -151,4 +152,3 @@ export function ExpertQuote({
     </div>
   );
 }
-

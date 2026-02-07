@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface ReadingSession {
   articleId: string;
@@ -22,19 +22,9 @@ interface ReadingStatsData {
 }
 
 export default function ReadingStats({ className = "" }: { className?: string }) {
-  const [stats, setStats] = useState<ReadingStatsData>({
-    totalArticles: 0,
-    totalMinutes: 0,
-    completedArticles: 0,
-    streak: 0,
-    lastReadDate: "",
-  });
-
-  useEffect(() => {
-    const sessions = getReadingSessions();
-    const calculated = calculateStats(sessions);
-    setStats(calculated);
-  }, []);
+  const [stats] = useState<ReadingStatsData>(() =>
+    calculateStats(getReadingSessions())
+  );
 
   return (
     <div className={`bg-[#0c0d10] border border-white/5 rounded-xl p-6 ${className}`}>
@@ -178,4 +168,3 @@ export function trackReading(articleId: string, title: string, url: string) {
   window.addEventListener("beforeunload", saveSession);
   return () => window.removeEventListener("beforeunload", saveSession);
 }
-

@@ -15,11 +15,16 @@ export default function ImageLightbox({ src, alt, className = "", children }: Im
   const [isOpen, setIsOpen] = useState(false);
   const [scale, setScale] = useState(1);
 
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+    setScale(1);
+  }, []);
+
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
-    if (e.key === "Escape") setIsOpen(false);
+    if (e.key === "Escape") handleClose();
     if (e.key === "+" || e.key === "=") setScale((s) => Math.min(s + 0.25, 3));
     if (e.key === "-") setScale((s) => Math.max(s - 0.25, 0.5));
-  }, []);
+  }, [handleClose]);
 
   useEffect(() => {
     if (isOpen) {
@@ -27,7 +32,6 @@ export default function ImageLightbox({ src, alt, className = "", children }: Im
       window.addEventListener("keydown", handleKeyDown);
     } else {
       document.body.style.overflow = "";
-      setScale(1);
     }
     return () => {
       document.body.style.overflow = "";
@@ -38,8 +42,8 @@ export default function ImageLightbox({ src, alt, className = "", children }: Im
   return (
     <>
       {/* Clickable image */}
-      <div 
-        onClick={() => setIsOpen(true)} 
+      <div
+        onClick={() => setIsOpen(true)}
         className={`cursor-zoom-in relative group ${className}`}
       >
         {children || (
@@ -63,7 +67,7 @@ export default function ImageLightbox({ src, alt, className = "", children }: Im
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[300] flex items-center justify-center bg-black/95 backdrop-blur-sm"
-            onClick={() => setIsOpen(false)}
+            onClick={handleClose}
           >
             {/* Controls */}
             <div className="absolute top-4 right-4 flex items-center gap-2 z-10">
@@ -85,7 +89,7 @@ export default function ImageLightbox({ src, alt, className = "", children }: Im
               </button>
               <span className="text-white text-[12px] px-2">{Math.round(scale * 100)}%</span>
               <button
-                onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
+                onClick={(e) => { e.stopPropagation(); handleClose(); }}
                 className="p-2 bg-white/10 hover:bg-white/20 rounded-lg transition-colors ml-2"
               >
                 <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -128,4 +132,3 @@ export default function ImageLightbox({ src, alt, className = "", children }: Im
     </>
   );
 }
-

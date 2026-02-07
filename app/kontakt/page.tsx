@@ -3,9 +3,10 @@
 import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import ContactForm from "@/components/ContactForm";
 import FAQ from "@/components/FAQ";
 import SocialProof, { TrustBadges } from "@/components/SocialProof";
+import Link from "next/link";
+import PageHero from "@/components/PageHero";
 
 export default function KontaktPage() {
   return (
@@ -14,19 +15,12 @@ export default function KontaktPage() {
 
       <main className="flex-1 py-8">
         <div className="mx-auto max-w-[1200px] px-4 lg:px-6">
-          {/* Header */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-3xl lg:text-4xl font-serif font-medium text-[#f4f4f5] mb-3">
-              Skontaktuj się z <span className="bg-gradient-to-r from-[#e4d4a5] via-[#c9a962] to-[#9a7b3c] bg-clip-text text-transparent">nami</span>
-            </h1>
-            <p className="text-[#71717a] text-sm max-w-lg mx-auto">
-              Masz pytania, sugestie lub chcesz nawiązać współpracę? Napisz do nas!
-            </p>
-          </motion.div>
+          <PageHero
+            title="Kontakt"
+            subtitle="Jedyne oficjalne miejsce kontaktu: tomasz.chromy@outlook.com. Współpraca, uwagi, zgłoszenia."
+            eyebrow="Informacje"
+            badge="Direct mail"
+          />
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Contact Form */}
@@ -36,11 +30,31 @@ export default function KontaktPage() {
               transition={{ delay: 0.1 }}
             >
               <div className="bg-[#0c0d10] border border-white/5 rounded-2xl p-6 lg:p-8">
-                <h2 className="text-lg font-medium text-[#f4f4f5] mb-6 flex items-center gap-2">
+                <h2 className="text-lg font-medium text-[#f4f4f5] mb-4 flex items-center gap-2">
                   <span>✉️</span>
-                  Wyślij wiadomość
+                  Kontakt e-mail
                 </h2>
-                <ContactForm />
+                <p className="text-sm text-[#a1a1aa] mb-4">
+                  Jedyne oficjalne miejsce kontaktu:{" "}
+                  <Link
+                    href="mailto:tomasz.chromy@outlook.com"
+                    className="text-[#c9a962] hover:text-[#e4d4a5] transition-colors"
+                  >
+                    tomasz.chromy@outlook.com
+                  </Link>
+                </p>
+                <div className="flex items-center gap-3 bg-[#0f1115] border border-white/5 rounded-lg p-4">
+                  <div className="px-3 py-2 rounded-md bg-[#c9a962]/15 text-[#c9a962] text-sm font-semibold">
+                    tomasz.chromy@outlook.com
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => navigator.clipboard?.writeText("tomasz.chromy@outlook.com")}
+                    className="text-xs text-[#f4f4f5] border border-white/10 rounded px-3 py-2 hover:border-[#c9a962]/50 transition-colors"
+                  >
+                    Kopiuj
+                  </button>
+                </div>
               </div>
 
               {/* Trust badges */}
@@ -82,4 +96,3 @@ export default function KontaktPage() {
     </div>
   );
 }
-

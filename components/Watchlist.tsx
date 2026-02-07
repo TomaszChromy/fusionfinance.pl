@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface WatchlistItem {
   id: string;
@@ -34,23 +34,18 @@ interface WatchlistProps {
 }
 
 export default function Watchlist({ variant = "default", className = "" }: WatchlistProps) {
-  const [items, setItems] = useState<WatchlistItem[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  useEffect(() => {
-    // Load from localStorage or use mock data
+  const [items, setItems] = useState<WatchlistItem[]>(() => {
+    if (typeof window === "undefined") return MOCK_WATCHLIST;
     const saved = localStorage.getItem("watchlist");
     if (saved) {
       try {
-        setItems(JSON.parse(saved));
+        return JSON.parse(saved) as WatchlistItem[];
       } catch {
-        setItems(MOCK_WATCHLIST);
+        return MOCK_WATCHLIST;
       }
-    } else {
-      setItems(MOCK_WATCHLIST);
     }
-    setIsLoaded(true);
-  }, []);
+    return MOCK_WATCHLIST;
+  });
 
   const removeItem = (id: string) => {
     const updated = items.filter((item) => item.id !== id);
@@ -154,4 +149,3 @@ export default function Watchlist({ variant = "default", className = "" }: Watch
     </div>
   );
 }
-

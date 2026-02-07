@@ -49,7 +49,7 @@ const siteSelectors: Record<string, RegExp[]> = {
 async function fetchArticleContent(url: string): Promise<string> {
   try {
     // Clean URL - remove RSS tracking params
-    let cleanUrl = url.replace(/\?utm_source=RSS.*$/i, "").replace(/&amp;/g, "&");
+    const cleanUrl = url.replace(/\?utm_source=RSS.*$/i, "").replace(/&amp;/g, "&");
 
     const response = await fetch(cleanUrl, {
       headers: {
@@ -221,4 +221,3 @@ export async function GET(request: NextRequest) {
     }, { status: 500 });
   }
 }
-

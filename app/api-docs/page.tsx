@@ -21,9 +21,9 @@ export default function ApiDocPage() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-2 text-sm text-[#71717a] mb-12"
         >
-          <a href="/" className="hover:text-[#c9a962] transition-colors">
+          <Link href="/" className="hover:text-[#c9a962] transition-colors">
             Strona główna
-          </a>
+          </Link>
           <span>/</span>
           <span className="text-[#f4f4f5]">Developer API</span>
         </motion.div>

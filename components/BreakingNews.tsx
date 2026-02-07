@@ -10,6 +10,7 @@ interface NewsItem {
   title: string;
   link: string;
   originalUrl?: string;
+  image?: string;
 }
 
 const fallbackNews: NewsItem[] = [
@@ -28,15 +29,16 @@ export default function BreakingNews() {
   useEffect(() => {
     async function fetchBreakingNews() {
       try {
-        const apiUrl = getRssApiUrl("all", 12);
+        const apiUrl = getRssApiUrl("polska", 18);
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error("Failed to fetch");
 
         const data = await response.json();
-        const items: NewsItem[] = data.items?.map((item: { title: string; link: string }) => ({
+        const items: NewsItem[] = data.items?.map((item: { title: string; link: string; image?: string }) => ({
           title: item.title,
           link: getRssArticleLink(item.title, item.link),
           originalUrl: item.link,
+          image: item.image,
         })) || [];
 
         if (items.length > 0) {
@@ -100,8 +102,15 @@ export default function BreakingNews() {
               <Link
                 key={index}
                 href={item.link}
-                className="text-[13px] font-medium flex items-center text-[#e4e4e7] mx-6 hover:text-[#c9a962] transition-colors"
+                className="text-[13px] font-medium flex items-center text-[#e4e4e7] mx-6 hover:text-[#c9a962] transition-colors gap-3"
               >
+                {item.image && (
+                  <span className="relative w-10 h-6 overflow-hidden rounded bg-white/5 flex-shrink-0">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={item.image} alt="" className="w-full h-full object-cover" loading="lazy" />
+                    <span className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent" />
+                  </span>
+                )}
                 <span className="w-1.5 h-1.5 bg-[#c9a962] rounded-full mr-4 flex-shrink-0 opacity-60" />
                 <span className="max-w-[400px] truncate">{item.title}</span>
               </Link>
@@ -112,4 +121,3 @@ export default function BreakingNews() {
     </div>
   );
 }
-

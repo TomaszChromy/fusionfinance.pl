@@ -32,11 +32,9 @@ export default function MarketMoodIndicator({
   variant = "default",
   className = "",
 }: MarketMoodIndicatorProps) {
-  const [mounted, setMounted] = useState(false);
   const [displayValue, setDisplayValue] = useState(0);
 
   useEffect(() => {
-    setMounted(true);
     // Animate counter
     const duration = 1000;
     const steps = 50;
@@ -53,8 +51,6 @@ export default function MarketMoodIndicator({
     }, duration / steps);
     return () => clearInterval(interval);
   }, [value]);
-
-  if (!mounted) return null;
 
   const mood = getMoodLevel(value);
   const config = MOOD_CONFIG[mood];
@@ -163,4 +159,3 @@ export default function MarketMoodIndicator({
     </div>
   );
 }
-

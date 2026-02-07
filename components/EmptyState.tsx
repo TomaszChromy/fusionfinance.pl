@@ -142,12 +142,20 @@ export function NoHistory({ onExplore }: { onExplore?: () => void }) {
   );
 }
 
-export function ErrorState({ onRetry }: { onRetry?: () => void }) {
+export function ErrorState({
+  onRetry,
+  title = "Wystąpił błąd",
+  description = "Nie udało się załadować danych. Spróbuj ponownie później.",
+}: {
+  onRetry?: () => void;
+  title?: string;
+  description?: string;
+}) {
   return (
     <EmptyState
       icon={icons.error}
-      title="Wystąpił błąd"
-      description="Nie udało się załadować danych. Spróbuj ponownie później."
+      title={title}
+      description={description}
       action={onRetry ? { label: "Spróbuj ponownie", onClick: onRetry } : undefined}
     />
   );
@@ -163,4 +171,3 @@ export function OfflineState() {
     />
   );
 }
-

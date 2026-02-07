@@ -2,6 +2,7 @@
  * FusionFinance.pl - Restore API Routes & Finalize Build
  * Przywraca API routes po static build i kopiuje pliki konfiguracyjne
  */
+/* eslint-disable @typescript-eslint/no-require-imports */
 
 const fs = require('fs');
 const path = require('path');
@@ -86,4 +87,3 @@ console.log('   4. Usuń istniejące pliki (jeśli są)');
 console.log('   5. Wgraj całą zawartość folderu out/');
 console.log('   6. Upewnij się, że .htaccess jest widoczny');
 console.log('');
-

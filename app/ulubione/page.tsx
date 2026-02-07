@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FavoriteButton from "@/components/FavoriteButton";
@@ -11,12 +12,12 @@ import { NoFavorites } from "@/components/EmptyState";
 import { ListSkeleton } from "@/components/Skeleton";
 import { ConfirmDialog } from "@/components/Modal";
 import { SourceAvatar } from "@/components/Avatar";
-import { GoldDivider } from "@/components/Divider";
 import PortfolioWidget from "@/components/PortfolioWidget";
 import AlertsPanel from "@/components/AlertsPanel";
 import PerformanceChart from "@/components/PerformanceChart";
 import PriceAlertForm from "@/components/PriceAlertForm";
 import { useState } from "react";
+import PageHero from "@/components/PageHero";
 
 export default function UlubionePage() {
   const { favorites, isLoaded, clearFavorites } = useFavorites();
@@ -29,29 +30,23 @@ export default function UlubionePage() {
 
       <main className="flex-1 py-8">
         <div className="mx-auto max-w-[1000px] px-4 lg:px-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-serif font-medium text-[#f4f4f5] mb-2">
-                Ulubione <span className="bg-gradient-to-r from-[#f87171] via-[#ef4444] to-[#dc2626] bg-clip-text text-transparent">artykuły</span>
-              </h1>
-              <p className="text-[#71717a] text-sm">
-                {isLoaded ? `${favorites.length} zapisanych artykułów` : "Ładowanie..."}
-              </p>
-            </div>
-
-            {favorites.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setShowConfirm(true)}
-                className="text-xs text-[#71717a] hover:text-[#f87171] transition-colors"
-              >
-                Wyczyść wszystkie
-              </button>
-            )}
-          </div>
-
-          <GoldDivider className="mb-8" />
+          <PageHero
+            title="Ulubione artykuły"
+            subtitle={isLoaded ? `${favorites.length} zapisanych artykułów` : "Ładowanie..."}
+            eyebrow="Narzędzia"
+            badge="Twoje zapisy"
+            rightSlot={
+              favorites.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(true)}
+                  className="text-xs text-[#71717a] hover:text-[#f87171] transition-colors"
+                >
+                  Wyczyść wszystkie
+                </button>
+              )
+            }
+          />
 
           {/* Confirm Dialog */}
           <ConfirmDialog
@@ -81,8 +76,8 @@ export default function UlubionePage() {
                 >
                   <div className="flex gap-4">
                     {article.image && (
-                      <div className="w-24 h-18 rounded-lg overflow-hidden flex-shrink-0 bg-white/5">
-                        <img src={article.image} alt="" className="w-full h-full object-cover" />
+                      <div className="w-24 h-18 rounded-lg overflow-hidden flex-shrink-0 bg-white/5 relative">
+                        <Image src={article.image} alt="" fill className="object-cover" unoptimized />
                       </div>
                     )}
                     <div className="flex-1 min-w-0">
@@ -137,4 +132,3 @@ export default function UlubionePage() {
     </div>
   );
 }
-

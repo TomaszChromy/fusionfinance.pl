@@ -17,33 +17,33 @@ const STORAGE_KEY = "fusionfinance_favorites";
 const MAX_FAVORITES = 50;
 
 export function useFavorites() {
-  const [favorites, setFavorites] = useState<FavoriteArticle[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  // Load favorites from localStorage on mount
-  useEffect(() => {
+  const [favorites, setFavorites] = useState<FavoriteArticle[]>(() => {
+    if (typeof window === "undefined") return [];
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as FavoriteArticle[];
-        setFavorites(parsed);
+        return JSON.parse(stored) as FavoriteArticle[];
       }
     } catch {
       console.error("Failed to load favorites");
     }
+    return [];
+  });
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
     setIsLoaded(true);
   }, []);
 
   // Save favorites to localStorage whenever they change
   useEffect(() => {
-    if (isLoaded) {
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
-      } catch {
-        console.error("Failed to save favorites");
-      }
+    if (typeof window === "undefined") return;
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(favorites));
+    } catch {
+      console.error("Failed to save favorites");
     }
-  }, [favorites, isLoaded]);
+  }, [favorites]);
 
   const addFavorite = useCallback((article: Omit<FavoriteArticle, "savedAt">) => {
     setFavorites(prev => {
@@ -104,4 +104,3 @@ export function generateArticleId(title: string, source?: string): string {
   }
   return Math.abs(hash).toString(36);
 }
-

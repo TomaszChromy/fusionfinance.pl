@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import NewsletterForm from "./NewsletterForm";
 import VisitCounter from "./VisitCounter";
 
 export default function Footer() {
@@ -82,11 +81,6 @@ export default function Footer() {
         <div className="w-16 h-px bg-gradient-to-r from-transparent to-[#c9a962]/30" />
         <div className="w-1.5 h-1.5 rotate-45 border border-[#c9a962]/40" />
         <div className="w-16 h-px bg-gradient-to-l from-transparent to-[#c9a962]/30" />
-      </div>
-
-      {/* Newsletter Section */}
-      <div className="max-w-md mx-auto mb-8 px-4">
-        <NewsletterForm />
       </div>
 
       {/* Copyright */}

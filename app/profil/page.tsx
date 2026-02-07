@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -66,10 +67,12 @@ export default function ProfilePage() {
           {/* Profile Header */}
           <div className="flex items-center gap-6 mb-8 pb-8 border-b border-white/5">
             {session.user.image ? (
-              <img
+              <Image
                 src={session.user.image}
                 alt={session.user.name || "User"}
-                className="w-20 h-20 rounded-full object-cover border-2 border-[#c9a962]/30"
+                width={80}
+                height={80}
+                className="rounded-full object-cover border-2 border-[#c9a962]/30"
               />
             ) : (
               <div className="w-20 h-20 rounded-full bg-gradient-to-br from-[#c9a962] to-[#8b6914] flex items-center justify-center text-2xl font-medium text-[#08090c]">
@@ -132,4 +135,3 @@ export default function ProfilePage() {
     </main>
   );
 }
-

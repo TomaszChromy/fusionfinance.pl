@@ -55,7 +55,7 @@ const negativeWords = [
  */
 export async function POST(request: NextRequest) {
   try {
-    const { text, language = "pl" } = await request.json();
+    const { text } = await request.json();
 
     if (!text || text.length < 10) {
       return NextResponse.json(

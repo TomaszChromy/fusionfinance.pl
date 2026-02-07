@@ -4,13 +4,16 @@ import { useEffect, useRef } from "react";
 
 type Props = {
   symbol?: string; // np. "SP:SPX", "NASDAQ:IXIC"
+  height?: number;
+  className?: string;
 };
 
-export default function TradingViewChart({ symbol = "SP:SPX" }: Props) {
+export default function TradingViewChart({ symbol = "SP:SPX", height = 420, className = "" }: Props) {
   const container = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!container.current) return;
+    const target = container.current;
 
     const script = document.createElement("script");
     script.src =
@@ -33,18 +36,19 @@ export default function TradingViewChart({ symbol = "SP:SPX" }: Props) {
       support_host: "https://www.tradingview.com",
     });
 
-    container.current.innerHTML = "";
-    container.current.appendChild(script);
+    target.innerHTML = "";
+    target.appendChild(script);
 
     return () => {
-      if (container.current) {
-        container.current.innerHTML = "";
-      }
+      target.innerHTML = "";
     };
   }, [symbol]);
 
   return (
-    <div className="mt-6 h-[420px] w-full overflow-hidden rounded-3xl bg-slate-900/60">
+    <div
+      className={`mt-6 w-full overflow-hidden rounded-3xl bg-slate-900/60 ${className}`}
+      style={{ height }}
+    >
       <div className="tradingview-widget-container h-full" ref={container} />
     </div>
   );

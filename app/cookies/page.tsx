@@ -1,8 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PageHero from "@/components/PageHero";
 
 export default function CookiesPage() {
   return (
@@ -10,25 +10,12 @@ export default function CookiesPage() {
       <Navbar />
 
       <div className="mx-auto max-w-[800px] px-5 lg:px-8 py-[55px]">
-        <motion.div
-          initial={{ opacity: 0, y: 21 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
-        >
-          {/* Header */}
-          <div className="text-center mb-[55px]">
-            <div className="inline-flex items-center gap-[8px] text-[11px] text-[#c9a962] uppercase tracking-[0.15em] mb-[21px]">
-              <span className="w-[21px] h-[1px] bg-[#c9a962]/50" />
-              Informacje prawne
-              <span className="w-[21px] h-[1px] bg-[#c9a962]/50" />
-            </div>
-            <h1 className="font-serif text-4xl lg:text-5xl font-medium text-[#f4f4f5] mb-[21px]">
-              Polityka Cookies
-            </h1>
-            <p className="text-[15px] text-[#a1a1aa]">
-              Ostatnia aktualizacja: 30 listopada 2025
-            </p>
-          </div>
+        <PageHero
+          title="Polityka cookies"
+          subtitle="Jak korzystamy z plików cookies w FusionFinance."
+          eyebrow="Informacje prawne"
+          badge="Aktualizacja: 30 listopada 2025"
+        />
 
           {/* Content */}
           <div className="space-y-[34px]">
@@ -83,11 +70,9 @@ export default function CookiesPage() {
               </p>
             </section>
           </div>
-        </motion.div>
-
-        <Footer />
       </div>
+
+      <Footer />
     </main>
   );
 }
-

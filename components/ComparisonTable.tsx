@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ReactNode } from "react";
+import Image from "next/image";
 
 interface ComparisonItem {
   id: string;
@@ -66,7 +67,7 @@ export default function ComparisonTable({
               >
                 <div className="flex flex-col items-center gap-2">
                   {item.logo ? (
-                    <img src={item.logo} alt={item.name} className="w-10 h-10 rounded-lg object-contain" />
+                    <Image src={item.logo} alt={item.name} width={40} height={40} className="rounded-lg object-contain" unoptimized />
                   ) : (
                     <div className="w-10 h-10 rounded-lg bg-[#c9a962]/20 flex items-center justify-center text-[#c9a962] font-bold">
                       {item.name.charAt(0)}
@@ -149,4 +150,3 @@ export function BrokerComparison({ className = "" }: { className?: string }) {
     </div>
   );
 }
-

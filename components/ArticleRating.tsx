@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ArticleRatingProps {
@@ -12,21 +12,20 @@ interface ArticleRatingProps {
 const RATINGS_KEY = "fusionfinance_article_ratings";
 
 export default function ArticleRating({ articleId, onRate, className = "" }: ArticleRatingProps) {
-  const [rating, setRating] = useState<"helpful" | "not_helpful" | null>(null);
-  const [showThanks, setShowThanks] = useState(false);
-
-  // Load rating from localStorage
-  useEffect(() => {
+  const [rating, setRating] = useState<"helpful" | "not_helpful" | null>(() => {
+    if (typeof window === "undefined") return null;
     try {
       const stored = localStorage.getItem(RATINGS_KEY);
       if (stored) {
         const ratings = JSON.parse(stored);
-        if (ratings[articleId]) {
-          setRating(ratings[articleId]);
-        }
+        if (ratings[articleId]) return ratings[articleId];
       }
-    } catch {}
-  }, [articleId]);
+    } catch {
+      // ignore
+    }
+    return null;
+  });
+  const [showThanks, setShowThanks] = useState(false);
 
   const handleRate = (newRating: "helpful" | "not_helpful") => {
     setRating(newRating);
@@ -106,4 +105,3 @@ export default function ArticleRating({ articleId, onRate, className = "" }: Art
     </div>
   );
 }
-

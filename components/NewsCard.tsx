@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 
 interface NewsCardProps {
   title: string;
@@ -68,7 +69,7 @@ export default function NewsCard({
           className="flex items-center gap-3 p-3 bg-[#0c0d10] border border-white/5 rounded-lg hover:border-[#c9a962]/20 transition-colors"
         >
           {imageUrl && (
-            <img src={imageUrl} alt="" className="w-16 h-16 rounded-lg object-cover flex-shrink-0" />
+            <Image src={imageUrl} alt="" width={64} height={64} className="rounded-lg object-cover flex-shrink-0" unoptimized />
           )}
           <div className="flex-1 min-w-0">
             <h4 className="text-sm font-medium text-[#f4f4f5] group-hover:text-[#c9a962] transition-colors line-clamp-2">
@@ -89,7 +90,7 @@ export default function NewsCard({
           className="flex gap-4 p-4 bg-[#0c0d10] border border-white/5 rounded-xl hover:border-[#c9a962]/20 transition-all"
         >
           {imageUrl && (
-            <img src={imageUrl} alt="" className="w-32 h-24 rounded-lg object-cover flex-shrink-0" />
+            <Image src={imageUrl} alt="" width={128} height={96} className="rounded-lg object-cover flex-shrink-0" unoptimized />
           )}
           <div className="flex-1 min-w-0">
             {(category || badge) && (
@@ -118,14 +119,14 @@ export default function NewsCard({
       <Link href={href} className={`block group ${className}`}>
         <motion.div
           whileHover={{ y: -4 }}
-          className="relative overflow-hidden rounded-2xl bg-[#0c0d10] border border-white/5 hover:border-[#c9a962]/20 transition-all"
-        >
-          {imageUrl && (
-            <div className="relative h-48 overflow-hidden">
-              <img src={imageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#08090c] via-transparent to-transparent" />
-            </div>
-          )}
+        className="relative overflow-hidden rounded-2xl bg-[#0c0d10] border border-white/5 hover:border-[#c9a962]/20 transition-all"
+      >
+        {imageUrl && (
+          <div className="relative h-48 overflow-hidden">
+            <Image src={imageUrl} alt="" fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#08090c] via-transparent to-transparent" />
+          </div>
+        )}
           <div className="p-5">
             {(category || badge) && (
               <div className="flex items-center gap-2 mb-3">
@@ -157,7 +158,7 @@ export default function NewsCard({
       >
         {imageUrl && (
           <div className="relative h-40 overflow-hidden">
-            <img src={imageUrl} alt="" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+            <Image src={imageUrl} alt="" fill className="object-cover group-hover:scale-105 transition-transform duration-500" unoptimized />
           </div>
         )}
         <div className="p-4">
@@ -180,4 +181,3 @@ export default function NewsCard({
     </Link>
   );
 }
-

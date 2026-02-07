@@ -4,6 +4,7 @@ import { useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useHistory } from "@/hooks/useHistory";
@@ -13,6 +14,7 @@ import { ConfirmDialog } from "@/components/Modal";
 import { SourceAvatar } from "@/components/Avatar";
 import { SectionDivider } from "@/components/Divider";
 import ReadingStats from "@/components/ReadingStats";
+import PageHero from "@/components/PageHero";
 
 export default function HistoriaPage() {
   const { history, isLoaded, clearHistory, removeFromHistory } = useHistory();
@@ -37,27 +39,23 @@ export default function HistoriaPage() {
 
       <main className="flex-1 py-8">
         <div className="mx-auto max-w-[1000px] px-4 lg:px-6">
-          {/* Header */}
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-serif font-medium text-[#f4f4f5] mb-2">
-                Historia <span className="bg-gradient-to-r from-[#60a5fa] via-[#3b82f6] to-[#2563eb] bg-clip-text text-transparent">przeglądania</span>
-              </h1>
-              <p className="text-[#71717a] text-sm">
-                {isLoaded ? `${history.length} ostatnio przeglądanych artykułów` : "Ładowanie..."}
-              </p>
-            </div>
-
-            {history.length > 0 && (
-              <button
-                type="button"
-                onClick={() => setShowConfirm(true)}
-                className="text-xs text-[#71717a] hover:text-[#f87171] transition-colors"
-              >
-                Wyczyść historię
-              </button>
-            )}
-          </div>
+          <PageHero
+            title="Historia przeglądania"
+            subtitle={isLoaded ? `${history.length} ostatnich artykułów` : "Ładowanie..."}
+            eyebrow="Narzędzia"
+            badge="Twoje dane"
+            rightSlot={
+              history.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setShowConfirm(true)}
+                  className="text-xs text-[#71717a] hover:text-[#f87171] transition-colors"
+                >
+                  Wyczyść historię
+                </button>
+              )
+            }
+          />
 
           {/* Confirm Dialog */}
           <ConfirmDialog
@@ -104,8 +102,8 @@ export default function HistoriaPage() {
                         </button>
                         <div className="flex gap-4">
                           {item.image && (
-                            <div className="w-20 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-white/5">
-                              <img src={item.image} alt="" className="w-full h-full object-cover" />
+                            <div className="w-20 h-14 rounded-lg overflow-hidden flex-shrink-0 bg-white/5 relative">
+                              <Image src={item.image} alt="" fill className="object-cover" unoptimized />
                             </div>
                           )}
                           <div className="flex-1 min-w-0 pr-8">
@@ -142,4 +140,3 @@ export default function HistoriaPage() {
     </div>
   );
 }
-

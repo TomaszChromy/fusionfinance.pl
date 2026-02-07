@@ -1,129 +1,97 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readFile, writeFile, mkdir } from "fs/promises";
+import { resolve } from "path";
+import crypto from "crypto";
+import { auth } from "@/lib/auth";
 
-export const dynamic = "force-dynamic";
-export const runtime = "nodejs";
+type Alert = {
+  id: string;
+  userId: string;
+  symbol: string;
+  assetClass: string;
+  condition: "above" | "below" | "percent";
+  threshold: number;
+  isActive: boolean;
+  triggered: boolean;
+  channel: "email" | "push";
+  note?: string;
+  createdAt: string;
+};
 
-// Helper – leniwe pobieranie auth + prisma, żeby nie wywalały się przy imporcie modułu
-async function getDeps() {
-  const [authModule, prismaModule] = await Promise.all([
-    import("@/lib/auth"),
-    import("@/lib/prisma"),
-  ]);
+const DATA_DIR = "/tmp/fusionfinance";
+const FILE_PATH = resolve(DATA_DIR, "alerts.json");
 
-  return {
-    auth: authModule.auth,
-    prisma: prismaModule.prisma,
-  };
+async function loadAlerts(): Promise<Alert[]> {
+  try {
+    const raw = await readFile(FILE_PATH, "utf-8");
+    return JSON.parse(raw) as Alert[];
+  } catch {
+    return [];
+  }
 }
 
-export async function GET(_request: NextRequest) {
-  try {
-    const { auth, prisma } = await getDeps();
-    const session = await auth();
+async function saveAlerts(alerts: Alert[]) {
+  await mkdir(DATA_DIR, { recursive: true });
+  await writeFile(FILE_PATH, JSON.stringify(alerts, null, 2), "utf-8");
+}
 
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+async function getUserId() {
+  const session = await auth?.();
+  return session?.user?.id || "local";
+}
 
-    const alerts = await prisma.priceAlert.findMany({
-      where: { userId: session.user.id },
-      orderBy: { createdAt: "desc" },
-    });
-
-    return NextResponse.json(alerts);
-  } catch (error) {
-    console.error("Error fetching alerts:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
+export async function GET() {
+  const userId = await getUserId();
+  const alerts = await loadAlerts();
+  return NextResponse.json(alerts.filter(a => a.userId === userId));
 }
 
 export async function POST(request: NextRequest) {
-  try {
-    const { auth, prisma } = await getDeps();
-    const session = await auth();
-
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const body = await request.json();
-    const { symbol, price, condition } = body;
-
-    if (!symbol || !price || !condition) {
-      return NextResponse.json(
-        { error: "Missing required fields" },
-        { status: 400 }
-      );
-    }
-
-    const alert = await prisma.priceAlert.create({
-      data: {
-        userId: session.user.id,
-        symbol,
-        price: parseFloat(String(price)),
-        condition,
-        isActive: true,
-      },
-    });
-
-    return NextResponse.json(alert);
-  } catch (error) {
-    console.error("Error creating alert:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  const userId = await getUserId();
+  const body = await request.json();
+  const { symbol, condition, threshold, channel, assetClass, note } = body;
+  if (!symbol || threshold === undefined || !condition) {
+    return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
-}
-
-export async function DELETE(request: NextRequest) {
-  try {
-    const { auth, prisma } = await getDeps();
-    const session = await auth();
-
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const { searchParams } = new URL(request.url);
-    const id = searchParams.get("id");
-
-    if (!id) {
-      return NextResponse.json({ error: "Missing id" }, { status: 400 });
-    }
-
-    await prisma.priceAlert.delete({
-      where: { id, userId: session.user.id },
-    });
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error("Error deleting alert:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
+  const alerts = await loadAlerts();
+  const alert: Alert = {
+    id: crypto.randomUUID(),
+    userId,
+    symbol: String(symbol).toUpperCase(),
+    assetClass: assetClass || "stock",
+    condition,
+    threshold: Number(threshold),
+    channel: channel === "email" ? "email" : "push",
+    isActive: true,
+    triggered: false,
+    note: note || "",
+    createdAt: new Date().toISOString(),
+  };
+  alerts.unshift(alert);
+  await saveAlerts(alerts);
+  return NextResponse.json(alert);
 }
 
 export async function PATCH(request: NextRequest) {
-  try {
-    const { auth, prisma } = await getDeps();
-    const session = await auth();
+  const userId = await getUserId();
+  const body = await request.json();
+  const { id, isActive } = body;
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  const alerts = await loadAlerts();
+  const idx = alerts.findIndex(a => a.id === id && a.userId === userId);
+  if (idx === -1) return NextResponse.json({ error: "Not found" }, { status: 404 });
+  alerts[idx].isActive = Boolean(isActive);
+  await saveAlerts(alerts);
+  return NextResponse.json(alerts[idx]);
+}
 
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const body = await request.json();
-    const { id, isActive } = body;
-
-    if (!id) {
-      return NextResponse.json({ error: "Missing id" }, { status: 400 });
-    }
-
-    const alert = await prisma.priceAlert.update({
-      where: { id, userId: session.user.id },
-      data: { isActive },
-    });
-
-    return NextResponse.json(alert);
-  } catch (error) {
-    console.error("Error updating alert:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
-  }
+export async function DELETE(request: NextRequest) {
+  const userId = await getUserId();
+  const { searchParams } = new URL(request.url);
+  const id = searchParams.get("id");
+  if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+  const alerts = await loadAlerts();
+  const filtered = alerts.filter(a => !(a.id === id && a.userId === userId));
+  await saveAlerts(filtered);
+  return NextResponse.json({ success: true });
 }

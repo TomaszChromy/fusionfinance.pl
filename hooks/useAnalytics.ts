@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { useSession } from "next-auth/react";
 
 interface TrackPageViewData {
@@ -17,20 +17,21 @@ interface TrackArticleViewData {
 
 interface TrackEventData {
   eventType: string;
-  eventData?: Record<string, any>;
+  eventData?: Record<string, unknown>;
 }
+
+const getNow = () => Date.now();
 
 export function useAnalytics() {
   const { data: session } = useSession();
-  const startTimeRef = useRef<number>(Date.now());
-  const scrollTrackRef = useRef<NodeJS.Timeout | null>(null);
+  const startTimeRef = useRef<number>(0);
 
   /**
    * Śledź widok strony
    */
-  const trackPageView = async (data: TrackPageViewData) => {
+  const trackPageView = useCallback(async (data: TrackPageViewData) => {
     try {
-      const duration = Math.round((Date.now() - startTimeRef.current) / 1000);
+      const duration = Math.round((getNow() - startTimeRef.current) / 1000);
 
       await fetch("/api/analytics/page-view", {
         method: "POST",
@@ -47,14 +48,23 @@ export function useAnalytics() {
     } catch (error) {
       console.error("Failed to track page view:", error);
     }
-  };
+  }, [session]);
+
+  /**
+   * Oblicz głębokość scroll
+   */
+  const calculateScrollDepth = useCallback((): number => {
+    if (!document.documentElement.scrollHeight) return 0;
+    const scrolled = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
+    return Math.round(Math.min(scrolled, 1) * 100);
+  }, []);
 
   /**
    * Śledź widok artykułu
    */
-  const trackArticleView = async (data: TrackArticleViewData) => {
+  const trackArticleView = useCallback(async (data: TrackArticleViewData) => {
     try {
-      const duration = data.duration || Math.round((Date.now() - startTimeRef.current) / 1000);
+      const duration = data.duration || Math.round((getNow() - startTimeRef.current) / 1000);
       const scrollDepth = data.scrollDepth || calculateScrollDepth();
 
       await fetch("/api/analytics/article-view", {
@@ -72,12 +82,12 @@ export function useAnalytics() {
     } catch (error) {
       console.error("Failed to track article view:", error);
     }
-  };
+  }, [calculateScrollDepth, session]);
 
   /**
    * Śledź zdarzenie
    */
-  const trackEvent = async (data: TrackEventData) => {
+  const trackEvent = useCallback(async (data: TrackEventData) => {
     try {
       await fetch("/api/analytics/event", {
         method: "POST",
@@ -91,21 +101,14 @@ export function useAnalytics() {
     } catch (error) {
       console.error("Failed to track event:", error);
     }
-  };
-
-  /**
-   * Oblicz głębokość scroll
-   */
-  const calculateScrollDepth = (): number => {
-    if (!document.documentElement.scrollHeight) return 0;
-    const scrolled = (window.scrollY + window.innerHeight) / document.documentElement.scrollHeight;
-    return Math.round(Math.min(scrolled, 1) * 100);
-  };
+  }, [session]);
 
   /**
    * Setup automatycznego śledzenia scroll depth
    */
   useEffect(() => {
+    startTimeRef.current = Date.now();
+
     let lastScrollDepth = 0;
 
     const handleScroll = () => {
@@ -123,7 +126,7 @@ export function useAnalytics() {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [calculateScrollDepth, trackEvent]);
 
   return {
     trackPageView,

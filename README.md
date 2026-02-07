@@ -102,6 +102,13 @@ npm install
 ```bash
 cp .env.example .env.local
 ```
+Kluczowe wartości do uzupełnienia w `.env.local`: `AUTH_SECRET`, `NEXTAUTH_URL` (np. http://localhost:3000), `DATABASE_URL` (PostgreSQL), `GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`, `STRIPE_SECRET_KEY`, `RESEND_API_KEY`, `FUSION_OPENAI_API_KEY`, `CRON_SECRET`.
+
+Jeśli chcesz korzystać z redakcyjnych artykułów w bazie, po ustawieniu `DATABASE_URL` uruchom:
+```bash
+npx prisma migrate dev --name articles
+npx prisma generate
+```
 
 ### 4. Uruchom aplikację
 ```bash

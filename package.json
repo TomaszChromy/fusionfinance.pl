@@ -9,6 +9,7 @@
     "postinstall": "prisma generate",
     "dev": "next dev",
     "build": "next build",
+    "typecheck": "tsc --noEmit",
     "prebuild:static": "node scripts/prepare-static.js",
     "build:static": "cross-env STATIC_EXPORT=true next build",
     "postbuild:static": "node scripts/restore-api.js",

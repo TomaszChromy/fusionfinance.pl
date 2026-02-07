@@ -3,14 +3,47 @@
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+
+type SettingsState = {
+  emailNotifications: boolean;
+  priceAlerts: boolean;
+  weeklyDigest: boolean;
+  marketOpen: boolean;
+};
+
+type SettingRowProps = {
+  label: string;
+  description: string;
+  settingKey: keyof SettingsState;
+  value: boolean;
+  onToggle: (key: keyof SettingsState) => void;
+};
+
+const SettingRow = ({ label, description, settingKey, value, onToggle }: SettingRowProps) => (
+  <div className="flex items-center justify-between py-4 border-b border-white/5 last:border-0">
+    <div>
+      <p className="text-[#f4f4f5] font-medium">{label}</p>
+      <p className="text-sm text-[#71717a]">{description}</p>
+    </div>
+    <button
+      onClick={() => onToggle(settingKey)}
+      className={`w-12 h-6 rounded-full transition-colors relative ${value ? "bg-[#c9a962]" : "bg-white/10"}`}
+    >
+      <motion.div
+        animate={{ x: value ? 24 : 2 }}
+        className="w-5 h-5 bg-white rounded-full absolute top-0.5"
+      />
+    </button>
+  </div>
+);
 
 export default function SettingsPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  const [settings, setSettings] = useState({
+  const [settings, setSettings] = useState<SettingsState>({
     emailNotifications: true,
     priceAlerts: true,
     weeklyDigest: true,
@@ -22,10 +55,10 @@ export default function SettingsPage() {
     if (status === "unauthenticated") router.push("/logowanie");
   }, [status, router]);
 
-  const handleToggle = (key: keyof typeof settings) => {
-    setSettings(prev => ({ ...prev, [key]: !prev[key] }));
+  const handleToggle = useCallback((key: keyof SettingsState) => {
+    setSettings((prev) => ({ ...prev, [key]: !prev[key] }));
     setSaved(false);
-  };
+  }, []);
 
   const handleSave = () => {
     // In production, save to API
@@ -46,24 +79,6 @@ export default function SettingsPage() {
     );
   }
 
-  const SettingRow = ({ label, description, settingKey }: { label: string; description: string; settingKey: keyof typeof settings }) => (
-    <div className="flex items-center justify-between py-4 border-b border-white/5 last:border-0">
-      <div>
-        <p className="text-[#f4f4f5] font-medium">{label}</p>
-        <p className="text-sm text-[#71717a]">{description}</p>
-      </div>
-      <button
-        onClick={() => handleToggle(settingKey)}
-        className={`w-12 h-6 rounded-full transition-colors relative ${settings[settingKey] ? "bg-[#c9a962]" : "bg-white/10"}`}
-      >
-        <motion.div
-          animate={{ x: settings[settingKey] ? 24 : 2 }}
-          className="w-5 h-5 bg-white rounded-full absolute top-0.5"
-        />
-      </button>
-    </div>
-  );
-
   return (
     <main className="min-h-screen bg-[#08090c]">
       <Navbar />
@@ -72,10 +87,10 @@ export default function SettingsPage() {
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-[#0c0d10] border border-white/5 rounded-2xl p-6 mb-6">
           <h2 className="text-lg font-medium text-[#f4f4f5] mb-4">Powiadomienia</h2>
-          <SettingRow label="Powiadomienia email" description="Otrzymuj powiadomienia na email" settingKey="emailNotifications" />
-          <SettingRow label="Alerty cenowe" description="Powiadomienia o osiągnięciu ceny docelowej" settingKey="priceAlerts" />
-          <SettingRow label="Tygodniowy digest" description="Podsumowanie rynku co tydzień" settingKey="weeklyDigest" />
-          <SettingRow label="Otwarcie rynku" description="Powiadomienie o otwarciu GPW" settingKey="marketOpen" />
+          <SettingRow label="Powiadomienia email" description="Otrzymuj powiadomienia na email" settingKey="emailNotifications" value={settings.emailNotifications} onToggle={handleToggle} />
+          <SettingRow label="Alerty cenowe" description="Powiadomienia o osiągnięciu ceny docelowej" settingKey="priceAlerts" value={settings.priceAlerts} onToggle={handleToggle} />
+          <SettingRow label="Tygodniowy digest" description="Podsumowanie rynku co tydzień" settingKey="weeklyDigest" value={settings.weeklyDigest} onToggle={handleToggle} />
+          <SettingRow label="Otwarcie rynku" description="Powiadomienie o otwarciu GPW" settingKey="marketOpen" value={settings.marketOpen} onToggle={handleToggle} />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="bg-[#0c0d10] border border-white/5 rounded-2xl p-6 mb-6">
@@ -112,4 +127,3 @@ export default function SettingsPage() {
     </main>
   );
 }
-

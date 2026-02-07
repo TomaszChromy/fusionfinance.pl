@@ -21,11 +21,6 @@ const EXPERIMENTS: ABExperiment[] = [
     name: "Pricing Layout",
     variants: ["cards", "table"],
   },
-  {
-    id: "newsletter_position",
-    name: "Newsletter Position",
-    variants: ["sidebar", "footer", "popup"],
-  },
 ];
 
 export function getExperiments(): ABExperiment[] {
@@ -104,4 +99,3 @@ export async function trackConversion(experimentId: string, variant: string): Pr
     console.error("Failed to track AB conversion:", error);
   }
 }
-

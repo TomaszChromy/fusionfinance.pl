@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
+import { env } from "@/lib/env";
 import Stripe from "stripe";
 
 const getStripe = () => {
-  const key = process.env.STRIPE_SECRET_KEY;
-  if (!key) {
+  if (!env.stripeSecretKey) {
     return null;
   }
-  return new Stripe(key);
+  return new Stripe(env.stripeSecretKey);
 };
 
 const priceMap: Record<string, { amount: number; description: string }> = {
@@ -70,8 +70,8 @@ export async function POST(request: NextRequest) {
       ],
       mode: "subscription",
       customer_email: session.user.email,
-      success_url: `${process.env.NEXTAUTH_URL}/billing/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXTAUTH_URL}/cennik`,
+      success_url: `${env.nextauthUrl}/billing/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${env.nextauthUrl}/cennik`,
       metadata: {
         userId: session.user.id,
         planId,

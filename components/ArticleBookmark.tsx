@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface Bookmark {
   id: string;
@@ -25,13 +25,10 @@ export default function ArticleBookmark({
   articleUrl,
   className = "",
 }: ArticleBookmarkProps) {
-  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(() =>
+    getBookmarks().some((b) => b.id === articleId)
+  );
   const [showTooltip, setShowTooltip] = useState(false);
-
-  useEffect(() => {
-    const bookmarks = getBookmarks();
-    setIsBookmarked(bookmarks.some((b) => b.id === articleId));
-  }, [articleId]);
 
   const toggleBookmark = () => {
     const bookmarks = getBookmarks();
@@ -102,11 +99,7 @@ function getBookmarks(): Bookmark[] {
 
 // Bookmarks list component
 export function BookmarksList({ className = "" }: { className?: string }) {
-  const [bookmarks, setBookmarks] = useState<Bookmark[]>([]);
-
-  useEffect(() => {
-    setBookmarks(getBookmarks());
-  }, []);
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>(() => getBookmarks());
 
   const removeBookmark = (id: string) => {
     const filtered = bookmarks.filter((b) => b.id !== id);
@@ -154,15 +147,12 @@ export function BookmarksList({ className = "" }: { className?: string }) {
 
 // Continue reading button
 export function ContinueReading({ articleId, className = "" }: { articleId: string; className?: string }) {
-  const [bookmark, setBookmark] = useState<Bookmark | null>(null);
-
-  useEffect(() => {
+  const [bookmark] = useState<Bookmark | null>(() => {
     const bookmarks = getBookmarks();
     const found = bookmarks.find((b) => b.id === articleId);
-    if (found && found.position > 200) {
-      setBookmark(found);
-    }
-  }, [articleId]);
+    if (found && found.position > 200) return found;
+    return null;
+  });
 
   if (!bookmark) return null;
 
@@ -181,4 +171,3 @@ export function ContinueReading({ articleId, className = "" }: { articleId: stri
     </motion.button>
   );
 }
-

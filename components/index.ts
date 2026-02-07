@@ -7,7 +7,7 @@
  * - navigation/ - BreakingNews, NewsTicker, Tickers
  * - hero/       - HeroBanner, FeaturedArticles, RSSFeatured
  * - news/       - NewsCard, RSSArticles, ArticleSkeleton
- * - sidebar/    - MarketSidebar, MarketStatus, Widgets
+ * - sidebar/    - Mood, SocialProof, Watchlist, QuickActions
  * - markets/    - Charts, Tables, Prices
  * - ui/         - Card, Badge, Button, Modal, etc.
  */
@@ -32,4 +32,3 @@ export * from "./markets";
 
 // UI Components (Design System)
 export * from "./ui";
-
