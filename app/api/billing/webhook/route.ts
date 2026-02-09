@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 
 const stripe = env.stripeSecretKey
   ? new Stripe(env.stripeSecretKey, {
-      apiVersion: "2024-06-20",
+      apiVersion: "2025-11-17.clover",
     })
   : null;
 
@@ -92,13 +92,21 @@ export async function POST(request: NextRequest) {
         const userId = sub.metadata?.userId;
         const planId =
           sub.metadata?.planId || sub.items.data[0]?.price.nickname || "pro";
+        const currentPeriodEnd =
+          typeof sub === "object" &&
+          sub !== null &&
+          "current_period_end" in sub &&
+          typeof (sub as { current_period_end?: unknown }).current_period_end ===
+            "number"
+            ? (sub as { current_period_end: number }).current_period_end
+            : undefined;
         if (userId) {
           await upsertSubscription({
             userId,
             plan: planId,
             customerId: sub.customer?.toString(),
             subscriptionId: sub.id,
-            currentPeriodEnd: sub.current_period_end,
+            currentPeriodEnd,
           });
         }
         break;
@@ -113,7 +121,7 @@ export async function POST(request: NextRequest) {
               stripeInvoiceId: invoice.id,
               amount: invoice.amount_paid ?? 0,
               currency: invoice.currency?.toUpperCase() || "PLN",
-              status: invoice.paid ? "paid" : "pending",
+              status: invoice.status === "paid" ? "paid" : "pending",
               description: invoice.lines?.data?.[0]?.description ?? "Invoice",
             },
           });

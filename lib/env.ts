@@ -47,4 +47,9 @@ export const env = {
   fusionOpenAiKey: optional("FUSION_OPENAI_API_KEY"),
   openAiKey: optional("OPENAI_API_KEY"),
   cronSecret: optional("CRON_SECRET"),
+  googleSiteVerification: optional("NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION"),
+  bingSiteVerification: optional("NEXT_PUBLIC_MSVALIDATE_01"),
+  yandexSiteVerification: optional("NEXT_PUBLIC_YANDEX_VERIFICATION"),
+  staticExport: optional("NEXT_PUBLIC_STATIC_EXPORT"),
+  usePhpApi: optional("NEXT_PUBLIC_USE_PHP_API"),
 };

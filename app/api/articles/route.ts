@@ -4,6 +4,7 @@ import type { Article } from "@prisma/client";
 import { FALLBACK_ARTICLES } from "./fallback";
 
 type ListItem = Omit<Article, "content"> & { content?: never };
+type FallbackArticle = typeof FALLBACK_ARTICLES[number];
 
 async function getPrismaSafe() {
   try {
@@ -13,6 +14,25 @@ async function getPrismaSafe() {
     return null;
   }
 }
+
+function normalizeFallbackArticle(article: FallbackArticle): ListItem {
+  const publishedAt = new Date(article.publishedAt);
+  return {
+    id: article.slug,
+    slug: article.slug,
+    title: article.title,
+    summary: article.summary,
+    coverImage: article.coverImage ?? null,
+    category: article.category ?? null,
+    tags: article.tags ?? [],
+    source: article.source ?? "FusionFinance.pl",
+    publishedAt,
+    createdAt: publishedAt,
+    updatedAt: publishedAt,
+  };
+}
+
+const FALLBACK_LIST = FALLBACK_ARTICLES.map(normalizeFallbackArticle);
 
 function applyFilters(items: ListItem[], category?: string, search?: string, tag?: string) {
   return items.filter(item => {
@@ -90,12 +110,9 @@ export async function GET(request: NextRequest) {
     console.error("[articles] DB error, falling back:", error);
   }
 
-  const filtered = applyFilters(FALLBACK_ARTICLES, category, search, tag);
+  const filtered = applyFilters(FALLBACK_LIST, category, search, tag);
   const total = filtered.length;
-  const items = paginate(filtered, page, limit).map(item => ({
-    id: item.slug,
-    ...item,
-  }));
+  const items = paginate(filtered, page, limit);
 
   return NextResponse.json({
     items,

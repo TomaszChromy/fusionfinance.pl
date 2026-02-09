@@ -14,10 +14,10 @@ async function getPrismaSafe() {
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
   const prisma = await getPrismaSafe();
-  const slug = params.slug;
+  const { slug } = await params;
 
   try {
     if (prisma) {

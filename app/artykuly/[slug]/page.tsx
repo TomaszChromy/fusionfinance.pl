@@ -13,6 +13,7 @@ export async function generateStaticParams() {
 }
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const IS_STATIC = process.env.NEXT_PUBLIC_STATIC_EXPORT === "true" || process.env.STATIC_EXPORT === "true";
 
 interface ArticlePayload {
   item?: {
@@ -30,79 +31,84 @@ interface ArticlePayload {
   source?: string;
 }
 
+function getFallbackArticle(slug: string): ArticlePayload | null {
+  const fallback = FALLBACK_ARTICLES.find(a => a.slug === slug);
+  if (!fallback) return null;
+  return {
+    item: { id: fallback.slug, ...fallback },
+    source: "fallback",
+  };
+}
+
 async function fetchArticle(slug: string, baseUrl: string): Promise<ArticlePayload> {
-  const res = await fetch(`${baseUrl}/api/articles/${slug}`, { next: { revalidate: 120 } });
-  if (!res.ok) {
-    throw new Error(`Article fetch failed: ${res.status}`);
+  const fallback = getFallbackArticle(slug);
+
+  if (IS_STATIC && fallback) {
+    return fallback;
   }
-  return res.json();
+
+  // Avoid slow network calls during static generation; rely on bundled fallback content instead.
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    if (fallback) return fallback;
+    return { item: undefined };
+  }
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+  try {
+    const res = await fetch(`${baseUrl}/api/articles/${slug}`, {
+      next: { revalidate: 120 },
+      signal: controller.signal,
+    });
+    if (!res.ok) {
+      throw new Error(`Article fetch failed: ${res.status}`);
+    }
+    return await res.json();
+  } catch {
+    return fallback ?? { item: undefined };
+  } finally {
+    clearTimeout(timeoutId);
+  }
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const baseUrl = BASE_URL;
-  try {
-    const data = await fetchArticle(slug, baseUrl);
-    const article = data.item;
-    if (!article) return {};
+  const data = await fetchArticle(slug, baseUrl);
+  const article = data.item;
+  if (!article) return {};
 
-    const title = article.title;
-    const description = article.summary?.slice(0, 160) || "Analiza finansowa FusionFinance";
-    const url = `${baseUrl}/artykuly/${article.slug}`;
-    const image = article.coverImage;
+  const title = article.title;
+  const description = article.summary?.slice(0, 160) || "Analiza finansowa FusionFinance";
+  const url = `${baseUrl}/artykuly/${article.slug}`;
+  const image = article.coverImage || `${baseUrl}/og-image.svg`;
 
-    return {
+  return {
+    title,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
       title,
       description,
-      openGraph: {
-        title,
-        description,
-        url,
-        images: image ? [{ url: image, width: 1200, height: 630, alt: title }] : undefined,
-        type: "article",
-      },
-      twitter: {
-        card: "summary_large_image",
-        title,
-        description,
-        images: image ? [image] : undefined,
-      },
-    };
-  } catch {
-    const fallback = FALLBACK_ARTICLES.find(a => a.slug === slug);
-    if (!fallback) return {};
-    return {
-      title: fallback.title,
-      description: fallback.summary?.slice(0, 160),
-      openGraph: {
-        title: fallback.title,
-        description: fallback.summary?.slice(0, 160),
-        url: `${BASE_URL}/artykuly/${fallback.slug}`,
-        images: fallback.coverImage ? [{ url: fallback.coverImage, width: 1200, height: 630, alt: fallback.title }] : undefined,
-        type: "article",
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: fallback.title,
-        description: fallback.summary?.slice(0, 160),
-        images: fallback.coverImage ? [fallback.coverImage] : undefined,
-      },
-    };
-  }
+      url,
+      images: image ? [{ url: image, width: 1200, height: 630, alt: title }] : undefined,
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: image ? [image] : undefined,
+    },
+  };
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const baseUrl = BASE_URL;
-  let article: ArticlePayload["item"];
-
-  try {
-    const data = await fetchArticle(slug, baseUrl);
-    article = data.item;
-  } catch {
-    const fallback = FALLBACK_ARTICLES.find(a => a.slug === slug);
-    article = fallback ? { id: fallback.slug, ...fallback } : undefined;
-  }
+  const data = await fetchArticle(slug, baseUrl);
+  const article = data.item;
 
   if (!article) {
     notFound();

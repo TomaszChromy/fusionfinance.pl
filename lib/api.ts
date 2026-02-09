@@ -20,6 +20,15 @@ export function isLocalhost(): boolean {
  * Returns false for: static hosting with PHP backend
  */
 export function shouldUseNextApi(): boolean {
+  const isStaticExport =
+    (typeof process !== "undefined" &&
+      (process.env.NEXT_PUBLIC_STATIC_EXPORT === "true" ||
+        process.env.STATIC_EXPORT === "true")) ||
+    (typeof process !== "undefined" &&
+      process.env.NEXT_PUBLIC_USE_PHP_API === "true");
+
+  if (isStaticExport) return false;
+
   if (typeof window === "undefined") return true; // SSR - always use Next.js API
 
   const { hostname, port } = window.location;
@@ -110,4 +119,3 @@ export function getRssApiUrl(feed: string, limit: number = 10): string {
 export function getArticleApiUrl(url: string): string {
   return getApiUrl("article", { url });
 }
-

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { auth } from "@/lib/auth";
 
+// Access control and basic security headers via proxy (replaces deprecated middleware)
 const protectedRoutes = ["/profil", "/alerty", "/watchlist", "/ustawienia"];
 const authRoutes = ["/logowanie", "/rejestracja"];
 
@@ -65,7 +66,7 @@ const withSecurityHeaders = (
   return response;
 };
 
-export default async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Basic rate limiting for API routes

@@ -223,6 +223,7 @@ model User {
   watchlist    WatchlistItem[]
   pageViews    PageView[]
   articleViews ArticleView[]
+  localArticleViews ArticleViewLocal[]
   events       Event[]
   subscription Subscription?
   billingHistory BillingHistory[]

@@ -12,6 +12,7 @@ import ServiceWorkerRegistration from "@/components/ServiceWorkerRegistration";
 import DevCacheReset from "@/components/DevCacheReset";
 import { ToastProvider } from "@/components/Toast";
 import Providers from "@/components/Providers";
+import { env } from "@/lib/env";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -136,9 +137,10 @@ export const metadata: Metadata = {
   classification: "Business/Finance/Investment",
   referrer: "origin-when-cross-origin",
   other: {
-    "google-site-verification": "YOUR_GOOGLE_VERIFICATION_CODE",
-    "msvalidate.01": "YOUR_BING_VERIFICATION_CODE",
-    "yandex-verification": "YOUR_YANDEX_VERIFICATION_CODE",
+    ...(env.googleSiteVerification && { "google-site-verification": env.googleSiteVerification }),
+    ...(env.bingSiteVerification && { "msvalidate.01": env.bingSiteVerification }),
+    ...(env.yandexSiteVerification && { "yandex-verification": env.yandexSiteVerification }),
+    "mobile-web-app-capable": "yes",
     "apple-mobile-web-app-capable": "yes",
     "apple-mobile-web-app-status-bar-style": "black-translucent",
     "apple-mobile-web-app-title": "FusionFinance",
@@ -285,7 +287,7 @@ export default function RootLayout({
             {children}
             <CookieConsent />
             <ScrollToTop />
-            <SpeedInsights />
+            {env.staticExport === "true" ? null : <SpeedInsights />}
           </ToastProvider>
         </Providers>
       </body>

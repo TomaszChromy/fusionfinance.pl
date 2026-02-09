@@ -34,7 +34,7 @@ const FALLBACK_WIG20: StockRow[] = [
 const INDEX_SYMBOLS = "wig20,wig,mwig40,swig80";
 const WIG20_SYMBOLS = "pko,pkn,pzu,peo,kgh,lpp,cdr,dnp,ale,spl";
 
-function parseCsvLine(line: string) {
+function parseCsvLine(line: string): StockRow | null {
   // Symbol,Date,Time,Open,High,Low,Close,Volume
   const parts = line.split(",");
   if (parts.length < 8) return null;
@@ -44,7 +44,14 @@ function parseCsvLine(line: string) {
   const change = closeNum - openNum;
   const changePct = openNum ? (change / openNum) * 100 : 0;
   const volume = volumeRaw && volumeRaw !== "0" ? volumeRaw : undefined;
-  return { symbol: symbol.toUpperCase(), price: closeNum, change, changePercent: changePct, volume };
+  return {
+    symbol: symbol.toUpperCase(),
+    name: symbol.toUpperCase(),
+    price: closeNum,
+    change,
+    changePercent: changePct,
+    volume,
+  };
 }
 
 async function fetchCsv(symbols: string): Promise<StockRow[]> {
@@ -53,10 +60,12 @@ async function fetchCsv(symbols: string): Promise<StockRow[]> {
   if (!res.ok) throw new Error(`Stooq error ${res.status}`);
   const text = await res.text();
   const lines = text.trim().split("\n").slice(1); // drop header
-  const parsed = lines.map(parseCsvLine).filter(Boolean) as Array<ReturnType<typeof parseCsvLine>>;
+  const parsed = lines
+    .map(parseCsvLine)
+    .filter((row): row is StockRow => row !== null);
   return parsed.map(row => ({
     symbol: row.symbol,
-    name: row.symbol,
+    name: row.name,
     price: row.price,
     change: row.change,
     changePercent: row.changePercent,
