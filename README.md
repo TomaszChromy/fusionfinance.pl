@@ -168,3 +168,4 @@ Ten projekt jest własnością intelektualną Tomasza Chromy. Szczegółowe info
   <em>FusionFinance.pl - Luksusowy Portal Finansowy</em>
 </p>
 <!-- Deploy fix test -->
+# RiderProjects-fusionfinance.pl
